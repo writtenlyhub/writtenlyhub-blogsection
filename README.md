@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WrittenlyHub Blog Platform
 
-## Getting Started
+A modern, SEO-first blog platform built with **Next.js** and **Payload CMS**, designed to replace the existing WordPress-based blog while providing a scalable content management experience for editors and writers.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Features
+
+- Next.js App Router
+- Payload CMS v3
+- PostgreSQL Database
+- Lexical Rich Text Editor
+- Draft & Publish Workflow
+- Automatic Slug Generation
+- Read Time Calculation
+- Featured Article Support
+- Category Management
+- Media Library
+- Responsive Blog UI
+- SEO-Friendly Architecture
+- TypeScript
+- Tailwind CSS
+
+---
+
+## 🛠 Tech Stack
+
+- Next.js 16
+- Payload CMS 3
+- PostgreSQL
+- Tailwind CSS
+- TypeScript
+- Docker
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── app/
+│   ├── (frontend)/
+│   └── (payload)/
+├── collections/
+│   ├── Blogs/
+│   ├── Categories/
+│   ├── Media/
+│   └── Users/
+├── components/
+├── lib/
+└── payload.config.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Install dependencies
 
-## Learn More
+```bash
+pnpm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Start PostgreSQL
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+docker compose up -d
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Run the development server
 
-## Deploy on Vercel
+```bash
+pnpm dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Payload Admin:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+http://localhost:3000/admin
+```
+
+---
+
+## 📌 Current Status
+
+### ✅ Completed
+
+- Project setup
+- Payload CMS integration
+- Authentication
+- Users collection
+- Blogs collection
+- Categories collection
+- Media library
+- Draft & Publish workflow
+- Frontend design system
+- Static blog listing page
+- Responsive layout foundation
+
+### 🚧 In Progress
+
+- Editorial UI refinement
+- Payload data integration
+- Dynamic blog pages
+- Search functionality
+- SEO enhancements
+
+---
+
+## 🎯 Project Goal
+
+Build a fast, scalable, SEO-friendly publishing platform with a premium editorial experience while providing a modern content management workflow for writers and editors.
+
+---
+
+## 📄 License
+
+Private project.
