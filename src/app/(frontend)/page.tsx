@@ -4,6 +4,7 @@ import { HeroCard } from '@/components/blog/HeroCard';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
 import { FadeIn } from '@/components/ui/FadeIn';
+import { CategoryFilter } from '@/components/blog/CategoryFilter';
 
 export default function BlogListingPage() {
   const heroBlog = MOCK_BLOGS.find(b => b.featuredHero) || MOCK_BLOGS[0];
@@ -20,26 +21,50 @@ export default function BlogListingPage() {
         
         <section className="w-full px-gutter pt-12 md:pt-16 max-w-container-max mx-auto flex flex-col items-center text-center pb-4 md:pb-6 relative z-10">
           <FadeIn direction="up" delay={0}>
-            <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 md:mb-5">
-              <img alt="WrittenlyHub Accent" className="hidden min-[375px]:block w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd11M-PIY0x4_CsAYjgOoY8E3ySIOZ-3WGWMG53h59gkznyNLht4LnMBGIrXY5yENbFaVUE8PiGACLO4Q3030pRdMWCKtZ6mRVJl23TiUW2eG2iPe4P8_7kvqVIqSZ4-LD0DpdEF2di0y71kvr9Kd-X0clt8_vp6dCXxVxg7N9Tw5pToq8PUcbpkdMnunkTwRXyHnFDVNQTnmhXeJYyeeikvoR15Ec4AWWfNYXiKnQKJfNmcYESphzYrvEZhDakvRXBNRVVKfiJXg"/>
-              <h1 className="font-display-lg text-display-lg text-writtenly-navy tracking-tight leading-tight">Blogs at WrittenlyHub</h1>
-            </div>
-            <p className="font-body-lg text-body-lg text-on-surface-variant/80 max-w-2xl mx-auto leading-[1.6] mb-8 md:mb-10">
+            {/* ── Editorial Masthead Lockup ──────────────────────────────
+                 Mobile: bird vertically centered to BOTH title lines as one
+                 text block. The whole unit is centered on the page.
+                 Desktop: classic single-row with bird + full title.
+            ───────────────────────────────────────────────────────────── */}
+            <h1 className="mb-3 md:mb-5 font-display-lg text-display-lg text-writtenly-navy tracking-tight leading-tight">
+
+              {/* ── Mobile lockup ── */}
+              <span className="flex md:hidden justify-center">
+                <span className="inline-flex items-center gap-3">
+                  <img
+                    alt="WrittenlyHub Accent"
+                    className="hidden min-[375px]:block w-11 h-11 object-contain shrink-0 self-center"
+                    src="/images/logos/bird-accent.png"
+                  />
+                  <span className="flex flex-col text-left">
+                    <span>Blogs at</span>
+                    <span>WrittenlyHub</span>
+                  </span>
+                </span>
+              </span>
+
+              {/* ── Desktop lockup ── */}
+              <span className="hidden md:flex items-center justify-center gap-4">
+                <img
+                  alt="WrittenlyHub Accent"
+                  className="w-20 h-20 object-contain shrink-0"
+                  src="/images/logos/bird-accent.png"
+                />
+                <span>Blogs at WrittenlyHub</span>
+              </span>
+
+            </h1>
+
+            {/* Subtitle — grouped with heading, 16–20px extra clearance before pills */}
+            <p className="font-body-lg text-body-lg text-on-surface-variant/80 max-w-2xl mx-auto leading-[1.6] mb-10 md:mb-10 px-1 md:px-0">
               Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources.
             </p>
           </FadeIn>
-          
-          <FadeIn direction="up" delay={0.1}>
-            {/* Tighter Category Pills */}
-            <div className="flex md:flex-wrap items-center justify-center gap-2 md:gap-3 w-full mb-6 md:mb-8 overflow-x-auto md:overflow-visible pb-2 md:pb-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <button className="px-5 py-2 rounded-full bg-writtenly-navy text-white font-label-md text-label-md font-bold transition-all shadow-sm hover:shadow-md hover:-translate-y-[1px] shrink-0 min-h-[40px] md:min-h-[44px]">All</button>
-              {CATEGORIES.slice(0, 8).map(cat => (
-                <button key={cat.id} className="px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 hover:border-writtenly-navy/50 hover:text-writtenly-navy font-label-md text-label-md transition-all shadow-sm hover:shadow-md hover:-translate-y-[1px] shrink-0 min-h-[40px] md:min-h-[44px]">
-                  {cat.title}
-                </button>
-              ))}
-            </div>
-            
+
+          <FadeIn direction="up" delay={0.1} className="w-full">
+            {/* CategoryFilter handles desktop pills + mobile condensed bar + bottom sheet */}
+            <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
+
             {/* Integrated Search Bar spanning full container width */}
             <div className="w-full mx-auto max-w-container-max">
               <SearchBar />

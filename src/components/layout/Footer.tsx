@@ -7,14 +7,13 @@ export function Footer() {
       <div className="max-w-container-max mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
           <div className="flex flex-col gap-6 lg:col-span-1">
-            <div className="w-40 relative h-10">
-              <Image 
-                alt="WrittenlyHub" 
-                className="object-contain object-left" 
-                src="/images/logos/logo.svg" 
-                fill
+            <Image
+                alt="WrittenlyHub"
+                className="object-contain"
+                src="/images/logos/logo.svg"
+                width={210}
+                height={50}
               />
-            </div>
             <p className="font-body-md text-body-md text-white/70 leading-relaxed max-w-xs">
               We are a boutique content marketing agency to help you add a premium touch to your brand through our expertise and creativity.
             </p>

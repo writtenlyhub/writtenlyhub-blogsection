@@ -8,16 +8,15 @@ export function Header() {
       <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto">
         <div className="font-display-lg text-headline-md font-bold text-white flex items-center gap-2">
           <Link href="/">
-            <div className="relative h-7 md:h-9 w-[180px]">
-              <Image 
-                alt="Writtenly Hub Logo" 
+              <Image
+                alt="WrittenlyHub Logo"
                 src="/images/logos/logo.svg"
-                fill
-                className="object-contain object-left"
+                width={200}
+                height={34}
+                className="object-contain"
                 priority
               />
-            </div>
-          </Link>
+            </Link>
         </div>
         <div className="hidden md:flex items-center gap-10">
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">About</Link>
