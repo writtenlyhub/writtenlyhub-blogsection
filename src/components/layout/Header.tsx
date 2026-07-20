@@ -27,7 +27,7 @@ export function Header() {
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Write For Us</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
-          <Button variant="primary" className="text-[12px] md:text-[14px] px-3 py-2 md:px-4 md:py-2 min-h-[40px] md:min-h-[44px]">Contact Us</Button>
+          <Button variant="primary" className="hidden md:inline-flex text-[12px] md:text-[14px] px-3 py-2 md:px-4 md:py-2 min-h-[40px] md:min-h-[44px]">Contact Us</Button>
           <button className="md:hidden text-white bg-white/10 p-2.5 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]">
             <span className="material-symbols-outlined text-[20px]">menu</span>
           </button>
