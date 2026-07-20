@@ -2,16 +2,16 @@ import { InputHTMLAttributes } from 'react';
 
 export function SearchBar(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <div className="relative group">
-      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <span className="material-symbols-outlined text-outline group-focus-within:text-writtenly-orange transition-colors">
+    <div className="relative group w-full">
+      <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+        <span className="material-symbols-outlined text-on-surface-variant/50 group-focus-within:text-writtenly-orange transition-colors text-[24px]">
           search
         </span>
       </div>
       <input
-        className="w-full pl-12 pr-6 py-3 bg-white border border-outline-variant rounded-full font-body-md text-body-md text-on-surface focus:outline-none focus:border-writtenly-orange focus:ring-2 focus:ring-writtenly-orange/20 transition-all shadow-sm"
+        className="w-full pl-14 pr-6 py-4 md:py-[18px] bg-white border border-outline-variant/40 rounded-full font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-writtenly-orange focus:ring-4 focus:ring-writtenly-orange/15 transition-all shadow-sm hover:shadow-md hover:border-writtenly-navy/30 placeholder:text-on-surface-variant/50"
         type="text"
-        placeholder="Search articles..."
+        placeholder="Search articles, topics, or guides..."
         {...props}
       />
     </div>

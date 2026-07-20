@@ -1,40 +1,51 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Blog } from '@/data/mockBlogs';
-import { Badge } from '@/components/ui/Badge';
 
 export function BlogCard({ blog }: { blog: Blog }) {
   return (
-    <Link href={`/blog/${blog.slug}`} className="flex flex-col bg-surface-container-lowest rounded-2xl border border-outline-variant overflow-hidden hover:border-primary-container/20 transition-all group shadow-sm hover:shadow-xl">
-      <div className="h-36 bg-surface-container-high relative overflow-hidden">
-        <img 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+    <Link 
+      href={`/blog/${blog.slug}`} 
+      className="flex flex-col h-full bg-surface-container-lowest rounded-xl border border-outline-variant/60 overflow-hidden hover:border-writtenly-navy/30 hover:shadow-lg transition-all duration-300 group"
+    >
+      <div className="aspect-[3/2] shrink-0 bg-surface-container-high relative overflow-hidden">
+        <Image 
+          className="object-cover transition-transform duration-500 group-hover:scale-105" 
           src={blog.featuredImage} 
-          alt={blog.title} 
+          alt={blog.altText || blog.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-2 mb-3">
-          <Badge>{blog.category.title}</Badge>
-          <span className="text-outline text-xs">• {blog.readTime}</span>
+      
+      <div className="p-5 md:p-6 flex flex-col flex-grow">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="border border-writtenly-navy/30 text-writtenly-navy rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-widest uppercase bg-transparent">
+            {blog.category.title}
+          </span>
         </div>
-        <h4 className="font-headline-md text-headline-md text-writtenly-navy mb-2 group-hover:opacity-80 transition-opacity line-clamp-2">
+        
+        <h4 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 leading-[1.3] group-hover:text-writtenly-orange transition-colors">
           {blog.title}
         </h4>
-        <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">
+        
+        <div className="flex items-center gap-1.5 text-[13px] text-on-surface-variant mb-4">
+          <span className="font-bold text-writtenly-navy/80">{blog.author.name}</span>
+          <span className="text-outline/50 px-1">•</span>
+          <span>{blog.publishedDate}</span>
+        </div>
+        
+        <p className="font-body-md text-body-md text-on-surface-variant/80 mb-6 leading-relaxed">
           {blog.excerpt}
         </p>
-        <div className="mt-auto pt-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
-              <img 
-                className="w-full h-full object-cover" 
-                src={blog.author.avatarUrl} 
-                alt={blog.author.name} 
-              />
-            </div>
-            <span className="font-label-md text-label-md text-writtenly-navy text-sm font-bold">{blog.author.name}</span>
+        
+        <div className="mt-auto flex justify-start items-center pt-2">
+          <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-3 py-1.5 text-[12px] font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
+            <span>Read more</span>
+            <span className="material-symbols-outlined text-[14px]">
+              chevron_right
+            </span>
           </div>
-          <span className="material-symbols-outlined text-outline group-hover:text-writtenly-navy transition-colors text-sm">arrow_outward</span>
         </div>
       </div>
     </Link>

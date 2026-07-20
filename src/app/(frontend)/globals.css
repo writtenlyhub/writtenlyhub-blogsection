@@ -1,8 +1,9 @@
 @import "tailwindcss";
-
+@plugin "@tailwindcss/typography";
 @theme inline {
   /* Colors */
-  --color-writtenly-navy: #102B63;
+  --color-writtenly-navy: #022150;
+  --color-writtenly-navy-hover: #011533;
   --color-writtenly-orange: #fe6b00;
 
   --color-surface-container-lowest: #ffffff;
@@ -72,54 +73,54 @@
   --font-body-md: var(--font-inter), sans-serif;
   --font-label-md: var(--font-inter), sans-serif;
 
-  /* Text Styles (Editorial Scale - Zeffy/Linear style) */
-  --text-display-lg: 44px;
-  --text-display-lg--line-height: 1.05;
+  /* Fluid Text Styles (Responsive without abrupt media queries) */
+  --text-display-lg: clamp(32px, 4vw, 44px);
+  --text-display-lg--line-height: 1.1;
   --text-display-lg--letter-spacing: -0.02em;
   --text-display-lg--font-weight: 800;
 
-  --text-headline-xl: 36px;
+  --text-headline-xl: clamp(28px, 3.5vw, 36px);
   --text-headline-xl--line-height: 1.15;
   --text-headline-xl--letter-spacing: -0.01em;
-  --text-headline-xl--font-weight: 700;
+  --text-headline-xl--font-weight: 800;
 
-  --text-headline-xl-mobile: 28px;
-  --text-headline-xl-mobile--line-height: 1.15;
-  --text-headline-xl-mobile--font-weight: 700;
+  --text-headline-xl-mobile: clamp(24px, 3vw, 28px);
+  --text-headline-xl-mobile--line-height: 1.2;
+  --text-headline-xl-mobile--font-weight: 800;
 
-  --text-headline-lg: 24px;
-  --text-headline-lg--line-height: 1.2;
+  --text-headline-lg: clamp(20px, 2.5vw, 24px);
+  --text-headline-lg--line-height: 1.25;
   --text-headline-lg--font-weight: 700;
 
-  --text-headline-lg-mobile: 20px;
-  --text-headline-lg-mobile--line-height: 1.2;
+  --text-headline-lg-mobile: clamp(18px, 2vw, 20px);
+  --text-headline-lg-mobile--line-height: 1.25;
   --text-headline-lg-mobile--font-weight: 700;
 
-  --text-headline-md: 18px;
-  --text-headline-md--line-height: 1.3;
-  --text-headline-md--font-weight: 600;
+  --text-headline-md: clamp(17px, 2vw, 19px);
+  --text-headline-md--line-height: 1.35;
+  --text-headline-md--font-weight: 700;
+  --text-headline-md--letter-spacing: -0.01em;
 
-  --text-body-lg: 15px;
+  --text-body-lg: clamp(15px, 1.5vw, 16px);
   --text-body-lg--line-height: 1.6;
   --text-body-lg--font-weight: 400;
 
-  --text-body-md: 14px;
+  --text-body-md: clamp(14px, 1vw, 15px);
   --text-body-md--line-height: 1.6;
   --text-body-md--font-weight: 400;
 
-  --text-label-md: 13px;
+  --text-label-md: clamp(11px, 1vw, 12px);
   --text-label-md--line-height: 1;
   --text-label-md--letter-spacing: 0.05em;
-  --text-label-md--font-weight: 500;
+  --text-label-md--font-weight: 600;
 
-  /* Spacing */
-  --spacing-stack-sm: 8px;
-  --spacing-stack-md: 16px;
-  --spacing-stack-lg: 24px;
-  --spacing-gutter: 64px;
-  --spacing-margin-mobile: 24px;
-  --spacing-section-gap: 120px;
-  --spacing-container-max: 1200px;
+  /* Fluid Spacing */
+  --spacing-stack-sm: clamp(6px, 1vw, 8px);
+  --spacing-stack-md: clamp(12px, 2vw, 16px);
+  --spacing-stack-lg: clamp(16px, 3vw, 24px);
+  --spacing-gutter: clamp(20px, 4vw, 48px);
+  --spacing-section-gap: clamp(48px, 8vw, 80px);
+  --spacing-container-max: 1140px;
 
   /* Border Radius */
   --radius-sm: 0.125rem;

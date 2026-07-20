@@ -21,49 +21,51 @@ export interface Blog {
   publishedDate: string;
   readTime: string;
   featuredImage: string;
+  altText: string;
   featuredHero?: boolean;
+  contentHtml?: string;
 }
 
 const AUTHOR_SARAH: Author = {
   id: '1',
   name: 'Sarah Jenkins',
   role: 'Lead Strategist',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI',
+  avatarUrl: '/images/authors/sarah.webp',
 };
 
 const AUTHOR_ALEX: Author = {
   id: '2',
   name: 'Alex Chen',
   role: 'SEO Specialist',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI', // Using same for mock
+  avatarUrl: '/images/authors/alex.webp',
 };
 
 const AUTHOR_MARCUS: Author = {
   id: '3',
   name: 'Marcus Wright',
   role: 'Content Lead',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI',
+  avatarUrl: '/images/authors/marcus.webp',
 };
 
 const AUTHOR_ELENA: Author = {
   id: '4',
   name: 'Elena Rostova',
   role: 'Managing Editor',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI',
+  avatarUrl: '/images/authors/elena.webp',
 };
 
 const AUTHOR_DAVID: Author = {
   id: '5',
   name: 'David Kim',
   role: 'B2B Strategist',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI',
+  avatarUrl: '/images/authors/david.webp',
 };
 
 const AUTHOR_MARIA: Author = {
   id: '6',
   name: 'Maria Gonzalez',
   role: 'Analytics Expert',
-  avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCERAy6d81tQEJT_NSBA2VRraK1bXQqDQTzcV1fjiPGTGoVtswqkEn328Nf6fUE5CnA9wzHlMjOuL8bMHYbkQ7O_ngLytMp_n707Sk3Tn_wLO-FZQ-7Q6QbCcokNXQq7z7iVSq6QR4bW02rjOTib6m0mCW-faFLbFr9glx-Jf1R88WkNeuqHA8RTCe6umXjLy7LQRiasC6wYWloJ0uDPSd4ZV4SXzzzqebcA6Hs4T1ern8f_cJF2xkTEj0fPurh4YXNNFtdqMeVayI',
+  avatarUrl: '/images/authors/maria.webp',
 };
 
 const CAT_AI: Category = { id: 'c1', title: 'AI & Tech', slug: 'ai-tech' };
@@ -92,8 +94,45 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_SARAH,
     publishedDate: 'March 15, 2024',
     readTime: '12 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDyh8DjpWbAMq-UE3eNWryXAL-Y1cfsbgqfF6q2OvIkdc1K4rnuTOTl473Bt8kVrCZjl-IJ5Qh1uuvoHYIoWrGC7Ea1eKiYRqq0b0qbw2GOiIlprzmvDRt3OflJ7yh-Xg-oKX0OD3m6WIHEp3zYGu3LtYbRLVc3Xo4Ide0qsI91Io4yjF468irvJXGpHJxA5uC_nUg_2dhMnhjJk4jY1GLY5XVz7OxegEZY0LxZaUkXFB7a64uys4Ejn4P7ICGW0TjYqxaUaGEB2wc',
+    featuredImage: '/images/blog/future-of-ai-content-strategy.webp',
+    altText: 'Modern developer workspace with glowing code screens representing AI workflows',
     featuredHero: true,
+    contentHtml: `
+      <p>The generative AI revolution is no longer just on the horizon—it is already fundamentally reshaping how marketing teams operate. However, as language models like GPT-4 and Claude 3 become more sophisticated, a new challenge has emerged: the sea of sameness.</p>
+      
+      <p>When every brand has access to the same baseline level of competence, simply producing grammatically correct content is no longer a competitive advantage. In this new era, the role of the content strategist shifts from mere creation to high-level curation, deep subject matter expertise, and advanced prompt engineering.</p>
+
+      <h2>The Shift from Creation to Curation</h2>
+      <p>Traditionally, a content marketer spent 80% of their time writing and 20% researching. Today, that ratio must flip. The most successful teams are spending the vast majority of their time on:</p>
+      <ul>
+        <li>Interviewing internal subject matter experts (SMEs).</li>
+        <li>Analyzing proprietary data that AI cannot access.</li>
+        <li>Curating unique viewpoints that challenge industry consensus.</li>
+      </ul>
+
+      <blockquote>
+        <p>"AI can synthesize what is already known, but it takes a human to synthesize what is felt, experienced, and truly novel."</p>
+      </blockquote>
+
+      <h3>Building the 'Data Moat'</h3>
+      <p>A data moat refers to the proprietary insights your company generates through its normal operations. If you are a SaaS company, this might be anonymized usage statistics. If you are an agency, it is the aggregated results of your client campaigns.</p>
+      
+      <p>When you feed this proprietary data into an LLM via Retrieval-Augmented Generation (RAG) or careful prompt engineering, the output ceases to be generic. It becomes uniquely yours.</p>
+
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAly25P27UdqoR0I4M7WjSaktkZ5_gRULiaePaKnuISDzWsBoSJOWozJAceUGMdF2w0SzfZZ4M0jI1QdUnnIE6ZypaPyZIA7LXuQKN65GLnosOvov5Bu0z2SveynhU8tLsVx3ZjkUsagocDRsgysltO9Bf701mWUN7m5GDj9uaGZ6tPeWuaOCC09-SMjDjEyWlUXwZHVo5NBM2BHJ6sY0XOSxseEmChBw54qUm9L60HIJSxa9aWg_6ue3Q2A1gyUVh8s6KzkGgl-o" alt="Data visualization graph" />
+      
+      <h2>Advanced Prompt Engineering for Brand Voice</h2>
+      <p>Getting an LLM to sound like your brand requires more than appending "write this in a professional but approachable tone." It requires systematic prompt architecture.</p>
+
+      <ol>
+        <li><strong>Establish the Persona:</strong> Define the exact role and worldview of the writer.</li>
+        <li><strong>Provide Few-Shot Examples:</strong> Feed the model 3-5 examples of your best-performing content.</li>
+        <li><strong>Define the Anti-Voice:</strong> Explicitly tell the model what words, phrases, and structures to avoid (e.g., "Do not use the word 'delve' or 'tapestry'").</li>
+      </ol>
+
+      <h3>The Future is Hybrid</h3>
+      <p>We are entering a hybrid era of content strategy. The winners will not be the teams that stubbornly refuse to use AI, nor will it be the teams that fully automate their publishing pipelines. The winners will be the <em>centaurs</em>—human strategists utilizing AI to amplify their unique insights and execute at unprecedented scale.</p>
+    `
   },
   {
     id: '2',
@@ -104,7 +143,8 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_ALEX,
     publishedDate: 'March 10, 2024',
     readTime: '5 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDWVab2vobAJVan86HTuVMrhVS_W0Vu1yOEsLGB78YqHPwjNnBn-G90aqvSAVz02RieekxO-13PMOtJ5g6JzQ4I63JSOuTNFvRq1UecqawQvLRXs1Lt68EUIuZG5FQCm8qlGlo8yNmxQv_WZjtm12SR-cE6hFjhBou_DIkOrdiJgiqVpnFYp4VizLjz76U3jDHAqgisga87qMglbxOrMuwuuqxl_bSQXNVklOIcUUJOEYJLy5gEKvut92_NLGvqLWpZAJ89QLyHV-g',
+    featuredImage: '/images/blog/mastering-semantic-search-2024.webp',
+    altText: 'Close up of a financial analytics dashboard and graphs',
   },
   {
     id: '3',
@@ -115,7 +155,8 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_MARCUS,
     publishedDate: 'March 08, 2024',
     readTime: '8 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAly25P27UdqoR0I4M7WjSaktkZ5_gRULiaePaKnuISDzWsBoSJOWozJAceUGMdF2w0SzfZZ4M0jI1QdUnnIE6ZypaPyZIA7LXuQKN65GLnosOvov5Bu0z2SveynhU8tLsVx3ZjkUsagocDRsgysltO9Bf701mWUN7m5GDj9uaGZ6tPeWuaOCC09-SMjDjEyWlUXwZHVo5NBM2BHJ6sY0XOSxseEmChBw54qUm9L60HIJSxa9aWg_6ue3Q2A1gyUVh8s6KzkGgl-o',
+    featuredImage: '/images/blog/measuring-content-roi.webp',
+    altText: 'Marketing team collaborating closely in a modern office space',
   },
   {
     id: '4',
@@ -126,7 +167,8 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_ELENA,
     publishedDate: 'March 05, 2024',
     readTime: '4 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcHk8XDzM_74ryFYoBj9a28wqmOqxGvZjhqoGUCrK-wxtxWJoOtZgWOHmIX7qanqwnv-uZtrW0LtgeYFMLlZBANUkzfRLC36ba4Ku8uJFjK5vg9ALxJbvE2gsgs_13JLxMxO2N9vX1hY0oHXbQrcjFrEdvsEBZsxExREzXO5kvyBUN_4CWdwYCY9TVnQzj1kswba51dnNWs7z4OBBnjr9wocMuN1q0z0s9udnS_OKrf8SAA95eegxG38q5zdO3g2eK9RIWUVNXkV0',
+    featuredImage: '/images/blog/building-resilient-editorial-calendar.webp',
+    altText: 'Team looking over a content strategy roadmap on a table',
   },
   {
     id: '5',
@@ -137,7 +179,8 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_SARAH,
     publishedDate: 'March 02, 2024',
     readTime: '6 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0WabBuIA0ZQVNTXUKQWQ4gvIBuFgKh0zJeJIrW7bGo7Q6uksSjX91xHssMZgvGJJJQGDxC3Z3z3h448WLDeopCteFad-f9LC8QxDgHFEW8Q2eTrTqx3I7aJxYLk-8-gYl1mDRW0ulqvXksIB6vjoN8XKIkr6955Y5iXo-P6KmkPLOtmbbAmI6v_l-rxaKPSo4jKoFMtJtpdgjcYk7RxmReYmR5BnOSRXkiP5Zzv7r8u3k9GxSxsJOLg5zx6LodCvD_I9ux3ST8rk',
+    featuredImage: '/images/blog/maintaining-consistency-across-channels.webp',
+    altText: 'Cohesive team having a brand strategy discussion over coffee',
   },
   {
     id: '6',
@@ -148,7 +191,8 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_DAVID,
     publishedDate: 'February 28, 2024',
     readTime: '7 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDeiWeBff_e7VoeYpo50ehDWqkcUlUE8Kiuy9kQ_EW64BkiDQnAc9udn5M2qowtMt2qQt8UKVouG26W8KnMatX6RW3wpG4Xfloj3UKV8Kz6dMCFUpp5IqOkp0SdYzWJlNVbI1cTn_Wsd51YRttu90x9Qt6iTUQA2JHGLuNYG49chiOjBHOc5BML33qV3o2y3eaCzIB0zLyZaHOYj-7sxMznpdYQaQJTr8vKESyeM8z8JkO3PD7j3hX4NwwM_K9syc-K0NfD-nBoxWM',
+    featuredImage: '/images/blog/prompt-engineering-b2b-content.webp',
+    altText: 'Bright modern workspace representing B2B content generation',
   },
   {
     id: '7',
@@ -159,6 +203,67 @@ export const MOCK_BLOGS: Blog[] = [
     author: AUTHOR_MARIA,
     publishedDate: 'February 25, 2024',
     readTime: '10 min read',
-    featuredImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8-zJn5HSsN-ZsMIbBLUXuAX-qVPHei6R0X1g_elVRW6A5XqDU7EA-9zEUUcd2CwE2J77Vyu28dFauc7nJjWVV7VZrAPhfcSA6vCTjxJhcBVWAEi7_toeyuojMaGfKoN2EQoWOr_lHGQ6s4ugJYD-XJ-WBmfCi_wcG8sw0xCjftcqyyApWhODrtd6K8vK39SdnKsWai9gfMKBxlmm2vkAbXsp9hoi473zINnT3ahTQUSm0qI0iZXcW1Bqj23Itz_P26-qjaGjTgY',
+    featuredImage: '/images/blog/impact-of-sge-organic-traffic.webp',
+    altText: 'Laptop displaying SEO traffic graphs and analytics',
   },
+  {
+    id: '8',
+    title: 'Automating Content Workflows with AI',
+    excerpt: 'How to build automated pipelines that scale your content production without sacrificing quality or brand voice.',
+    slug: 'automating-content-workflows',
+    category: CAT_AI,
+    author: AUTHOR_ALEX,
+    publishedDate: 'February 20, 2024',
+    readTime: '6 min read',
+    featuredImage: '/images/blog/automating-content-workflows.webp',
+    altText: 'Clean minimalist desk with a laptop and organized notebooks',
+  },
+  {
+    id: '9',
+    title: 'Evaluating LLMs for Marketing Copy',
+    excerpt: 'Not all language models are created equal. We tested GPT-4, Claude 3, and Gemini for marketing copy to see which performs best.',
+    slug: 'evaluating-llms-marketing',
+    category: CAT_AI,
+    author: AUTHOR_SARAH,
+    publishedDate: 'February 15, 2024',
+    readTime: '9 min read',
+    featuredImage: '/images/blog/evaluating-llms-marketing.webp',
+    altText: 'Professional examining text and code on a dual-screen setup',
+  },
+  {
+    id: '10',
+    title: 'Technical SEO Audit Checklist 2024',
+    excerpt: 'The ultimate technical SEO checklist to ensure your website meets modern crawling, indexing, and core web vitals standards.',
+    slug: 'technical-seo-audit-2024',
+    category: CAT_SEO,
+    author: AUTHOR_MARCUS,
+    publishedDate: 'February 10, 2024',
+    readTime: '15 min read',
+    featuredImage: '/images/blog/technical-seo-audit-2024.webp',
+    altText: 'Data and technical charts on a glowing monitor screen',
+  },
+  {
+    id: '11',
+    title: 'How to Build a Demand Generation Engine',
+    excerpt: 'Move past lead generation and build a demand generation engine that drives high-intent pipelines using organic content.',
+    slug: 'build-demand-generation-engine',
+    category: CAT_CONTENT,
+    author: AUTHOR_ELENA,
+    publishedDate: 'February 05, 2024',
+    readTime: '11 min read',
+    featuredImage: '/images/blog/build-demand-generation-engine.webp',
+    altText: 'A marketer presenting demand generation strategies to a team',
+  },
+  {
+    id: '12',
+    title: 'Content Syndication Best Practices',
+    excerpt: 'Distribute your content to millions without risking duplicate content penalties. A complete guide to modern syndication.',
+    slug: 'content-syndication-best-practices',
+    category: CAT_CONTENT,
+    author: AUTHOR_DAVID,
+    publishedDate: 'February 01, 2024',
+    readTime: '7 min read',
+    featuredImage: '/images/blog/content-syndication-best-practices.webp',
+    altText: 'Sleek modern office laptops representing content distribution',
+  }
 ];
