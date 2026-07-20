@@ -1,0 +1,246 @@
+import type { CollectionConfig } from 'payload'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+
+const formatSlug = (val: string): string =>
+  val
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '')
+    .toLowerCase()
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const extractText = (node: any): string => {
+  if (!node) return ''
+  if (node.type === 'text') return node.text || ''
+  if (node.children && Array.isArray(node.children)) {
+    return node.children.map(extractText).join(' ')
+  }
+  return ''
+}
+
+export const Blogs: CollectionConfig = {
+  slug: 'blogs',
+  versions: {
+    drafts: true,
+  },
+  admin: {
+    useAsTitle: 'title',
+  },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    beforeChange: [
+      ({ data, originalDoc }) => {
+        // 1. Slug Generation
+        if (data.title && !data.slug) {
+          data.slug = formatSlug(data.title)
+        } else if (data.slug) {
+          data.slug = formatSlug(data.slug)
+        }
+
+        // 2. Read Time Calculation
+        if (data.content && data.content.root) {
+          const text = extractText(data.content.root)
+          const wordCount = text.split(/\s+/).filter((word) => word.length > 0).length
+          const minutes = Math.ceil(wordCount / 200) || 1
+          data.readTime = `${minutes} min read`
+        } else {
+          data.readTime = '1 min read'
+        }
+
+        // 3. Last Updated Timestamp
+        data.lastUpdated = new Date().toISOString()
+
+        // 4. Published Date (only on first publish)
+        if (
+          data._status === 'published' &&
+          (!originalDoc?._status || originalDoc._status !== 'published') &&
+          !originalDoc?.publishedDate
+        ) {
+          data.publishedDate = new Date().toISOString()
+        }
+
+        return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, req, previousDoc }) => {
+        // Ensure only one Featured Hero
+        if (doc.featuredHero === true && previousDoc?.featuredHero !== true) {
+          const { payload } = req
+          const otherHeroes = await payload.find({
+            collection: 'blogs',
+            where: {
+              and: [
+                { id: { not_equals: doc.id } },
+                { featuredHero: { equals: true } },
+              ],
+            },
+          })
+          
+          for (const other of otherHeroes.docs) {
+            await payload.update({
+              collection: 'blogs',
+              id: other.id,
+              data: { featuredHero: false },
+              req,
+            })
+          }
+        }
+      },
+    ],
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Basic',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+            },
+          ],
+        },
+        {
+          label: 'Hero',
+          fields: [
+            {
+              name: 'featuredImage',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'content',
+              type: 'richText',
+              editor: lexicalEditor({
+                // Configured for a single continuous editor without custom blocks
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures.filter((f) => f.key !== 'blocks'),
+                ],
+              }),
+              required: true,
+            },
+          ],
+        },
+        {
+          label: 'SEO',
+          fields: [
+            {
+              name: 'seoTitle',
+              type: 'text',
+            },
+            {
+              name: 'seoDescription',
+              type: 'textarea',
+            },
+            {
+              name: 'canonicalUrl',
+              type: 'text',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+            },
+          ],
+        },
+      ],
+    },
+    // Sidebar fields (Editorial & Homepage Flags)
+    {
+      name: 'slug',
+      type: 'text',
+      unique: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'categories',
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'publishedDate',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'lastUpdated',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'readTime',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description: 'Estimated read time (auto-calculated)',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'featuredHero',
+      type: 'checkbox',
+      label: 'Featured Hero',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'featuredArticle',
+      type: 'checkbox',
+      label: 'Featured Article',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+  ],
+}

@@ -1,0 +1,13 @@
+feat: establish blog platform foundation with Payload CMS and frontend architecture
+
+This commit represents:
+- Next.js project initialization
+- Payload CMS integration
+- PostgreSQL configuration
+- Authentication
+- Users, Blogs, Categories, and Media collections
+- Draft/Publish workflow
+- Frontend design system
+- Reusable UI components
+- Static Blog Listing page
+- Responsive layout foundation
