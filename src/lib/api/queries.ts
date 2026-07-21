@@ -51,3 +51,41 @@ export const getSiteSettings = async () => {
     depth: 1,
   })
 }
+
+export const getAdjacentPosts = async (publishedAt: string) => {
+  const payload = await getPayloadClient()
+  
+  const [prev, next] = await Promise.all([
+    // Previous (older)
+    payload.find({
+      collection: 'blogs',
+      where: {
+        and: [
+          { _status: { equals: 'published' } },
+          { publishedAt: { less_than: publishedAt } }
+        ]
+      },
+      sort: '-publishedAt',
+      limit: 1,
+      depth: 0,
+    }),
+    // Next (newer)
+    payload.find({
+      collection: 'blogs',
+      where: {
+        and: [
+          { _status: { equals: 'published' } },
+          { publishedAt: { greater_than: publishedAt } }
+        ]
+      },
+      sort: 'publishedAt',
+      limit: 1,
+      depth: 0,
+    })
+  ])
+  
+  return {
+    prev: prev.docs[0] || null,
+    next: next.docs[0] || null,
+  }
+}

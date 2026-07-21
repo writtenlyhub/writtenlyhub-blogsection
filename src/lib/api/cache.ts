@@ -19,6 +19,16 @@ export const getCachedPostBySlug = async (slug: string) => {
   return cached()
 }
 
+export const getCachedAdjacentPosts = async (publishedAt: string) => {
+  const { getAdjacentPosts } = await import('./queries')
+  const cached = unstable_cache(
+    async () => getAdjacentPosts(publishedAt),
+    ['adjacent-posts', publishedAt],
+    { revalidate: 3600, tags: ['blogs'] }
+  )
+  return cached()
+}
+
 export const getCachedCategories = unstable_cache(
   async () => getCategories(),
   ['categories-list'],

@@ -24,7 +24,14 @@ export const revalidate = 3600; // Revalidate every hour
 interface PageProps {
   params: {
     slug: string;
-  };
+}
+
+export async function generateStaticParams() {
+  const { getCachedPosts } = await import('@/lib/api');
+  const posts = await getCachedPosts(100, 1);
+  return posts.docs.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<import("next").Metadata> {
@@ -73,6 +80,9 @@ export default async function BlogDetail({ params }: PageProps) {
   if (!blogData) {
     notFound();
   }
+
+  const { getCachedAdjacentPosts } = await import('@/lib/api');
+  const adjacent = rawPayloadPost.publishedAt ? await getCachedAdjacentPosts(rawPayloadPost.publishedAt) : { prev: null, next: null };
 
   return (
     <>
@@ -181,22 +191,31 @@ export default async function BlogDetail({ params }: PageProps) {
           <FAQ data={blogData.faqs} />
           
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-y border-outline-variant py-8 mb-16">
-              {/* TODO: Payload CMS - Generate real previous/next links based on adjacent posts */}
-              <Link className="group flex flex-col items-start gap-2 w-full md:w-1/2 text-left hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href="#">
-                <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
-                  <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
-                  Previous Article
-                </div>
-                <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">Why CEOs Are Rethinking Strategic Decision-Making</h4>
-              </Link>
+              {adjacent.prev ? (
+                <Link className="group flex flex-col items-start gap-2 w-full md:w-1/2 text-left hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href={`/blog/${adjacent.prev.slug}`}>
+                  <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
+                    <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                    Previous Article
+                  </div>
+                  <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">{adjacent.prev.title}</h4>
+                </Link>
+              ) : (
+                <div className="w-full md:w-1/2" />
+              )}
+              
               <div className="hidden md:block w-px h-16 bg-outline-variant"></div>
-              <Link className="group flex flex-col items-end gap-2 w-full md:w-1/2 text-right hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href="#">
-                <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
-                  Next Article
-                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </div>
-                <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">What Successful Startups Do Differently in Their First 12 Months</h4>
-              </Link>
+              
+              {adjacent.next ? (
+                <Link className="group flex flex-col items-end gap-2 w-full md:w-1/2 text-right hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href={`/blog/${adjacent.next.slug}`}>
+                  <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
+                    Next Article
+                    <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </div>
+                  <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">{adjacent.next.title}</h4>
+                </Link>
+              ) : (
+                <div className="w-full md:w-1/2" />
+              )}
             </div>
           </div>
         </div>
