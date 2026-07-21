@@ -20,7 +20,7 @@ export function Newsletter() {
                 type="email" 
               />
               <button 
-                className="w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-writtenly-orange text-white rounded-full font-label-md text-label-md font-bold hover:bg-[#ff8a20] transition-colors whitespace-nowrap shadow-md hover:shadow-lg hover:-translate-y-[1px] outline-none min-h-[44px]" 
+                className="w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-writtenly-orange text-white rounded-full font-label-md text-label-md font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-md hover:shadow-lg hover:-translate-y-[1px] outline-none min-h-[44px]" 
                 type="submit"
               >
                 Subscribe

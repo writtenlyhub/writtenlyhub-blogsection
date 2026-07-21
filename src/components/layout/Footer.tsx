@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 export function Footer() {
   return (
-    <footer className="bg-writtenly-navy text-white py-12 md:py-16 lg:py-20 px-gutter mt-auto">
+    <footer className="bg-writtenly-navy text-white pt-16 md:pt-24 lg:pt-28 pb-10 md:pb-12 lg:pb-14 px-gutter mt-auto">
       <div className="max-w-container-max mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-16">
           <div className="flex flex-col gap-6 lg:col-span-1">
             <Image
                 alt="WrittenlyHub"
@@ -46,9 +46,9 @@ export function Footer() {
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 font-label-md text-label-md text-white/60">
-            <Link className="block py-2 px-1 hover:text-white transition-colors" href="#">Terms and Conditions</Link>
-            <Link className="block py-2 px-1 hover:text-white transition-colors" href="#">Return Policy</Link>
-            <Link className="block py-2 px-1 hover:text-white transition-colors" href="#">Privacy Policy</Link>
+            <Link className="px-1 hover:text-white transition-colors" href="#">Terms and Conditions</Link>
+            <Link className="px-1 hover:text-white transition-colors" href="#">Return Policy</Link>
+            <Link className="px-1 hover:text-white transition-colors" href="#">Privacy Policy</Link>
           </div>
           <p className="font-label-md text-label-md text-white/50 text-center">
             © 2025 WrittenlyHub Private Limited - All rights Reserved

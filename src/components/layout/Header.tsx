@@ -4,7 +4,7 @@ import { Button } from '../ui/Button';
 
 export function Header() {
   return (
-    <nav className="bg-writtenly-navy w-full top-0 sticky z-50 transition-all shadow-sm h-16 flex items-center">
+    <nav className="bg-writtenly-navy w-full top-0 sticky z-50 transition-all h-16 flex items-center">
       <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto">
         <div className="font-display-lg text-headline-md font-bold text-white flex items-center gap-2">
           <Link href="/">

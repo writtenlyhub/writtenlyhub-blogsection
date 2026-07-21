@@ -1,42 +1,42 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useLenis } from 'lenis/react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { TocItem } from '@/types/blog';
 
-interface TOCItem {
-  id: string;
-  text: string;
-  level: number;
+export interface TableOfContentsProps {
+  items: TocItem[];
 }
 
-export function TableOfContents() {
-  const [headings, setHeadings] = useState<TOCItem[]>([]);
+interface NestedTocItem extends TocItem {
+  children: TocItem[];
+}
+
+export function TableOfContents({ items }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
-  const lenis = useLenis();
+
+  const nestedItems = useMemo(() => {
+    const result: NestedTocItem[] = [];
+    let currentH2: NestedTocItem | null = null;
+
+    items.forEach(item => {
+      if (item.level === 2) {
+        currentH2 = { ...item, children: [] };
+        result.push(currentH2);
+      } else if (item.level === 3 && currentH2) {
+        currentH2.children.push(item);
+      }
+    });
+
+    return result;
+  }, [items]);
 
   useEffect(() => {
-    // Wait a brief moment for the HTML content to render
-    const extractHeadings = () => {
-      const elements = Array.from(document.querySelectorAll('article h2, article h3'));
-      
-      const items: TOCItem[] = elements.map((el, index) => {
-        // Ensure each heading has an ID
-        if (!el.id) {
-          el.id = `heading-${index}`;
-        }
-        return {
-          id: el.id,
-          text: el.textContent || '',
-          level: el.tagName.toLowerCase() === 'h2' ? 2 : 3,
-        };
-      });
-      
-      setHeadings(items);
-    };
-
-    extractHeadings();
+    const headingElements = items
+      .map(item => document.getElementById(item.id))
+      .filter(Boolean) as HTMLElement[];
     
-    // Setup intersection observer for scroll spy
+    if (headingElements.length === 0) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -45,53 +45,107 @@ export function TableOfContents() {
           }
         });
       },
-      { rootMargin: '-100px 0px -60% 0px' }
+      {
+        rootMargin: '-140px 0px -80% 0px',
+        threshold: 0
+      }
     );
 
-    const elements = document.querySelectorAll('article h2, article h3');
-    elements.forEach((elem) => observer.observe(elem));
-
+    headingElements.forEach(el => observer.observe(el));
+    
     return () => observer.disconnect();
-  }, []);
+  }, [items]);
 
-  if (headings.length === 0) return null;
+  if (!items || items.length === 0) {
+    return null;
+  }
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    if (lenis) {
-      lenis.scrollTo(`#${id}`, { offset: -120 });
-    } else {
-      const element = document.getElementById(id);
-      if (element) {
-        const top = element.getBoundingClientRect().top + window.scrollY - 120;
-        window.scrollTo({ top, behavior: 'smooth' });
+  // Determine which H2 group is currently active (either the H2 itself or one of its H3s)
+  const activeParentId = useMemo(() => {
+    for (const item of nestedItems) {
+      if (item.id === activeId || item.children.some(child => child.id === activeId)) {
+        return item.id;
       }
     }
-  };
+    return '';
+  }, [activeId, nestedItems]);
 
   return (
-    <nav className="sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto hidden lg:block pr-4" style={{ scrollbarWidth: 'none' }}>
-      <h4 className="font-label-md text-label-md font-bold text-writtenly-navy/50 tracking-wider mb-6">ON THIS PAGE</h4>
-      <ul className="flex flex-col gap-3 font-body-md text-body-md">
-        {headings.map((heading) => (
-          <li 
-            key={heading.id} 
-            className={`transition-colors ${heading.level === 3 ? 'ml-4' : ''}`}
-          >
-            <a 
-              href={`#${heading.id}`}
-              onClick={(e) => handleClick(e, heading.id)}
-              className={`block leading-snug border-l-2 pl-4 py-1 transition-all ${
-                activeId === heading.id 
-                  ? 'border-writtenly-orange text-writtenly-navy font-bold' 
-                  : 'border-outline-variant/30 text-on-surface-variant/70 hover:text-writtenly-orange hover:border-writtenly-orange/50'
-              }`}
-            >
-              {heading.text}
+    <aside className="hidden lg:block w-full max-w-[320px]">
+      <div className="flex flex-col gap-8">
+        <div className="bg-transparent flex flex-col gap-stack-md">
+          <h3 className="font-headline-md text-[18px] font-bold text-primary mb-3 border-b border-outline-variant pb-4">
+            Table of Contents
+          </h3>
+          <nav className="flex flex-col gap-1">
+            {nestedItems.map(item => {
+              const isGroupActive = activeParentId === item.id;
+              const hasChildren = item.children.length > 0;
+              const isItemActive = activeId === item.id;
+
+              return (
+                <div key={item.id} className="flex flex-col">
+                  <a
+                    href={`#${item.id}`}
+                    className={`block py-2.5 px-4 text-[15px] border-l-[3px] transition-all duration-200 ${
+                      isItemActive
+                        ? 'border-writtenly-orange bg-surface-container-low text-primary font-medium'
+                        : isGroupActive
+                        ? 'border-transparent text-primary font-medium'
+                        : 'border-transparent text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
+                    }`}
+                  >
+                    {item.title}
+                  </a>
+                  
+                  {hasChildren && (
+                    <div 
+                      className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${
+                        isGroupActive ? 'max-h-[1000px] opacity-100 py-1' : 'max-h-0 opacity-0'
+                      }`}
+                    >
+                      {item.children.map(child => {
+                        const isChildActive = activeId === child.id;
+                        return (
+                          <a
+                            key={child.id}
+                            href={`#${child.id}`}
+                            className={`block py-2 pl-6 pr-4 text-[14px] border-l-[3px] transition-all duration-200 ${
+                              isChildActive
+                                ? 'border-writtenly-orange bg-surface-container-low text-primary font-medium'
+                                : 'border-transparent text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
+                            }`}
+                          >
+                            {child.title}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="pt-6 border-t border-outline-variant shrink-0">
+          <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share</span>
+          <div className="flex items-center gap-4">
+            <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">share</span>
             </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+            <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">alternate_email</span>
+            </a>
+            <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">link</span>
+            </a>
+            <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">mail</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </aside>
   );
 }

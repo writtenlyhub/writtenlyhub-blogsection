@@ -1,18 +1,38 @@
-'use client';
-import { motion, useScroll, useSpring } from 'framer-motion';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 
 export function ReadingProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+    const updateProgress = () => {
+      const currentScroll = window.scrollY;
+      const scrollHeight = document.body.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0) {
+        setProgress((currentScroll / scrollHeight) * 100);
+      }
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateProgress();
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-1.5 bg-writtenly-orange origin-left z-50"
-      style={{ scaleX }}
+    <div 
+      className="fixed top-16 left-0 h-[2px] w-full bg-writtenly-orange z-50 origin-left transition-transform duration-150 ease-out"
+      style={{ transform: `scaleX(${progress / 100})` }}
     />
   );
 }

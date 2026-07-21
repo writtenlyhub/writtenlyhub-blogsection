@@ -120,7 +120,8 @@
   --spacing-stack-lg: clamp(16px, 3vw, 24px);
   --spacing-gutter: clamp(20px, 4vw, 48px);
   --spacing-section-gap: clamp(48px, 8vw, 80px);
-  --spacing-container-max: 1140px;
+  --spacing-container-max: 1536px;
+  --spacing-header-height: 140px;
 
   /* Border Radius */
   --radius-sm: 0.125rem;
@@ -134,4 +135,14 @@
 
 body {
   @apply bg-surface-container-lowest text-on-surface antialiased;
+}
+
+html {
+  font-size: 92%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

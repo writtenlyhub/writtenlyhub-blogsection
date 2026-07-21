@@ -16,8 +16,35 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "WrittenlyHub Blog",
-  description: "Insightful articles, expert guides, and SEO strategies.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com'),
+  title: {
+    default: "WrittenlyHub Blog",
+    template: "%s | WrittenlyHub",
+  },
+  description: "Insightful articles, expert guides, and SEO strategies to grow your business.",
+  openGraph: {
+    title: "WrittenlyHub Blog",
+    description: "Insightful articles, expert guides, and SEO strategies to grow your business.",
+    url: "/",
+    siteName: "WrittenlyHub",
+    images: [
+      {
+        url: "/images/og/default-og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "WrittenlyHub Blog",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WrittenlyHub Blog",
+    description: "Insightful articles, expert guides, and SEO strategies to grow your business.",
+    creator: "@WrittenlyHub",
+    images: ["/images/og/default-og.jpg"],
+  },
 };
 
 export default function RootLayout({
