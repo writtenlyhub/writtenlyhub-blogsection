@@ -9,10 +9,10 @@ import {
 
 export async function seedPosts(
   payload: Payload,
-  mediaIds: Record<string, string>,
-  userIds: Record<string, string>,
-  categoryIds: Record<string, string>,
-  tagIds: Record<string, string>
+  mediaIds: Record<string, number>,
+  userIds: Record<string, number>,
+  categoryIds: Record<string, number>,
+  tagIds: Record<string, number>
 ) {
   payload.logger.info('— Seeding Blog Posts...');
 
@@ -129,7 +129,7 @@ export async function seedPosts(
     },
   ];
 
-  const results: Record<string, string> = {};
+  const results: Record<string, number> = {};
 
   for (const post of postsData) {
     const existing = await payload.find({
@@ -153,9 +153,9 @@ export async function seedPosts(
           title: post.title,
           slug: post.slug,
           excerpt: post.excerpt,
-          featuredImage: mediaIds['cover-1.svg'],
-          author: userIds[post.authorEmail],
-          category: categoryIds[post.categorySlug],
+          featuredImage: mediaIds['cover-1.svg'] as any as any,
+          author: userIds[post.authorEmail] as any,
+          category: categoryIds[post.categorySlug] as any,
           tags: post.tagSlugs.map((slug) => ({ tag: slug })),
           featuredHero: post.featuredHero,
           featuredArticle: post.featuredArticle,

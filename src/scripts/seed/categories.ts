@@ -12,7 +12,7 @@ export async function seedCategories(payload: Payload) {
     { name: 'Digital Marketing', description: 'Broad digital marketing insights.', color: '#6366f1', slug: 'digital-marketing' },
   ];
 
-  const results: Record<string, string> = {};
+  const results: Record<string, number> = {};
 
   for (const cat of categories) {
     const existing = await payload.find({

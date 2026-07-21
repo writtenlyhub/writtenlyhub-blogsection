@@ -48,14 +48,15 @@ export function createBlock(blockType: string, fields: any) {
   };
 }
 
-export function generateRichText(nodes: any[]) {
+export function generateRichText(children: any[] = []) {
   return {
     root: {
       type: 'root',
-      format: '',
+      direction: null,
+      format: '' as const,
       indent: 0,
       version: 1,
-      children: nodes,
+      children,
     },
   };
 }

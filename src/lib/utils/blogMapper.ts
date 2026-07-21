@@ -157,11 +157,11 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
     });
 
   // Map Related Articles
-  const relatedArticles = (post.relatedArticles || []).map((rel) => {
+  const relatedArticles = (post.relatedArticles || []).flatMap((rel) => {
     if (typeof rel === 'object' && rel !== null && 'title' in rel) {
       const relCat = isCategory(rel.category) ? rel.category.name : 'Category';
       const relImg = isMedia(rel.featuredImage) ? rel.featuredImage.url || '' : '';
-      return {
+      return [{
         title: rel.title,
         summary: rel.excerpt || '',
         category: relCat,
@@ -169,9 +169,10 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
         readTime: rel.readTime || '5 min read',
         imageUrl: relImg,
         link: `/blog/${rel.slug}`,
-      };
-    return null; // fallback
-  }).filter(Boolean) as any[];
+      }];
+    }
+    return [];
+  });
 
   return {
     hero: {

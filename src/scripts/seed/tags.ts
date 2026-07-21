@@ -10,7 +10,7 @@ export async function seedTags(payload: Payload) {
     'Lead Generation', 'Email Marketing'
   ];
 
-  const results: Record<string, string> = {};
+  const results: Record<string, number> = {};
 
   for (const tagName of tagNames) {
     const slug = tagName.toLowerCase().replace(/ /g, '-');

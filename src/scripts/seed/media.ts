@@ -15,7 +15,7 @@ export async function seedMedia(payload: Payload) {
     { filename: 'cover-1.svg', filepath: path.join(dirname, 'assets', 'cover-1.svg') },
   ];
 
-  const results: Record<string, string> = {};
+  const results: Record<string, number> = {};
 
   for (const file of mediaFiles) {
     const existingMedia = await payload.find({

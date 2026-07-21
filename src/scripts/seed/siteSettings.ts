@@ -1,6 +1,6 @@
 import type { Payload } from 'payload';
 
-export async function seedSiteSettings(payload: Payload, mediaIds: Record<string, string>) {
+export async function seedSiteSettings(payload: Payload, mediaIds: Record<string, number>) {
   payload.logger.info('— Seeding Site Settings...');
 
   try {
@@ -11,7 +11,7 @@ export async function seedSiteSettings(payload: Payload, mediaIds: Record<string
         heroDescription: 'Expert strategies, industry insights, and the latest trends in content marketing, SEO, and copywriting.',
         defaultTitle: 'WrittenlyHub Blog | Elevate Your Content',
         defaultDescription: 'Discover expert articles on content strategy, SEO, and digital marketing.',
-        defaultOgImage: mediaIds['cover-1.svg'],
+        defaultOgImage: mediaIds['cover-1.svg'] as any,
         contactEmail: 'hello@writtenlyhub.com',
         socialLinks: [
           { platform: 'Twitter', url: 'https://twitter.com/writtenlyhub' },
