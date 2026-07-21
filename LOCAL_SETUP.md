@@ -39,19 +39,41 @@ docker run --name writtenlyhub-postgres \
    ```
 3. Update your `.env` file with the correct credentials.
 
-## 3. Starting the Project
+## 3. Database Initialization & Migration Strategy
 
-Once PostgreSQL is running and your `.env` is configured:
+Payload v3 uses Drizzle ORM to manage the PostgreSQL schema. To avoid schema drift between development and production, this project uses **Explicit Migrations**. 
 
-1. Start the Next.js development server:
+By default in development (`NODE_ENV !== 'production'`), Payload will automatically "push" schema changes to the database without tracking them. However, for a production-ready workflow, you MUST track schema changes via migration files.
+
+### Initialization Sequence (First Startup)
+1. **Ensure PostgreSQL is running** and your `.env` is configured.
+2. **Generate your first migration** (this tracks the initial schema creation):
+   ```bash
+   npm run payload:migrate:create
+   ```
+   *You will be prompted to name the migration (e.g., `initial_schema`). This generates a `.sql` and `.ts` file inside `src/migrations`.*
+3. **Run the migration** to create the tables in your local database:
+   ```bash
+   npm run payload:migrate
+   ```
+4. **Start the development server**:
    ```bash
    npm run dev
    ```
-2. Payload will automatically connect to your database, run the required migrations, and synchronize the database schema based on your Collections.
-3. Access the Payload Admin panel at: `http://localhost:3000/admin`
-4. The first time you visit the admin panel, you'll be prompted to create your first Admin user.
+
+### Managing Future Schema Changes
+Whenever you modify a Collection (e.g., adding a new field to `Blogs.ts`), do NOT rely on automatic push. Instead, generate a new migration:
+1. `npm run payload:migrate:create` (name it descriptively, e.g., `add_featured_hero_field`)
+2. `npm run payload:migrate`
+3. Commit the new migration file to Git.
+
+## 4. First Admin User
+
+1. Access the Payload Admin panel at: `http://localhost:3000/admin`
+2. Since the database is freshly initialized, you will be prompted to create your first Admin user.
 
 ## Troubleshooting
 
 - **`connect ECONNREFUSED 127.0.0.1:5432`**: This means your PostgreSQL server is not running or the port is blocked. Ensure Docker is running or the Windows service for PostgreSQL is active.
 - **`password authentication failed`**: Verify the password in your `DATABASE_URI` matches the one configured in Postgres.
+- **`relation "users" does not exist`**: You forgot to run `npm run payload:migrate`. The database is empty!
