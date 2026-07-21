@@ -1,12 +1,21 @@
-import { MOCK_BLOGS, CATEGORIES } from '@/data/mockBlogs';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { HeroCard } from '@/components/blog/HeroCard';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CategoryFilter } from '@/components/blog/CategoryFilter';
+import { getCachedPosts, getCachedCategories } from '@/lib/api';
+import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 
-export default function BlogListingPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function BlogListingPage() {
+  const rawPosts = await getCachedPosts();
+  const rawCategories = await getCachedCategories();
+  
+  const MOCK_BLOGS = mapBlogList(rawPosts.docs);
+  const CATEGORIES = mapCategoryList(rawCategories.docs);
+
   const heroBlog = MOCK_BLOGS.find(b => b.featuredHero) || MOCK_BLOGS[0];
   const latestBlogs = MOCK_BLOGS.filter(b => !b.featuredHero).slice(0, 3);
   const aiBlogs = MOCK_BLOGS.filter(b => b.category.slug === 'ai-tech' && !b.featuredHero).slice(0, 3);

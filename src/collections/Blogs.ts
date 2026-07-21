@@ -1,5 +1,17 @@
 import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, BlocksFeature } from '@payloadcms/richtext-lexical'
+import { slugField } from '../fields/slug'
+import { seoFields } from '../fields/seo'
+import {
+  QuoteBlock,
+  ExpertInsightBlock,
+  CTABlock,
+  WatchLearnBlock,
+  KeyTakeawaysBlock,
+  QuickFactsBlock,
+  CalloutBlock,
+  FAQBlock,
+} from '../blocks'
 
 const formatSlug = (val: string): string =>
   val
@@ -20,7 +32,12 @@ const extractText = (node: any): string => {
 export const Blogs: CollectionConfig = {
   slug: 'blogs',
   versions: {
-    drafts: true,
+    drafts: {
+      autosave: {
+        interval: 10000, // Autosave every 10 seconds
+      },
+    },
+    maxPerDoc: 50,
   },
   admin: {
     useAsTitle: 'title',
@@ -129,9 +146,20 @@ export const Blogs: CollectionConfig = {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
-                // Configured for a single continuous editor without custom blocks
                 features: ({ defaultFeatures }) => [
-                  ...defaultFeatures.filter((f) => f.key !== 'blocks'),
+                  ...defaultFeatures,
+                  BlocksFeature({
+                    blocks: [
+                      QuoteBlock,
+                      ExpertInsightBlock,
+                      CTABlock,
+                      WatchLearnBlock,
+                      KeyTakeawaysBlock,
+                      QuickFactsBlock,
+                      CalloutBlock,
+                      FAQBlock,
+                    ],
+                  }),
                 ],
               }),
               required: true,
@@ -140,37 +168,12 @@ export const Blogs: CollectionConfig = {
         },
         {
           label: 'SEO',
-          fields: [
-            {
-              name: 'seoTitle',
-              type: 'text',
-            },
-            {
-              name: 'seoDescription',
-              type: 'textarea',
-            },
-            {
-              name: 'canonicalUrl',
-              type: 'text',
-            },
-            {
-              name: 'ogImage',
-              type: 'upload',
-              relationTo: 'media',
-            },
-          ],
+          fields: [seoFields],
         },
       ],
     },
     // Sidebar fields (Editorial & Homepage Flags)
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    slugField('title'),
     {
       name: 'author',
       type: 'relationship',
@@ -203,10 +206,23 @@ export const Blogs: CollectionConfig = {
       ],
     },
     {
-      name: 'publishedDate',
+      name: 'publishedAt',
       type: 'date',
       admin: {
         position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date()
+            }
+            return value
+          },
+        ],
       },
     },
     {
@@ -238,6 +254,23 @@ export const Blogs: CollectionConfig = {
       name: 'featuredArticle',
       type: 'checkbox',
       label: 'Featured Article',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'sticky',
+      type: 'checkbox',
+      label: 'Sticky Article (Pin to Top)',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'relatedArticles',
+      type: 'relationship',
+      relationTo: 'blogs',
+      hasMany: true,
       admin: {
         position: 'sidebar',
       },

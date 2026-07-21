@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from '../fields/slug'
+import { seoFields } from '../fields/seo'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -23,15 +25,7 @@ export const Categories: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    slugField('name'),
     {
       name: 'description',
       type: 'textarea',
@@ -43,5 +37,6 @@ export const Categories: CollectionConfig = {
         description: 'Hex color code (e.g., #FF0000)',
       },
     },
+    seoFields,
   ],
 }

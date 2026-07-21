@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     categories: Category;
+    tags: Tag;
     blogs: Blog;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -81,6 +82,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -91,8 +93,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -128,9 +134,13 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name: string;
+  /**
+   * Auto-generated from name if left blank.
+   */
   slug?: string | null;
   avatar?: (number | null) | Media;
   role: 'admin' | 'author';
+  designation?: string | null;
   bio?: string | null;
   linkedin?: string | null;
   twitter?: string | null;
@@ -160,6 +170,7 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  caption?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -205,12 +216,42 @@ export interface Media {
 export interface Category {
   id: number;
   name: string;
-  slug: string;
+  /**
+   * Auto-generated from name if left blank.
+   */
+  slug?: string | null;
   description?: string | null;
   /**
    * Hex color code (e.g., #FF0000)
    */
   color?: string | null;
+  seo?: {
+    /**
+     * Recommended length: 50-60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended length: 150-160 characters.
+     */
+    description?: string | null;
+    image?: (number | null) | Media;
+    canonicalUrl?: string | null;
+    noIndex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from name if left blank.
+   */
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -238,10 +279,22 @@ export interface Blog {
     };
     [k: string]: unknown;
   };
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  canonicalUrl?: string | null;
-  ogImage?: (number | null) | Media;
+  seo?: {
+    /**
+     * Recommended length: 50-60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended length: 150-160 characters.
+     */
+    description?: string | null;
+    image?: (number | null) | Media;
+    canonicalUrl?: string | null;
+    noIndex?: boolean | null;
+  };
+  /**
+   * Auto-generated from title if left blank.
+   */
   slug?: string | null;
   author: number | User;
   category: number | Category;
@@ -251,7 +304,7 @@ export interface Blog {
         id?: string | null;
       }[]
     | null;
-  publishedDate?: string | null;
+  publishedAt?: string | null;
   lastUpdated?: string | null;
   /**
    * Estimated read time (auto-calculated)
@@ -259,6 +312,8 @@ export interface Blog {
   readTime?: string | null;
   featuredHero?: boolean | null;
   featuredArticle?: boolean | null;
+  sticky?: boolean | null;
+  relatedArticles?: (number | Blog)[] | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -298,6 +353,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
       } | null)
     | ({
         relationTo: 'blogs';
@@ -354,6 +413,7 @@ export interface UsersSelect<T extends boolean = true> {
   slug?: T;
   avatar?: T;
   role?: T;
+  designation?: T;
   bio?: T;
   linkedin?: T;
   twitter?: T;
@@ -380,6 +440,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -435,6 +496,25 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   description?: T;
   color?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        canonicalUrl?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -447,10 +527,15 @@ export interface BlogsSelect<T extends boolean = true> {
   excerpt?: T;
   featuredImage?: T;
   content?: T;
-  seoTitle?: T;
-  seoDescription?: T;
-  canonicalUrl?: T;
-  ogImage?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        canonicalUrl?: T;
+        noIndex?: T;
+      };
   slug?: T;
   author?: T;
   category?: T;
@@ -460,11 +545,13 @@ export interface BlogsSelect<T extends boolean = true> {
         tag?: T;
         id?: T;
       };
-  publishedDate?: T;
+  publishedAt?: T;
   lastUpdated?: T;
   readTime?: T;
   featuredHero?: T;
   featuredArticle?: T;
+  sticky?: T;
+  relatedArticles?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -508,6 +595,50 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  heroTitle?: string | null;
+  heroDescription?: string | null;
+  defaultTitle?: string | null;
+  defaultDescription?: string | null;
+  defaultOgImage?: (number | null) | Media;
+  contactEmail?: string | null;
+  socialLinks?:
+    | {
+        platform?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  heroTitle?: T;
+  heroDescription?: T;
+  defaultTitle?: T;
+  defaultDescription?: T;
+  defaultOgImage?: T;
+  contactEmail?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

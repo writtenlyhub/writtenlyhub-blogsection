@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from '../fields/slug'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -24,14 +25,7 @@ export const Users: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    slugField('name'),
     {
       // Payload v3 limitation:
       // During create-first-user, the Media relationship drawer requires an authenticated
@@ -53,6 +47,10 @@ export const Users: CollectionConfig = {
       ],
       defaultValue: 'author',
       required: true,
+    },
+    {
+      name: 'designation',
+      type: 'text',
     },
     {
       name: 'bio',

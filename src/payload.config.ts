@@ -7,6 +7,8 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Blogs } from './collections/Blogs'
+import { Tags } from './collections/Tags'
+import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +24,11 @@ export default buildConfig({
     Users,
     Media,
     Categories,
+    Tags,
     Blogs,
+  ],
+  globals: [
+    SiteSettings,
   ],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',

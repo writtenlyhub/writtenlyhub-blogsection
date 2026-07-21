@@ -16,6 +16,7 @@ import { FAQ } from '@/components/blog/FAQ';
 import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
 import { mapBlogData } from '@/lib/utils/blogMapper';
+import { getCachedPostBySlug } from '@/lib/api';
 
 interface PageProps {
   params: {
@@ -23,9 +24,9 @@ interface PageProps {
   };
 }
 
-export async function generateMetadata({ params: _params }: PageProps): Promise<import("next").Metadata> {
-  // TODO: Payload CMS - Fetch real post by slug
-  const rawPayloadPost = null; 
+export async function generateMetadata({ params }: PageProps): Promise<import("next").Metadata> {
+  const { slug } = await params;
+  const rawPayloadPost = await getCachedPostBySlug(slug); 
   const blogData = mapBlogData(rawPayloadPost);
 
   if (!blogData) {
@@ -61,19 +62,9 @@ export async function generateMetadata({ params: _params }: PageProps): Promise<
   };
 }
 
-export default async function BlogDetail({ params: _params }: PageProps) {
-  // TODO: Payload CMS - Fetch real post by slug
-  // const payload = await getPayload({ config: configPromise })
-  // const { docs } = await payload.find({ collection: 'posts', where: { slug: { equals: params.slug } } })
-  // const post = docs[0]
-  // if (!post) notFound();
-  
-  // TODO: Payload CMS - Support preview mode
-  // const { isEnabled: isDraftMode } = draftMode()
-  // if (isDraftMode) { ... }
-  
-  // For now, we simulate fetching and pass it to our mapper
-  const rawPayloadPost = null; 
+export default async function BlogDetail({ params }: PageProps) {
+  const { slug } = await params;
+  const rawPayloadPost = await getCachedPostBySlug(slug); 
   const blogData = mapBlogData(rawPayloadPost);
 
   if (!blogData) {
