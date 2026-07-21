@@ -7,7 +7,7 @@ import { CategoryFilter } from '@/components/blog/CategoryFilter';
 import { getCachedPosts, getCachedCategories } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function BlogListingPage() {
   const rawPosts = await getCachedPosts();

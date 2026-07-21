@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { notFound } from 'next/navigation';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { ReadingProgress } from '@/components/blog/ReadingProgress';
@@ -17,6 +18,8 @@ import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
 import { mapBlogData } from '@/lib/utils/blogMapper';
 import { getCachedPostBySlug } from '@/lib/api';
+
+export const revalidate = 3600; // Revalidate every hour
 
 interface PageProps {
   params: {
