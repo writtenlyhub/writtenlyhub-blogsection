@@ -88,9 +88,9 @@ function filterOutBlocks(nodes: any[]): any[] {
 /**
  * Maps the raw Payload document to the 'BlogDetailData' interface expected by our UI.
  */
-export function mapBlogData(post: Blog | null | undefined): BlogDetailData {
+export function mapBlogData(post: Blog | null | undefined): BlogDetailData | null {
   if (!post) {
-    return DETAILED_MOCK_DATA;
+    return null;
   }
 
   // Author Resolution
@@ -170,9 +170,8 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData {
         imageUrl: relImg,
         link: `/blog/${rel.slug}`,
       };
-    }
-    return DETAILED_MOCK_DATA.relatedArticles[0]; // fallback
-  });
+    return null; // fallback
+  }).filter(Boolean) as any[];
 
   return {
     hero: {
@@ -245,7 +244,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData {
           })),
         }
       : DETAILED_MOCK_DATA.faqs,
-    relatedArticles: relatedArticles.length > 0 ? relatedArticles : DETAILED_MOCK_DATA.relatedArticles,
+    relatedArticles: relatedArticles.length > 0 ? relatedArticles : [],
   };
 }
 
