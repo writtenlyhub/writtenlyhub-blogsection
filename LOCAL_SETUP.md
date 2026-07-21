@@ -56,7 +56,11 @@ By default in development (`NODE_ENV !== 'production'`), Payload will automatica
    ```bash
    npm run payload:migrate
    ```
-4. **Start the development server**:
+4. **Seed the database** with demo data (idempotent, safe to run multiple times):
+   ```bash
+   npm run payload:seed
+   ```
+5. **Start the development server**:
    ```bash
    npm run dev
    ```
