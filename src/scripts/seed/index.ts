@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { getPayload } from 'payload';
 import config from '../../payload.config';
 import { seedMedia } from './media';
@@ -9,6 +10,17 @@ import { seedPosts } from './posts';
 
 async function seed() {
   console.log('\n🌱 Starting Payload CMS Seed Process...\n');
+
+  // Validate required environment variables
+  const missingVars: string[] = [];
+  if (!process.env.PAYLOAD_SECRET) missingVars.push('PAYLOAD_SECRET');
+  if (!process.env.DATABASE_URI) missingVars.push('DATABASE_URI');
+
+  if (missingVars.length > 0) {
+    console.error(`❌ Seed aborted. Missing required environment variables:\n   - ${missingVars.join('\n   - ')}`);
+    console.error('\nPlease ensure these are defined in your .env file before running the seed script.\n');
+    process.exit(1);
+  }
 
   try {
     const payload = await getPayload({ config });
