@@ -13,6 +13,7 @@ export function Footer() {
                 src="/images/logos/logo.svg"
                 width={210}
                 height={50}
+                style={{ width: "210px", height: "auto" }}
               />
             <p className="font-body-md text-body-md text-white/70 leading-relaxed max-w-xs">
               We are a boutique content marketing agency to help you add a premium touch to your brand through our expertise and creativity.

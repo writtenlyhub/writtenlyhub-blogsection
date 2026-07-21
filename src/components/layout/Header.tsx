@@ -13,6 +13,7 @@ export function Header() {
                 src="/images/logos/logo.svg"
                 width={200}
                 height={34}
+                style={{ width: "200px", height: "auto" }}
                 className="object-contain"
                 priority
               />
