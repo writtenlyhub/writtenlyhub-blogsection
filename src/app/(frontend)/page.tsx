@@ -93,7 +93,7 @@ export default async function BlogListingPage() {
           </h3>
         </div>
         <FadeIn direction="up">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {latestBlogs.map((blog, index) => (
               <FadeIn key={blog.id} delay={index * 0.1} direction="up">
                 <BlogCard blog={blog} />
@@ -113,7 +113,7 @@ export default async function BlogListingPage() {
           </a>
         </div>
         <FadeIn direction="up">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {aiBlogs.map((blog, index) => (
               <FadeIn key={blog.id} delay={index * 0.1} direction="up">
                 <BlogCard blog={blog} />
@@ -133,7 +133,7 @@ export default async function BlogListingPage() {
           </a>
         </div>
         <FadeIn direction="up">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {seoBlogs.map((blog, index) => (
               <FadeIn key={blog.id} delay={index * 0.1} direction="up">
                 <BlogCard blog={blog} />
@@ -153,7 +153,7 @@ export default async function BlogListingPage() {
           </a>
         </div>
         <FadeIn direction="up">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {contentMarketingBlogs.map((blog, index) => (
               <FadeIn key={blog.id} delay={index * 0.1} direction="up">
                 <BlogCard blog={blog} />
