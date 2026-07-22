@@ -24,6 +24,7 @@ export const revalidate = 3600; // Revalidate every hour
 interface PageProps {
   params: {
     slug: string;
+  };
 }
 
 export async function generateStaticParams() {
@@ -77,7 +78,7 @@ export default async function BlogDetail({ params }: PageProps) {
   const rawPayloadPost = await getCachedPostBySlug(slug); 
   const blogData = mapBlogData(rawPayloadPost);
 
-  if (!blogData) {
+  if (!rawPayloadPost || !blogData) {
     notFound();
   }
 
