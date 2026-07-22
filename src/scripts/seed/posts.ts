@@ -142,8 +142,7 @@ export async function seedPosts(
     });
 
     if (existing.docs.length > 0) {
-      results[post.slug] = existing.docs[0].id;
-      continue;
+      await payload.delete({ collection: 'blogs', id: existing.docs[0].id });
     }
 
     try {

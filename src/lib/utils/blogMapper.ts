@@ -1,7 +1,25 @@
-import { BlogDetailData, MockContentNode, TocItem } from '@/types/blog';
-import { MOCK_BLOGS, CATEGORIES as MOCK_CATEGORIES, Blog as UI_Blog, Category as UI_Category, Author as UI_Author } from '@/data/mockBlogs';
-import { MOCK_DATA as DETAILED_MOCK_DATA } from '@/lib/mock/blog';
+import { BlogDetailData, MockContentNode, TocItem, Author as UI_Author } from '@/types/blog';
 import type { Blog, User, Media, Category, Tag } from '@/payload-types';
+
+export interface UI_Category {
+  id: string;
+  title: string;
+  slug: string;
+}
+
+export interface UI_Blog {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  category: UI_Category;
+  author: UI_Author & { id: string };
+  publishedDate: string;
+  readTime: string;
+  featuredImage: string;
+  altText: string;
+  featuredHero?: boolean;
+}
 
 /**
  * Type guard for Media
@@ -25,6 +43,25 @@ function isCategory(category: number | Category | undefined | null): category is
 }
 
 /**
+ * Generate a stable ID from heading text
+ */
+function generateStableId(text: string, existingIds: Set<string>): string {
+  const baseId = text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphen
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+
+  let id = baseId || 'section';
+  let counter = 1;
+  while (existingIds.has(id)) {
+    id = `${baseId}-${counter}`;
+    counter++;
+  }
+  existingIds.add(id);
+  return id;
+}
+
+/**
  * Transform Payload Lexical nodes to MockContentNode expected by existing UI
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,91 +69,44 @@ function transformLexicalToMockNodes(lexicalNodes: any[]): MockContentNode[] {
   if (!lexicalNodes || !Array.isArray(lexicalNodes)) return [];
 
   return lexicalNodes.map((node) => {
-    // Handle Text Nodes
     if (node.type === 'text') {
-      return {
-        type: 'text',
-        text: node.text || '',
-      };
+      return { type: 'text', text: node.text || '' };
     }
-
-    // Handle Links
     if (node.type === 'link') {
-      return {
-        type: 'link',
-        url: node.fields?.url || '#',
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: 'link', url: node.fields?.url || '#', children: transformLexicalToMockNodes(node.children) };
     }
-
-    // Handle Headings (h2, h3)
     if (node.type === 'heading') {
       const level = node.tag === 'h2' ? 'heading-2' : 'heading-3';
-      return {
-        type: level,
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: level, children: transformLexicalToMockNodes(node.children) };
     }
-
-    // Handle Lists
     if (node.type === 'list') {
-      return {
-        type: node.listType === 'number' ? 'ol' : 'ul',
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: node.listType === 'number' ? 'ol' : 'ul', children: transformLexicalToMockNodes(node.children) };
     }
-
     if (node.type === 'listitem') {
-      return {
-        type: 'li',
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: 'li', children: transformLexicalToMockNodes(node.children) };
     }
-
-    // Handle Quotes
     if (node.type === 'quote') {
-      return {
-        type: 'blockquote',
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: 'blockquote', children: transformLexicalToMockNodes(node.children) };
     }
-
-    // Handle Horizontal Rule
     if (node.type === 'horizontalrule') {
-      return {
-        type: 'hr',
-      };
+      return { type: 'hr' };
     }
-
-    // Handle Code Blocks
     if (node.type === 'code') {
-      return {
-        type: 'code-block',
-        language: node.language || 'typescript',
-        children: transformLexicalToMockNodes(node.children),
-      };
+      return { type: 'code-block', language: node.language || 'typescript', children: transformLexicalToMockNodes(node.children) };
     }
-
-    // Handle Images / Uploads
     if (node.type === 'upload') {
-      return {
-        type: 'upload',
-        value: node.value,
-        relationTo: node.relationTo,
-      };
+      return { type: 'upload', value: node.value, relationTo: node.relationTo };
     }
-
-    // Default to paragraph for unknown or standard text blocks
-    return {
-      type: 'paragraph',
-      children: transformLexicalToMockNodes(node.children),
-    };
+    if (node.type === 'block') {
+      const blockType = node.fields?.blockType;
+      if (['quote', 'expertInsight', 'cta', 'watchLearn', 'keyTakeaways', 'quickFacts', 'callout', 'faq'].includes(blockType)) {
+        return { type: `block-${blockType}` as any, data: node.fields };
+      }
+    }
+    return { type: 'paragraph', children: transformLexicalToMockNodes(node.children) };
   });
 }
 
-/**
- * Extracts a specific block type from Lexical blocks
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractBlock(nodes: any[], blockSlug: string): any | null {
   if (!nodes || !Array.isArray(nodes)) return null;
@@ -124,90 +114,66 @@ function extractBlock(nodes: any[], blockSlug: string): any | null {
   return block ? block.fields : null;
 }
 
-/**
- * Filter out custom blocks to just return text/structural nodes
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function filterOutBlocks(nodes: any[]): any[] {
   if (!nodes || !Array.isArray(nodes)) return [];
   return nodes.filter((n) => n.type !== 'block');
 }
 
-/**
- * Maps the raw Payload document to the 'BlogDetailData' interface expected by our UI.
- */
 export function mapBlogData(post: Blog | null | undefined): BlogDetailData | null {
   if (!post) {
     return null;
   }
 
-  // Author Resolution
   const author = isUser(post.author)
     ? {
         name: post.author.name,
-        role: post.author.designation || post.author.role,
+        role: post.author.designation || post.author.role || 'Author',
         bio: post.author.bio || '',
         avatarUrl: isMedia(post.author.avatar) ? post.author.avatar.url || '' : '',
       }
-    : DETAILED_MOCK_DATA.aboutAuthor || {
-        name: DETAILED_MOCK_DATA.hero.author.name,
+    : {
+        name: 'Anonymous',
         role: 'Author',
         bio: '',
-        avatarUrl: DETAILED_MOCK_DATA.hero.author.avatarUrl,
+        avatarUrl: '',
       };
 
-  // Category Resolution
-  const categoryName = isCategory(post.category) ? post.category.name : 'Category';
-
-  // Featured Image Resolution
+  const categoryName = isCategory(post.category) ? post.category.name : 'Uncategorized';
   const imageUrl = isMedia(post.featuredImage) ? post.featuredImage.url || '' : '';
   const imageAlt = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
 
-  // Lexical Content Root
   const rootChildren = post.content?.root?.children || [];
-  
-  // Extract custom blocks
-  const quoteBlock = extractBlock(rootChildren, 'quote');
-  const keyTakeawaysBlock = extractBlock(rootChildren, 'keyTakeaways');
-  const inlineCTABlock = extractBlock(rootChildren, 'cta');
-  const footerCTABlock = extractBlock(rootChildren, 'cta'); // We can use CTA for footer too
-  const watchLearnBlock = extractBlock(rootChildren, 'watchLearn');
-  const faqBlock = extractBlock(rootChildren, 'faq');
+  const parsedContent = transformLexicalToMockNodes(rootChildren);
+  const existingIds = new Set<string>();
+  const toc: TocItem[] = [];
 
-  // Filter out blocks to get pure text content
-  const textNodes = filterOutBlocks(rootChildren);
+  // Recursive function to extract TOC and mutate nodes with IDs
+  const extractTocAndAssignIds = (nodes: MockContentNode[]) => {
+    for (const node of nodes) {
+      if (node.type === 'heading-2' || node.type === 'heading-3') {
+        const getText = (children: MockContentNode[] = []): string => {
+          return children.map((n) => (n.type === 'text' ? (n.text || '') : getText(n.children || []))).join('');
+        };
+        const text = getText(node.children);
+        const id = generateStableId(text, existingIds);
+        node.id = id; // Assign ID to the node so RichText can render it
+        toc.push({
+          id,
+          title: text || 'Section',
+          level: node.type === 'heading-2' ? 2 : 3,
+        });
+      } else if (node.children) {
+        extractTocAndAssignIds(node.children);
+      }
+    }
+  };
 
-  // Partition text nodes roughly into the sections the UI expects
-  // In a real dynamic scenario, the UI would loop over nodes, but we must adhere
-  // to the strict constraint: "Do not refactor the existing UI components."
-  const introNodes = textNodes.slice(0, 2);
-  const section1Nodes = textNodes.slice(2, 4);
-  const section2Nodes = textNodes.slice(4, 6);
-  const section2AfterNodes = textNodes.slice(6, 8);
-  const section3Nodes = textNodes.slice(8, 10);
-  const conclusionNodes = textNodes.slice(10);
+  extractTocAndAssignIds(parsedContent);
 
-  // Map TOC (Generate automatically from headings)
-  const toc: TocItem[] = textNodes
-    .filter((n) => n.type === 'heading')
-    .map((h, i) => {
-      // Find text recursively
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const getText = (nodes: any[]): string => {
-        return nodes.map((n) => (n.type === 'text' ? n.text : getText(n.children || []))).join('');
-      };
-      const text = getText(h.children || []);
-      return {
-        id: `heading-${i}`,
-        title: text || 'Section',
-        level: h.tag === 'h2' ? 2 : 3,
-      };
-    });
-
-  // Map Related Articles
   const relatedArticles = (post.relatedArticles || []).flatMap((rel) => {
     if (typeof rel === 'object' && rel !== null && 'title' in rel) {
-      const relCat = isCategory(rel.category) ? rel.category.name : 'Category';
+      const relCat = isCategory(rel.category) ? rel.category.name : 'Uncategorized';
       const relImg = isMedia(rel.featuredImage) ? rel.featuredImage.url || '' : '';
       return [{
         title: rel.title,
@@ -234,86 +200,42 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
       imageUrl: imageUrl,
       imageAlt: imageAlt,
     },
-    toc: toc.length > 0 ? toc : DETAILED_MOCK_DATA.toc,
-    contentBlocks: {
-      intro: introNodes.length > 0 ? transformLexicalToMockNodes(introNodes) : DETAILED_MOCK_DATA.contentBlocks.intro,
-      section1: section1Nodes.length > 0 ? transformLexicalToMockNodes(section1Nodes) : DETAILED_MOCK_DATA.contentBlocks.section1,
-      section2: section2Nodes.length > 0 ? transformLexicalToMockNodes(section2Nodes) : DETAILED_MOCK_DATA.contentBlocks.section2,
-      section2_afterImage: section2AfterNodes.length > 0 ? transformLexicalToMockNodes(section2AfterNodes) : DETAILED_MOCK_DATA.contentBlocks.section2_afterImage,
-      section3: section3Nodes.length > 0 ? transformLexicalToMockNodes(section3Nodes) : DETAILED_MOCK_DATA.contentBlocks.section3,
-      conclusion: conclusionNodes.length > 0 ? transformLexicalToMockNodes(conclusionNodes) : DETAILED_MOCK_DATA.contentBlocks.conclusion,
-    },
-    quote: quoteBlock
-      ? {
-          quote: quoteBlock.quote,
-          label: quoteBlock.label,
-        }
-      : DETAILED_MOCK_DATA.quote,
-    keyTakeaways: keyTakeawaysBlock
-      ? {
-          title: keyTakeawaysBlock.title,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          items: keyTakeawaysBlock.items.map((i: any) => i.item),
-        }
-      : DETAILED_MOCK_DATA.keyTakeaways,
-    inlineCTA: inlineCTABlock
-      ? {
-          title: inlineCTABlock.title,
-          description: inlineCTABlock.description,
-          buttonText: inlineCTABlock.buttonText,
-          buttonLink: inlineCTABlock.buttonLink,
-        }
-      : DETAILED_MOCK_DATA.inlineCTA,
+    toc: toc,
+    content: parsedContent,
     aboutAuthor: {
       ...author,
     },
-    footerCTA: footerCTABlock
-      ? {
-          title: footerCTABlock.title,
-          description: footerCTABlock.description,
-          buttonText: footerCTABlock.buttonText,
-          buttonLink: footerCTABlock.buttonLink,
-        }
-      : DETAILED_MOCK_DATA.footerCTA,
-    watchLearn: watchLearnBlock
-      ? {
-          title: watchLearnBlock.title,
-          description: watchLearnBlock.description,
-          buttonText: watchLearnBlock.buttonText,
-          buttonLink: watchLearnBlock.buttonLink,
-        }
-      : DETAILED_MOCK_DATA.watchLearn,
-    faqs: faqBlock
-      ? {
-          title: faqBlock.title,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          items: faqBlock.items.map((i: any) => ({
-            question: i.question,
-            answer: i.answer,
-          })),
-        }
-      : DETAILED_MOCK_DATA.faqs,
-    relatedArticles: relatedArticles.length > 0 ? relatedArticles : [],
+    relatedArticles: relatedArticles,
+    quote: null,
+    keyTakeaways: null,
+    inlineCTA: null,
+    footerCTA: null,
+    watchLearn: null,
+    faqs: null,
   };
 }
 
-/**
- * Maps a list of Payload Blogs to the UI Blog format used in listing pages
- */
 export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
   if (!posts || posts.length === 0) {
-    return MOCK_BLOGS;
+    return [];
   }
 
   return posts.map(post => {
-    const author: UI_Author = isUser(post.author)
+    const author = isUser(post.author)
       ? {
           id: post.author.id.toString(),
           name: post.author.name,
-          role: post.author.designation || post.author.role,
+          role: post.author.designation || post.author.role || 'Author',
+          bio: post.author.bio || '',
           avatarUrl: isMedia(post.author.avatar) ? post.author.avatar.url || '' : '',
         }
-      : MOCK_BLOGS[0].author;
+      : {
+          id: 'anon',
+          name: 'Anonymous',
+          role: 'Author',
+          bio: '',
+          avatarUrl: '',
+        };
 
     const category: UI_Category = isCategory(post.category)
       ? {
@@ -321,7 +243,7 @@ export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
           title: post.category.name,
           slug: post.category.slug || '',
         }
-      : MOCK_CATEGORIES[0];
+      : { id: 'uncategorized', title: 'Uncategorized', slug: 'uncategorized' };
 
     const featuredImage = isMedia(post.featuredImage) ? post.featuredImage.url || '' : '';
     const altText = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
@@ -342,12 +264,9 @@ export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
   });
 }
 
-/**
- * Maps a list of Payload Categories to the UI Category format
- */
 export function mapCategoryList(categories: Category[] | undefined): UI_Category[] {
   if (!categories || categories.length === 0) {
-    return MOCK_CATEGORIES;
+    return [];
   }
 
   return categories.map(cat => ({

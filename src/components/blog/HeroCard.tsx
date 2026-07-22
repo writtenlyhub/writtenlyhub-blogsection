@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
-import { Blog } from '@/data/mockBlogs';
+import { UI_Blog as Blog } from '@/types/blog';
 
 export function HeroCard({ blog }: { blog: Blog }) {
   return (

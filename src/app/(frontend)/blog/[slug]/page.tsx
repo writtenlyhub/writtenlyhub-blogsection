@@ -6,20 +6,13 @@ import { ReadingProgress } from '@/components/blog/ReadingProgress';
 import { TableOfContents } from '@/components/blog/TableOfContents';
 import { ArticleContent } from '@/components/blog/ArticleContent';
 import { RichText } from '@/components/blog/RichText';
-import { Quote } from '@/components/blog/Quote';
-import { KeyTakeaways } from '@/components/blog/KeyTakeaways';
-import { InlineCTA } from '@/components/blog/InlineCTA';
-import { Conclusion } from '@/components/blog/Conclusion';
 import { AboutAuthor } from '@/components/blog/AboutAuthor';
-import { FooterCTA } from '@/components/blog/FooterCTA';
-import { WatchLearn } from '@/components/blog/WatchLearn';
-import { FAQ } from '@/components/blog/FAQ';
 import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
-import { mapBlogData } from '@/lib/utils/blogMapper';
-import { getCachedPostBySlug } from '@/lib/api';
+import { mapBlogData, mapBlogList } from '@/lib/utils/blogMapper';
+import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts } from '@/lib/api';
+import { SocialShare } from '@/components/blog/SocialShare';
 
-export const revalidate = 3600; // Revalidate every hour
 
 interface PageProps {
   params: {
@@ -81,26 +74,76 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
 
 export default async function BlogDetail({ params }: PageProps) {
   const { slug } = await params;
+  console.log(`[BlogDetail] Resolving slug:`, slug);
   const rawPayloadPost = await getCachedPostBySlug(slug); 
-  const blogData = mapBlogData(rawPayloadPost);
+  console.log(`[BlogDetail] getCachedPostBySlug result:`, rawPayloadPost ? 'Found' : 'Null');
+  
+  let blogData = null;
+  try {
+    blogData = mapBlogData(rawPayloadPost);
+    console.log(`[BlogDetail] mapBlogData result:`, blogData ? 'Success' : 'Null');
+  } catch (error) {
+    console.error(`[BlogDetail] mapBlogData crashed:`, error);
+  }
 
   if (!rawPayloadPost || !blogData) {
+    console.log(`[BlogDetail] Calling notFound() because rawPayloadPost=${!!rawPayloadPost}, blogData=${!!blogData}`);
     notFound();
   }
 
   const { getCachedAdjacentPosts } = await import('@/lib/api');
   const adjacent = rawPayloadPost.publishedAt ? await getCachedAdjacentPosts(rawPayloadPost.publishedAt) : { prev: null, next: null };
 
+  let finalRelatedArticles = blogData.relatedArticles || [];
+  
+  if (finalRelatedArticles.length === 0) {
+    const categorySlug = rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : undefined;
+    
+    if (categorySlug) {
+      const categoryPosts = await getCachedArchivePosts(4, 1, categorySlug);
+      const filteredCatPosts = categoryPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
+      if (filteredCatPosts.length > 0) {
+        const mappedList = mapBlogList(filteredCatPosts);
+        finalRelatedArticles = mappedList.map(item => ({
+          title: item.title,
+          summary: item.excerpt,
+          category: item.category.title,
+          date: item.publishedDate,
+          readTime: item.readTime,
+          imageUrl: item.featuredImage,
+          link: `/blog/${item.slug}`
+        }));
+      }
+    }
+    
+    if (finalRelatedArticles.length === 0) {
+      const latestPosts = await getCachedPosts(4, 1);
+      const filteredLatest = latestPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
+      if (filteredLatest.length > 0) {
+         const mappedList = mapBlogList(filteredLatest);
+         finalRelatedArticles = mappedList.map(item => ({
+            title: item.title,
+            summary: item.excerpt,
+            category: item.category.title,
+            date: item.publishedDate,
+            readTime: item.readTime,
+            imageUrl: item.featuredImage,
+            link: `/blog/${item.slug}`
+         }));
+      }
+    }
+  }
+
   return (
     <>
       <ReadingProgress />
 
-      <main className="mt-8 max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+      <main className="mt-8 max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
 
 
         <BlogHero {...blogData.hero} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative w-full">
           {/* Desktop Sticky TOC */}
           <div className="hidden lg:block lg:col-span-3 h-full">
             <div className="sticky top-[112px] pb-8 h-fit self-start">
@@ -116,89 +159,25 @@ export default async function BlogDetail({ params }: PageProps) {
             </div>
             
             <ArticleContent>
-            <div className="mb-10 max-w-[75ch] mx-auto lg:mx-0 w-full">
-              <div className="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm mb-8 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
-                <h3 className="text-2xl font-bold text-primary mt-0 mb-4 font-headline-md scroll-mt-header-height" id="heading-0">Overview</h3>
-                <p className="text-on-surface-variant m-0 text-lg leading-[1.8] max-w-[75ch]">
-                  This article explores the practical, immediate applications of Artificial Intelligence in modern business operations. We detail ten specific ways companies are currently deploying AI tools to reduce manual workloads, optimize their sales funnels, and generate new revenue streams.
-                </p>
+              <RichText content={blogData.content} />
+            </ArticleContent>
+          </div>
+        </div>
+
+        {/* Bottom Content Grid (breaks sticky boundary) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full">
+          <div className="hidden lg:block lg:col-span-3"></div>
+          <div className="lg:col-span-8 lg:col-start-5 w-full min-w-0">
+            <div className="mt-24 border-t border-outline-variant pt-12">
+              <AboutAuthor data={blogData.aboutAuthor} />
+              
+              <div className="lg:hidden mt-8">
+                <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share this article</span>
+                <SocialShare title={blogData.hero.title} layout="horizontal" />
               </div>
-
-              <div className="bg-surface-container-low p-5 rounded-xl border border-outline-variant my-10 shadow-sm">
-                <h3 className="text-2xl font-bold text-primary mt-0 mb-5 font-headline-md flex items-center gap-2 scroll-mt-header-height" id="heading-1">
-                  <span className="material-symbols-outlined text-secondary-container">bolt</span> Quick Facts
-                </h3>
-                <ul className="space-y-3 m-0 text-on-surface-variant list-none pl-0">
-                  <li className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-secondary-container shrink-0 mt-1">check_circle</span>
-                    <span><strong>Target Audience:</strong> Business leaders, operational managers, and marketing directors looking to integrate AI pragmatically.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-secondary-container shrink-0 mt-1">check_circle</span>
-                    <span><strong>Key Insight:</strong> AI adoption has shifted from experimental to operational, focusing on measurable ROI.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-secondary-container shrink-0 mt-1">check_circle</span>
-                    <span><strong>Primary Benefits:</strong> Significant reduction in routine task hours (up to 40%) and improved customer response times.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-secondary-container shrink-0 mt-1">check_circle</span>
-                    <span><strong>Actionable Next Step:</strong> Audit your current workflows to identify repetitive tasks ripe for AI automation.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <RichText className="mb-8" content={blogData.contentBlocks.intro} />
-
-            <Quote data={blogData.quote} />
-
-            <h2 id="section1" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">1. Automating Customer Support Responses</h2>
-            <RichText content={blogData.contentBlocks.section1} />
-
-            <div className="w-full max-w-[75ch] mx-auto lg:mx-0 my-10 p-6 bg-surface-container-low rounded-2xl shadow-sm flex flex-col sm:flex-row gap-4 items-start">
-              <span className="material-symbols-outlined text-secondary-container text-2xl shrink-0">lightbulb</span>
-              <div>
-                <h4 className="text-primary font-bold mt-0 mb-2 font-headline-md text-[1.0625rem]">Pro Tip</h4>
-                <p className="m-0 text-on-surface-variant text-base">When implementing AI support, always provide a clear and seamless escalation path to a human agent for complex issues that require empathy or nuanced understanding.</p>
-              </div>
-            </div>
-
-            <h2 id="section2" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">2. Enhancing Sales Lead Qualification</h2>
-            <RichText content={blogData.contentBlocks.section2} />
-
-            <div className="my-10 relative w-full aspect-[4/3] sm:aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-md border border-outline-variant">
-               {/* eslint-disable-next-line @next/next/no-img-element */}
-               <img alt="AI Strategy Session Illustration" className="w-full h-full object-cover" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgcng9IjgiIGZpbGw9IiNlOGVhZWQiLz48cGF0aCBkPSJNMTcwIDEzMCBsMzAgNDAgbDIwLTE1IGw0MCA1NSBIMTQweiIgZmlsbD0iI2JkYzFjNiIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEyMCIgcj0iMTgiIGZpbGw9IiNiZGMxYzYiLz48L3N2Zz4=" />
-            </div>
-
-            <RichText content={blogData.contentBlocks.section2_afterImage} />
-
-            <div id="heading-4" className="scroll-mt-header-height">
-              <InlineCTA data={blogData.inlineCTA} />
-            </div>
-
-            <h2 id="section3" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">3. Personalizing Marketing Campaigns</h2>
-            <RichText content={blogData.contentBlocks.section3} />
-
-            <div id="heading-6" className="scroll-mt-header-height">
-              <KeyTakeaways data={blogData.keyTakeaways} />
-            </div>
-
-            <Conclusion content={blogData.contentBlocks.conclusion} />
-            
-          </ArticleContent>
-
-          <div className="mt-24 border-t border-outline-variant pt-12">
-          <AboutAuthor data={blogData.aboutAuthor} />
-          <FooterCTA data={blogData.footerCTA} />
-          <WatchLearn data={blogData.watchLearn} />
-          
-          <FAQ data={blogData.faqs} />
-          
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-y border-outline-variant py-8 mb-16">
-              {adjacent.prev ? (
+              
+              <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-y border-outline-variant py-8 mb-16 mt-8">
+                {adjacent.prev ? (
                 <Link className="group flex flex-col items-start gap-2 w-full md:w-1/2 text-left hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href={`/blog/${adjacent.prev.slug}`}>
                   <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
                     <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
@@ -229,7 +208,9 @@ export default async function BlogDetail({ params }: PageProps) {
       </div>
     </main>
 
-      <RelatedArticles data={{ articles: blogData.relatedArticles }} />
+      {finalRelatedArticles.length > 0 && (
+        <RelatedArticles data={{ articles: finalRelatedArticles }} />
+      )}
     </>
   );
 }

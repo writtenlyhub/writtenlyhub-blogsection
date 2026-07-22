@@ -11,6 +11,9 @@ export function createParagraph(text: string) {
   return {
     type: 'paragraph',
     version: 1,
+    format: '',
+    indent: 0,
+    direction: null,
     children: [createTextNode(text)],
   };
 }
@@ -20,6 +23,9 @@ export function createHeading(text: string, tag: 'h2' | 'h3' = 'h2') {
     type: 'heading',
     version: 1,
     tag,
+    format: '',
+    indent: 0,
+    direction: null,
     children: [createTextNode(text)],
   };
 }
@@ -29,9 +35,17 @@ export function createList(items: string[], listType: 'bullet' | 'number' = 'bul
     type: 'list',
     version: 1,
     listType,
-    children: items.map((item) => ({
+    format: '',
+    indent: 0,
+    direction: null,
+    start: 1,
+    children: items.map((item, index) => ({
       type: 'listitem',
       version: 1,
+      format: '',
+      indent: 0,
+      direction: null,
+      value: index + 1,
       children: [createTextNode(item)],
     })),
   };

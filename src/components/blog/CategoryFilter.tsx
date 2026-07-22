@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import type { Category } from '@/data/mockBlogs';
+import { useRouter, useSearchParams } from 'next/navigation';
+import type { UI_Category as Category } from '@/types/blog';
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -21,7 +22,10 @@ const PILL_INACTIVE =
   'bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 hover:border-writtenly-navy/50 hover:text-writtenly-navy shadow-sm';
 
 export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryFilterProps) {
-  const [active, setActive] = useState('all');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const active = searchParams.get('category') || 'all';
+
   const [sheetOpen, setSheetOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
@@ -73,10 +77,17 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
 
   const handleSelect = useCallback(
     (slug: string, fromSheet = false) => {
-      setActive(slug);
       if (fromSheet) closeSheet();
+      const params = new URLSearchParams(searchParams.toString());
+      if (slug === 'all') {
+        params.delete('category');
+      } else {
+        params.set('category', slug);
+      }
+      params.delete('page'); // Reset pagination on category change
+      router.push(`/blog?${params.toString()}`, { scroll: false });
     },
-    [closeSheet],
+    [closeSheet, searchParams, router],
   );
 
   return (
@@ -90,7 +101,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         <ul>
           {categories.map((cat) => (
             <li key={`seo-${cat.id}`}>
-              <a href={`/blog/category/${cat.slug}`}>{cat.title}</a>
+              <a href={`/blog?category=${cat.slug}`}>{cat.title}</a>
             </li>
           ))}
         </ul>
@@ -106,7 +117,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         aria-label="Filter articles by category"
       >
         <button
-          onClick={() => setActive('all')}
+          onClick={() => handleSelect('all')}
           aria-pressed={active === 'all'}
           className={`${PILL_BASE} px-5 py-2 min-h-[44px] ${active === 'all' ? PILL_ACTIVE : PILL_INACTIVE}`}
         >
@@ -115,7 +126,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         {categories.map((cat) => (
           <button
             key={`desk-${cat.id}`}
-            onClick={() => setActive(cat.slug)}
+            onClick={() => handleSelect(cat.slug)}
             aria-pressed={active === cat.slug}
             className={`${PILL_BASE} px-4 py-2 min-h-[44px] ${active === cat.slug ? PILL_ACTIVE : PILL_INACTIVE}`}
           >

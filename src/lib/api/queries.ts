@@ -17,6 +17,45 @@ export const getPosts = async (limit: number = 10, page: number = 1) => {
   })
 }
 
+export const getArchivePosts = async (limit: number = 9, page: number = 1, categorySlug?: string, searchQuery?: string) => {
+  const payload = await getPayloadClient()
+  
+  let categoryId = null;
+  if (categorySlug && categorySlug !== 'all') {
+    const cats = await payload.find({
+      collection: 'categories',
+      where: { slug: { equals: categorySlug } },
+      limit: 1
+    });
+    if (cats.docs.length > 0) {
+      categoryId = cats.docs[0].id;
+    }
+  }
+
+  const whereOptions: any = {
+    _status: {
+      equals: 'published',
+    },
+  };
+
+  if (categoryId) {
+    whereOptions.category = { equals: categoryId };
+  }
+
+  if (searchQuery) {
+    whereOptions.title = { contains: searchQuery };
+  }
+
+  return await payload.find({
+    collection: 'blogs',
+    depth: 2,
+    limit,
+    page,
+    where: whereOptions,
+    sort: '-publishedAt',
+  })
+}
+
 export const getPostBySlug = async (slug: string): Promise<Blog | null> => {
   const payload = await getPayloadClient()
   const result = await payload.find({
@@ -49,6 +88,14 @@ export const getSiteSettings = async () => {
   return await payload.findGlobal({
     slug: 'site-settings',
     depth: 1,
+  })
+}
+
+export const getHomepageSettings = async () => {
+  const payload = await getPayloadClient()
+  return await payload.findGlobal({
+    slug: 'homepage-settings',
+    depth: 2,
   })
 }
 

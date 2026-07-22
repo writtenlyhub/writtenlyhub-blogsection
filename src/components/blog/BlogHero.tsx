@@ -26,20 +26,20 @@ export function BlogHero(props: BlogHeroData) {
         </span>
       </div>
       
-      <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary leading-[1.1]">
+      <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary leading-tight tracking-tight mt-2">
         {title}
       </h1>
       
       {summary && (
-        <p className="font-body-lg text-[1.1875rem] text-on-surface-variant leading-relaxed">
+        <p className="font-body-lg text-lg md:text-[1.1875rem] text-on-surface-variant leading-relaxed opacity-90">
           {summary}
         </p>
       )}
       
-      <div className="flex flex-wrap items-start sm:items-center gap-4 sm:gap-8 text-sm text-on-surface-variant">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 text-sm text-on-surface-variant mt-2 border-t border-b border-outline-variant/30 py-4">
         {author && (
-          <div className="flex items-center gap-3 pr-4 sm:border-r border-outline-variant">
-            <div className="w-8 h-8 relative rounded-full overflow-hidden">
+          <div className="flex items-center gap-3 pr-4 sm:border-r border-outline-variant/50">
+            <div className="w-12 h-12 relative rounded-full overflow-hidden shrink-0">
               <ImageWithFallback 
                 alt={author.name} 
                 src={author.avatarUrl} 
@@ -47,40 +47,39 @@ export function BlogHero(props: BlogHeroData) {
                 className="object-cover" 
               />
             </div>
-            <span className="font-bold text-primary">{author.name}</span>
-          </div>
-        )}
-        
-        {publishedAt && (
-          <div className="flex flex-col gap-1">
-            <span className="font-label-md text-label-md text-outline text-[11px] uppercase tracking-wider">Published</span>
-            <div className="flex items-center gap-1 font-medium text-primary">
-              <span className="material-symbols-outlined text-[18px]">calendar_today</span> {publishedAt}
+            <div className="flex flex-col">
+              <span className="font-bold text-primary text-base">{author.name}</span>
+              <span className="text-xs text-outline font-medium tracking-wide">Author</span>
             </div>
           </div>
         )}
         
-        {updatedAt && (
-          <div className="flex flex-col gap-1">
-            <span className="font-label-md text-label-md text-outline text-[11px] uppercase tracking-wider">Last Updated</span>
-            <div className="flex items-center gap-1 font-medium text-primary">
-              <span className="material-symbols-outlined text-[18px]">update</span> {updatedAt}
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs md:text-sm font-medium">
+          {publishedAt && (
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-outline">calendar_today</span> 
+              <span>{publishedAt}</span>
             </div>
-          </div>
-        )}
-        
-        {readTime && (
-          <div className="flex flex-col gap-1">
-            <span className="font-label-md text-label-md text-outline text-[11px] uppercase tracking-wider">Read Time</span>
-            <div className="flex items-center gap-1 font-medium text-primary">
-              <span className="material-symbols-outlined text-[18px]">schedule</span> {readTime}
+          )}
+          
+          {updatedAt && (
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-outline">update</span> 
+              <span>Updated: {updatedAt}</span>
             </div>
-          </div>
-        )}
+          )}
+          
+          {readTime && (
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-outline">schedule</span> 
+              <span>{readTime} read</span>
+            </div>
+          )}
+        </div>
       </div>
       
       {imageUrl && (
-        <div className="mt-4 relative w-full aspect-[4/3] sm:aspect-video rounded-2xl overflow-hidden border border-outline-variant shadow-lg">
+        <div className="mt-6 relative w-full aspect-[21/9] sm:aspect-video rounded-xl overflow-hidden shadow-sm">
           <ImageWithFallback 
             alt={imageAlt || title} 
             src={imageUrl} 

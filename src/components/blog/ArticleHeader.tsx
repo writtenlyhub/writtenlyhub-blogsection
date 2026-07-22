@@ -1,4 +1,4 @@
-import { Blog } from '@/data/mockBlogs';
+import { UI_Blog as Blog } from '@/types/blog';
 import { Badge } from '@/components/ui/Badge';
 import Link from 'next/link';
 

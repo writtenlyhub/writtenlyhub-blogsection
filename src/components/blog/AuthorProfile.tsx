@@ -1,4 +1,4 @@
-import { Author } from '@/data/mockBlogs';
+import { UI_Author as Author } from '@/types/blog';
 import Link from 'next/link';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
 

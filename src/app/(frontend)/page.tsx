@@ -4,23 +4,27 @@ import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CategoryFilter } from '@/components/blog/CategoryFilter';
-import { getCachedPosts, getCachedCategories } from '@/lib/api';
+import { getCachedPosts, getCachedCategories, getCachedHomepageSettings } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
-
-export const revalidate = 3600; // Revalidate every hour
+import Link from 'next/link';
 
 export default async function BlogListingPage() {
-  const rawPosts = await getCachedPosts();
-  const rawCategories = await getCachedCategories();
+  const [rawPosts, rawCategories, rawSettings] = await Promise.all([
+    getCachedPosts(50, 1),
+    getCachedCategories(),
+    getCachedHomepageSettings(),
+  ]);
   
   const MOCK_BLOGS = mapBlogList(rawPosts.docs);
   const CATEGORIES = mapCategoryList(rawCategories.docs);
 
   const heroBlog = MOCK_BLOGS.find(b => b.featuredHero) || MOCK_BLOGS[0];
   const latestBlogs = MOCK_BLOGS.filter(b => !b.featuredHero).slice(0, 3);
-  const aiBlogs = MOCK_BLOGS.filter(b => b.category.slug === 'ai-tech' && !b.featuredHero).slice(0, 3);
-  const seoBlogs = MOCK_BLOGS.filter(b => b.category.slug === 'seo' && !b.featuredHero).slice(0, 3);
-  const contentMarketingBlogs = MOCK_BLOGS.filter(b => b.category.slug === 'content-marketing' && !b.featuredHero).slice(0, 3);
+  
+  // Safely get curated categories, defaulting to an empty array if not set
+  const curatedCategories = Array.isArray(rawSettings.curatedCategories) 
+    ? rawSettings.curatedCategories 
+    : [];
 
   return (
     <>
@@ -81,87 +85,68 @@ export default async function BlogListingPage() {
           </FadeIn>
         </section>
 
-        <FadeIn direction="up" delay={0.15}>
-          <HeroCard blog={heroBlog} />
-        </FadeIn>
+        {heroBlog && (
+          <FadeIn direction="up" delay={0.15}>
+            <HeroCard blog={heroBlog} />
+          </FadeIn>
+        )}
       </div>
 
-      <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto">
-        <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-          <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
-            Latest Articles
-          </h3>
-        </div>
-        <FadeIn direction="up">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-            {latestBlogs.map((blog, index) => (
-              <FadeIn key={blog.id} delay={index * 0.1} direction="up">
-                <BlogCard blog={blog} />
-              </FadeIn>
-            ))}
+      {latestBlogs.length > 0 && (
+        <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto">
+          <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
+            <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
+              Latest Articles
+            </h3>
           </div>
-        </FadeIn>
-      </section>
+          <FadeIn direction="up">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
+              {latestBlogs.map((blog, index) => (
+                <FadeIn key={blog.id} delay={index * 0.1} direction="up">
+                  <BlogCard blog={blog} />
+                </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
+        </section>
+      )}
 
-      <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto bg-surface-container-low/30 rounded-[2rem] md:rounded-3xl mb-12">
-        <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-          <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
-            AI & Tech
-          </h3>
-          <a className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href="#">
-            View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </a>
-        </div>
-        <FadeIn direction="up">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-            {aiBlogs.map((blog, index) => (
-              <FadeIn key={blog.id} delay={index * 0.1} direction="up">
-                <BlogCard blog={blog} />
-              </FadeIn>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
+      {/* Dynamically Rendered Curated Category Sections */}
+      {curatedCategories.map((cat: any, i: number) => {
+        const categorySlug = typeof cat === 'object' ? cat.slug : cat;
+        const categoryTitle = typeof cat === 'object' ? cat.name : cat;
+        
+        const categoryBlogs = MOCK_BLOGS.filter(
+          b => b.category.slug === categorySlug && !b.featuredHero
+        ).slice(0, 3);
+        
+        if (categoryBlogs.length === 0) return null;
 
-      <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto">
-        <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-          <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
-            SEO
-          </h3>
-          <a className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href="#">
-            View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </a>
-        </div>
-        <FadeIn direction="up">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-            {seoBlogs.map((blog, index) => (
-              <FadeIn key={blog.id} delay={index * 0.1} direction="up">
-                <BlogCard blog={blog} />
-              </FadeIn>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
+        // Alternate background color for visual separation
+        const useBackground = i % 2 === 0;
 
-      <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto mb-16 bg-surface-container-low/30 rounded-[2rem] md:rounded-3xl">
-        <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-          <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
-            Content Marketing
-          </h3>
-          <a className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href="#">
-            View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </a>
-        </div>
-        <FadeIn direction="up">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-            {contentMarketingBlogs.map((blog, index) => (
-              <FadeIn key={blog.id} delay={index * 0.1} direction="up">
-                <BlogCard blog={blog} />
-              </FadeIn>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
+        return (
+          <section key={categorySlug} className={`w-full px-gutter py-section-gap max-w-container-max mx-auto ${useBackground ? 'bg-surface-container-low/30 rounded-[2rem] md:rounded-3xl mb-12' : 'mb-16'}`}>
+            <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
+              <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
+                {categoryTitle}
+              </h3>
+              <Link className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href={`/blog?category=${categorySlug}`}>
+                View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
+            </div>
+            <FadeIn direction="up">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
+                {categoryBlogs.map((blog, index) => (
+                  <FadeIn key={blog.id} delay={index * 0.1} direction="up">
+                    <BlogCard blog={blog} />
+                  </FadeIn>
+                ))}
+              </div>
+            </FadeIn>
+          </section>
+        );
+      })}
 
       <FadeIn direction="up">
         <Newsletter />

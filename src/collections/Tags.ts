@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '../fields/slug'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const Tags: CollectionConfig = {
   slug: 'tags',
@@ -11,6 +12,10 @@ export const Tags: CollectionConfig = {
     create: ({ req }) => Boolean(req.user),
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [() => revalidateCollection(['tags', 'blogs'])],
+    afterDelete: [() => revalidateCollection(['tags', 'blogs'])],
   },
   fields: [
     {

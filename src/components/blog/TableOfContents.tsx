@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { TocItem } from '@/types/blog';
+import { SocialShare } from '@/components/blog/SocialShare';
 
 export interface TableOfContentsProps {
   items: TocItem[];
@@ -59,7 +60,9 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
     return () => observer.disconnect();
   }, [items]);
 
-  if (!items || items.length === 0) {
+  const showToc = items && items.length >= 2;
+
+  if (!showToc && !isDesktop) {
     return null;
   }
 
@@ -131,29 +134,18 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
     return (
       <aside className="hidden lg:block w-full max-w-[320px]">
         <div className="flex flex-col gap-8">
-          <div className="bg-transparent flex flex-col gap-stack-md">
-            <h3 className="font-headline-md text-[18px] font-bold text-primary mb-3 border-b border-outline-variant pb-4">
-              Table of Contents
-            </h3>
-            {renderTocList()}
-          </div>
-
-          <div className="pt-6 border-t border-outline-variant shrink-0">
-            <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share</span>
-            <div className="flex items-center gap-4">
-              <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
-                <span className="material-symbols-outlined text-[20px]">share</span>
-              </a>
-              <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
-                <span className="material-symbols-outlined text-[20px]">alternate_email</span>
-              </a>
-              <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
-                <span className="material-symbols-outlined text-[20px]">link</span>
-              </a>
-              <a className="text-on-surface-variant hover:text-secondary-container transition-colors" href="#">
-                <span className="material-symbols-outlined text-[20px]">mail</span>
-              </a>
+          {showToc && (
+            <div className="bg-transparent flex flex-col gap-stack-md">
+              <h3 className="font-headline-md text-[18px] font-bold text-primary mb-3 border-b border-outline-variant pb-4">
+                Table of Contents
+              </h3>
+              {renderTocList()}
             </div>
+          )}
+
+          <div className={`${showToc ? 'pt-6 border-t border-outline-variant' : ''} shrink-0`}>
+            <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share</span>
+            <SocialShare title="Check out this article" layout="horizontal" />
           </div>
         </div>
       </aside>
@@ -162,25 +154,28 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
 
   // Mobile / Tablet logic
   return (
-    <aside className="block lg:hidden w-full bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden">
+    <aside className="block lg:hidden w-full border-y border-outline-variant/40 py-2 mb-8 mt-2">
       <button 
         onClick={() => setMobileExpanded(!mobileExpanded)}
-        className="w-full flex items-center justify-between p-5 md:pointer-events-none"
+        className="w-full flex items-center justify-between py-4"
       >
-        <h3 className="font-headline-md text-[18px] font-bold text-primary m-0">
-          Table of Contents
-        </h3>
-        <span className={`material-symbols-outlined transition-transform duration-300 md:hidden ${mobileExpanded ? 'rotate-180' : ''}`}>
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined text-outline text-[20px]">menu_book</span>
+          <h3 className="font-headline-md text-sm font-bold text-primary uppercase tracking-widest m-0">
+            Table of Contents
+          </h3>
+        </div>
+        <span className={`material-symbols-outlined text-outline transition-transform duration-300 md:hidden ${mobileExpanded ? 'rotate-180' : ''}`}>
           expand_more
         </span>
       </button>
       
       <div 
-        className={`md:max-h-[2000px] md:opacity-100 transition-all duration-300 ease-in-out ${
-          mobileExpanded ? 'max-h-[2000px] opacity-100 pb-5' : 'max-h-0 opacity-0 md:pb-5'
+        className={`md:max-h-[2000px] md:opacity-100 transition-all duration-300 ease-in-out overflow-hidden ${
+          mobileExpanded ? 'max-h-[2000px] opacity-100 pb-6' : 'max-h-0 opacity-0 md:pb-6'
         }`}
       >
-        <div className="px-5 border-t border-outline-variant/50 pt-3 md:border-t-0 md:pt-0">
+        <div className="pt-2">
           {renderTocList()}
         </div>
       </div>

@@ -1,10 +1,13 @@
 export interface MockContentNode {
-  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text' | 'ul' | 'ol' | 'li' | 'blockquote' | 'hr' | 'code-block' | 'upload';
+  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text' | 'ul' | 'ol' | 'li' | 'blockquote' | 'hr' | 'code-block' | 'upload' | 'block-quote' | 'block-keyTakeaways' | 'block-cta' | 'block-watchLearn' | 'block-faq' | 'block-expertInsight' | 'block-quickFacts' | 'block-callout';
+  id?: string;
   text?: string;
   url?: string;
   language?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
   relationTo?: string;
   children?: MockContentNode[];
 }
@@ -14,6 +17,33 @@ export interface Author {
   role: string;
   bio: string;
   avatarUrl: string;
+}
+
+export interface UI_Category {
+  id: string;
+  title: string;
+  slug: string;
+}
+
+export interface UI_Author {
+  id: string;
+  name: string;
+  role: string;
+  avatarUrl: string;
+}
+
+export interface UI_Blog {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  category: UI_Category;
+  author: UI_Author;
+  publishedDate: string;
+  readTime: string;
+  featuredImage: string;
+  altText: string;
+  featuredHero?: boolean;
 }
 
 export interface BlogHeroData {
@@ -72,14 +102,7 @@ export interface ArticleCard {
 export interface BlogDetailData {
   hero: BlogHeroData;
   toc: TocItem[];
-  contentBlocks: {
-    intro: MockContentNode[];
-    section1: MockContentNode[];
-    section2: MockContentNode[];
-    section2_afterImage: MockContentNode[];
-    section3: MockContentNode[];
-    conclusion: MockContentNode[];
-  };
+  content: MockContentNode[];
   quote: QuoteData | null;
   keyTakeaways: KeyTakeawaysData | null;
   inlineCTA: CTAData | null;

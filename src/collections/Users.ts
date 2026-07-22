@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '../fields/slug'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -18,6 +19,10 @@ export const Users: CollectionConfig = {
       return req.user ? true : isBootstrap
     },
     delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [() => revalidateCollection(['blogs'])],
+    afterDelete: [() => revalidateCollection(['blogs'])],
   },
   fields: [
     {

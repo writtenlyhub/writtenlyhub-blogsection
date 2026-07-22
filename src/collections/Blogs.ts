@@ -12,6 +12,7 @@ import {
   CalloutBlock,
   FAQBlock,
 } from '../blocks'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 const formatSlug = (val: string): string =>
   val
@@ -107,7 +108,19 @@ export const Blogs: CollectionConfig = {
             })
           }
         }
+        
+        // Revalidate cache on publish or update
+        if (doc._status === 'published' || previousDoc?._status === 'published') {
+          revalidateCollection(['blogs', `blog-${doc.slug}`])
+        }
       },
+    ],
+    afterDelete: [
+      ({ doc }) => {
+        if (doc._status === 'published') {
+          revalidateCollection(['blogs', `blog-${doc.slug}`])
+        }
+      }
     ],
   },
   fields: [

@@ -35,7 +35,7 @@ export function Footer() {
             <ul className="flex flex-col font-body-md text-body-md text-white/80">
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">About Us</Link></li>
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Case Studies</Link></li>
-              <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Blog</Link></li>
+              <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="/blog">Blog</Link></li>
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Contact</Link></li>
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Career</Link></li>
             </ul>

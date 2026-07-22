@@ -1,10 +1,19 @@
 import { unstable_cache } from 'next/cache'
-import { getPosts, getPostBySlug, getCategories, getSiteSettings } from './queries'
+import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings } from './queries'
 
 export const getCachedPosts = async (limit?: number, page?: number) => {
   const cached = unstable_cache(
     async () => getPosts(limit, page),
     ['posts-list', String(limit), String(page)],
+    { revalidate: 3600, tags: ['blogs'] }
+  )
+  return cached()
+}
+
+export const getCachedArchivePosts = async (limit?: number, page?: number, categorySlug?: string, searchQuery?: string) => {
+  const cached = unstable_cache(
+    async () => getArchivePosts(limit, page, categorySlug, searchQuery),
+    ['archive-posts', String(limit), String(page), String(categorySlug), String(searchQuery)],
     { revalidate: 3600, tags: ['blogs'] }
   )
   return cached()
@@ -39,4 +48,10 @@ export const getCachedSiteSettings = unstable_cache(
   async () => getSiteSettings(),
   ['site-settings'],
   { revalidate: 86400, tags: ['site-settings'] }
+)
+
+export const getCachedHomepageSettings = unstable_cache(
+  async () => getHomepageSettings(),
+  ['homepage-settings'],
+  { revalidate: 86400, tags: ['homepage-settings'] }
 )

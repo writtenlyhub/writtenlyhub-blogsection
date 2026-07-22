@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -38,6 +39,10 @@ export const Media: CollectionConfig = {
       return req.user ? true : isBootstrap
     },
     delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [() => revalidateCollection(['blogs'])],
+    afterDelete: [() => revalidateCollection(['blogs'])],
   },
   fields: [
     {

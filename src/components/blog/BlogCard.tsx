@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Blog } from '@/data/mockBlogs';
+import { UI_Blog as Blog } from '@/types/blog';
 
 export function BlogCard({ blog }: { blog: Blog }) {
   return (

@@ -1,8 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '../ui/Button';
+import { MobileMenu } from './MobileMenu';
+import { getCachedSiteSettings } from '@/lib/api';
 
-export function Header() {
+export async function Header() {
+  const siteSettings = await getCachedSiteSettings();
+  const contactEmail = siteSettings.contactEmail || 'hello@writtenlyhub.com';
+
   return (
     <nav className="bg-writtenly-navy w-full top-0 sticky z-50 transition-all h-16 flex items-center">
       <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto">
@@ -29,11 +34,11 @@ export function Header() {
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
           <div className="hidden md:block">
-            <Button variant="primary" className="text-[12px] md:text-[14px] px-3 py-2 md:px-4 md:py-2 min-h-[40px] md:min-h-[44px]">Contact Us</Button>
+            <a href={`mailto:${contactEmail}`}>
+              <Button variant="primary" className="text-[12px] md:text-[14px] px-3 py-2 md:px-4 md:py-2 min-h-[40px] md:min-h-[44px]">Contact Us</Button>
+            </a>
           </div>
-          <button className="md:hidden text-white bg-white/10 p-2.5 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]">
-            <span className="material-symbols-outlined text-[20px]">menu</span>
-          </button>
+          <MobileMenu contactEmail={contactEmail} />
         </div>
       </div>
     </nav>

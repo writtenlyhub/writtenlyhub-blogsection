@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '../fields/slug'
 import { seoFields } from '../fields/seo'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -18,6 +19,18 @@ export const Categories: CollectionConfig = {
       return req.user ? true : isBootstrap
     },
     delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [
+      () => {
+        revalidateCollection(['categories', 'blogs'])
+      },
+    ],
+    afterDelete: [
+      () => {
+        revalidateCollection(['categories', 'blogs'])
+      },
+    ],
   },
   fields: [
     {

@@ -72,6 +72,7 @@ export interface Config {
     categories: Category;
     tags: Tag;
     blogs: Blog;
+    subscribers: Subscriber;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -95,9 +97,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
+    'homepage-settings': HomepageSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'homepage-settings': HomepageSettingsSelect<false> | HomepageSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -320,6 +324,21 @@ export interface Blog {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  email: string;
+  status: 'active' | 'unsubscribed';
+  /**
+   * Where this subscriber signed up from (e.g., homepage, footer)
+   */
+  source?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -361,6 +380,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blogs';
         value: number | Blog;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: number | Subscriber;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -558,6 +581,17 @@ export interface BlogsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  source?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -620,6 +654,19 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-settings".
+ */
+export interface HomepageSetting {
+  id: number;
+  /**
+   * Select up to 3 categories to display on the blog homepage.
+   */
+  curatedCategories: (number | Category)[];
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -636,6 +683,16 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-settings_select".
+ */
+export interface HomepageSettingsSelect<T extends boolean = true> {
+  curatedCategories?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
