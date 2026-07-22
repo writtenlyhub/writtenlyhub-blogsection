@@ -8,11 +8,9 @@ import { CategoryFilter } from '@/components/blog/CategoryFilter';
 import { Pagination } from '@/components/ui/Pagination';
 import { getCachedArchivePosts, getCachedCategories } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
+import { ArchiveJsonLd } from '@/components/seo/ArchiveJsonLd';
 
-export const metadata: Metadata = {
-  title: "Blog Archive | WrittenlyHub",
-  description: "Browse all articles, guides, and resources published on the WrittenlyHub blog.",
-};
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
 interface BlogArchivePageProps {
   searchParams: Promise<{
@@ -20,6 +18,48 @@ interface BlogArchivePageProps {
     category?: string;
     q?: string;
   }>;
+}
+
+export async function generateMetadata({ searchParams }: BlogArchivePageProps): Promise<Metadata> {
+  const { q } = await searchParams;
+  const archiveUrl = `${SITE_URL}/blog`;
+  const isSearchPage = Boolean(q);
+
+  return {
+    title: isSearchPage
+      ? `Search results for "${q}" | WrittenlyHub Blog`
+      : 'Blog Archive | WrittenlyHub',
+    description:
+      'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+    alternates: {
+      canonical: archiveUrl,
+    },
+    openGraph: {
+      title: 'Blog Archive | WrittenlyHub',
+      description:
+        'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+      url: archiveUrl,
+      siteName: 'WrittenlyHub',
+      type: 'website',
+      images: [
+        {
+          url: `${SITE_URL}/images/og/default-og.jpg`,
+          width: 1200,
+          height: 630,
+          alt: 'WrittenlyHub Blog Archive',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Blog Archive | WrittenlyHub',
+      description:
+        'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+      images: [`${SITE_URL}/images/og/default-og.jpg`],
+    },
+    // noindex search result pages — allow crawl so Google can read this directive
+    ...(isSearchPage ? { robots: { index: false, follow: true } } : {}),
+  };
 }
 
 export default async function BlogArchivePage({ searchParams }: BlogArchivePageProps) {
@@ -39,6 +79,7 @@ export default async function BlogArchivePage({ searchParams }: BlogArchivePageP
 
   return (
     <>
+      <ArchiveJsonLd />
       <div className="relative w-full overflow-hidden pb-8 md:pb-12 bg-surface-container-lowest">
         
         <section className="w-full px-gutter pt-12 md:pt-16 max-w-container-max mx-auto flex flex-col items-center text-center pb-4 md:pb-6 relative z-10">

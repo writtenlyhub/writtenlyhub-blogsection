@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { HeroCard } from '@/components/blog/HeroCard';
 import { BlogCard } from '@/components/blog/BlogCard';
@@ -7,6 +8,41 @@ import { CategoryFilter } from '@/components/blog/CategoryFilter';
 import { getCachedPosts, getCachedCategories, getCachedHomepageSettings } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 import Link from 'next/link';
+import { HomepageJsonLd } from '@/components/seo/HomepageJsonLd';
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
+
+export const metadata: Metadata = {
+  title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
+  description:
+    'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
+    description:
+      'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
+    url: SITE_URL,
+    siteName: 'WrittenlyHub',
+    type: 'website',
+    images: [
+      {
+        url: `${SITE_URL}/images/og/default-og.jpg`,
+        width: 1200,
+        height: 630,
+        alt: 'WrittenlyHub Blog',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
+    description:
+      'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
+    images: [`${SITE_URL}/images/og/default-og.jpg`],
+  },
+};
 
 export default async function BlogListingPage() {
   const [rawPosts, rawCategories, rawSettings] = await Promise.all([
@@ -28,6 +64,7 @@ export default async function BlogListingPage() {
 
   return (
     <>
+      <HomepageJsonLd />
       {/* Unified Hero Section with soft editorial background */}
       <div className="relative w-full overflow-hidden pb-8 md:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-surface-container-high/40 via-surface-container-low/20 to-transparent pointer-events-none -z-10" />
@@ -95,9 +132,9 @@ export default async function BlogListingPage() {
       {latestBlogs.length > 0 && (
         <section className="w-full px-gutter py-section-gap max-w-container-max mx-auto">
           <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-            <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
+            <h2 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
               Latest Articles
-            </h3>
+            </h2>
           </div>
           <FadeIn direction="up">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
@@ -128,9 +165,9 @@ export default async function BlogListingPage() {
         return (
           <section key={categorySlug} className={`w-full px-gutter py-section-gap max-w-container-max mx-auto ${useBackground ? 'bg-surface-container-low/30 rounded-[2rem] md:rounded-3xl mb-12' : 'mb-16'}`}>
             <div className="flex items-end justify-between mb-8 md:mb-10 border-b border-outline-variant/30 pb-4">
-              <h3 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
+              <h2 className="font-headline-lg text-headline-lg text-writtenly-navy font-bold tracking-tight">
                 {categoryTitle}
-              </h3>
+              </h2>
               <Link className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href={`/blog?category=${categorySlug}`}>
                 View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>

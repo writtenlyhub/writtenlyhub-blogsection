@@ -16,7 +16,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
 
   useEffect(() => {
     setUrl(propUrl || window.location.href);
-    if (navigator.share) {
+    if (typeof navigator.share === 'function') {
       setCanShare(true);
     }
   }, [propUrl]);
@@ -31,7 +31,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
 
   const handleNativeShare = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (navigator.share) {
+    if (typeof navigator.share === 'function') {
       try {
         await navigator.share({
           title,

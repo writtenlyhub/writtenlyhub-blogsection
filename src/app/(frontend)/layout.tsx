@@ -60,6 +60,10 @@ export default function RootLayout({
     >
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="alternate" type="application/rss+xml" title="WrittenlyHub Blog RSS Feed" href="/feed.xml" />
+        <meta name="theme-color" content="#fe6b00" />
+        <meta name="color-scheme" content="light" />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <SmoothScrollProvider>
