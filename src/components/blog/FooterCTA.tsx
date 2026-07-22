@@ -8,7 +8,7 @@ export function FooterCTA({ data }: { data: CTAData | null }) {
   const { title, description, buttonText, buttonLink } = data;
 
   return (
-    <div className="my-10 max-w-[72ch] w-full bg-writtenly-navy text-white rounded-2xl p-6 md:p-8 shadow-md border border-primary-container flex flex-col md:flex-row items-center gap-6">
+    <div className="my-10 max-w-[75ch] w-full bg-writtenly-navy text-white rounded-2xl p-6 md:p-8 shadow-md border border-primary-container flex flex-col md:flex-row items-center gap-6">
       <div className="flex-1">
         <h4 className="font-headline-md text-xl md:text-2xl mb-2">{title}</h4>
         <p className="text-sm opacity-90 leading-relaxed">{description}</p>

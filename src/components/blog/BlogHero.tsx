@@ -36,9 +36,9 @@ export function BlogHero(props: BlogHeroData) {
         </p>
       )}
       
-      <div className="flex flex-wrap items-center gap-8 text-sm text-on-surface-variant">
+      <div className="flex flex-wrap items-start sm:items-center gap-4 sm:gap-8 text-sm text-on-surface-variant">
         {author && (
-          <div className="flex items-center gap-3 pr-4 border-r border-outline-variant">
+          <div className="flex items-center gap-3 pr-4 sm:border-r border-outline-variant">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
               <ImageWithFallback 
                 alt={author.name} 
@@ -80,7 +80,7 @@ export function BlogHero(props: BlogHeroData) {
       </div>
       
       {imageUrl && (
-        <div className="mt-4 relative w-[90%] mx-auto aspect-video rounded-2xl overflow-hidden border border-outline-variant shadow-lg">
+        <div className="mt-4 relative w-full aspect-[4/3] sm:aspect-video rounded-2xl overflow-hidden border border-outline-variant shadow-lg">
           <ImageWithFallback 
             alt={imageAlt || title} 
             src={imageUrl} 

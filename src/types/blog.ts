@@ -1,7 +1,11 @@
 export interface MockContentNode {
-  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text';
+  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text' | 'ul' | 'ol' | 'li' | 'blockquote' | 'hr' | 'code-block' | 'upload';
   text?: string;
   url?: string;
+  language?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+  relationTo?: string;
   children?: MockContentNode[];
 }
 

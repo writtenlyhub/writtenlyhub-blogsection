@@ -7,7 +7,7 @@ export function KeyTakeaways({ data }: { data: KeyTakeawaysData | null }) {
   const { title = 'Key Takeaways', items } = data;
 
   return (
-    <div className="my-10 max-w-[72ch] px-6 pt-6 pb-5 md:px-8 md:pt-8 md:pb-6 bg-surface-container-low rounded-xl border border-outline-variant shadow-sm h-auto">
+    <div className="my-10 max-w-[75ch] mx-auto lg:mx-0 px-6 pt-6 pb-5 md:px-8 md:pt-8 md:pb-6 bg-surface-container-low rounded-xl border border-outline-variant shadow-sm h-auto">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 rounded-lg bg-white border border-outline-variant flex items-center justify-center shadow-sm">
           <span className="material-symbols-outlined text-writtenly-orange text-[20px]">star</span>

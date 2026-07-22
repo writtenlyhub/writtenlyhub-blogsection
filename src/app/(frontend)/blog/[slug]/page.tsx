@@ -90,31 +90,31 @@ export default async function BlogDetail({ params }: PageProps) {
       <ReadingProgress />
 
       <main className="mt-8 max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-        {/* Breadcrumb */}
-        <div className="max-w-4xl mx-auto py-4 flex items-center text-on-surface-variant gap-2 text-sm font-label-md mb-8">
-          <Link className="hover:text-secondary-container transition-colors" href="/">Home</Link>
-          <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-          <Link className="hover:text-secondary-container transition-colors" href="/blog">Library</Link>
-          <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-          <span className="text-secondary-container font-medium">{blogData.hero.title.substring(0, 36)}...</span>
-        </div>
+
 
         <BlogHero {...blogData.hero} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full overflow-hidden">
+          {/* Desktop Sticky TOC */}
           <div className="hidden lg:block lg:col-span-3">
             <div className="sticky top-[112px] pb-8">
-              <TableOfContents items={blogData.toc} />
+              <TableOfContents items={blogData.toc} isDesktop={true} />
             </div>
           </div>
           
-          <div className="lg:col-span-7 lg:col-start-5 w-full lg:pl-10">
+          {/* Main Article Content */}
+          <div className="lg:col-span-8 lg:col-start-5 w-full min-w-0">
+            {/* Mobile / Tablet TOC */}
+            <div className="lg:hidden mb-10 max-w-[75ch] mx-auto">
+              <TableOfContents items={blogData.toc} isMobile={true} />
+            </div>
+            
             <ArticleContent>
-            <div className="mb-10 max-w-[72ch] w-full">
+            <div className="mb-10 max-w-[75ch] mx-auto lg:mx-0 w-full">
               <div className="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm mb-8 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
                 <h3 className="text-2xl font-bold text-primary mt-0 mb-4 font-headline-md scroll-mt-header-height" id="heading-0">Overview</h3>
-                <p className="text-on-surface-variant m-0 text-lg leading-[1.8] max-w-[72ch]">
+                <p className="text-on-surface-variant m-0 text-lg leading-[1.8] max-w-[75ch]">
                   This article explores the practical, immediate applications of Artificial Intelligence in modern business operations. We detail ten specific ways companies are currently deploying AI tools to reduce manual workloads, optimize their sales funnels, and generate new revenue streams.
                 </p>
               </div>
@@ -148,10 +148,10 @@ export default async function BlogDetail({ params }: PageProps) {
 
             <Quote data={blogData.quote} />
 
-            <h2 id="section1" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[72ch] scroll-mt-header-height">1. Automating Customer Support Responses</h2>
+            <h2 id="section1" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">1. Automating Customer Support Responses</h2>
             <RichText content={blogData.contentBlocks.section1} />
 
-            <div className="w-full max-w-[72ch] my-10 p-6 bg-surface-container-low rounded-2xl shadow-sm flex gap-4 items-start">
+            <div className="w-full max-w-[75ch] mx-auto lg:mx-0 my-10 p-6 bg-surface-container-low rounded-2xl shadow-sm flex flex-col sm:flex-row gap-4 items-start">
               <span className="material-symbols-outlined text-secondary-container text-2xl shrink-0">lightbulb</span>
               <div>
                 <h4 className="text-primary font-bold mt-0 mb-2 font-headline-md text-[1.0625rem]">Pro Tip</h4>
@@ -159,10 +159,10 @@ export default async function BlogDetail({ params }: PageProps) {
               </div>
             </div>
 
-            <h2 id="section2" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[72ch] scroll-mt-header-height">2. Enhancing Sales Lead Qualification</h2>
+            <h2 id="section2" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">2. Enhancing Sales Lead Qualification</h2>
             <RichText content={blogData.contentBlocks.section2} />
 
-            <div className="my-10 relative max-w-[72ch] w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-outline-variant">
+            <div className="my-10 relative w-full aspect-[4/3] sm:aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-md border border-outline-variant">
                {/* eslint-disable-next-line @next/next/no-img-element */}
                <img alt="AI Strategy Session Illustration" className="w-full h-full object-cover" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgcng9IjgiIGZpbGw9IiNlOGVhZWQiLz48cGF0aCBkPSJNMTcwIDEzMCBsMzAgNDAgbDIwLTE1IGw0MCA1NSBIMTQweiIgZmlsbD0iI2JkYzFjNiIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEyMCIgcj0iMTgiIGZpbGw9IiNiZGMxYzYiLz48L3N2Zz4=" />
             </div>
@@ -173,7 +173,7 @@ export default async function BlogDetail({ params }: PageProps) {
               <InlineCTA data={blogData.inlineCTA} />
             </div>
 
-            <h2 id="section3" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[72ch] scroll-mt-header-height">3. Personalizing Marketing Campaigns</h2>
+            <h2 id="section3" className="text-3xl font-headline-lg font-bold text-primary mt-10 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">3. Personalizing Marketing Campaigns</h2>
             <RichText content={blogData.contentBlocks.section3} />
 
             <div id="heading-6" className="scroll-mt-header-height">

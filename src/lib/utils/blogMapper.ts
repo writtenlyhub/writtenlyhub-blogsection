@@ -58,6 +58,54 @@ function transformLexicalToMockNodes(lexicalNodes: any[]): MockContentNode[] {
       };
     }
 
+    // Handle Lists
+    if (node.type === 'list') {
+      return {
+        type: node.listType === 'number' ? 'ol' : 'ul',
+        children: transformLexicalToMockNodes(node.children),
+      };
+    }
+
+    if (node.type === 'listitem') {
+      return {
+        type: 'li',
+        children: transformLexicalToMockNodes(node.children),
+      };
+    }
+
+    // Handle Quotes
+    if (node.type === 'quote') {
+      return {
+        type: 'blockquote',
+        children: transformLexicalToMockNodes(node.children),
+      };
+    }
+
+    // Handle Horizontal Rule
+    if (node.type === 'horizontalrule') {
+      return {
+        type: 'hr',
+      };
+    }
+
+    // Handle Code Blocks
+    if (node.type === 'code') {
+      return {
+        type: 'code-block',
+        language: node.language || 'typescript',
+        children: transformLexicalToMockNodes(node.children),
+      };
+    }
+
+    // Handle Images / Uploads
+    if (node.type === 'upload') {
+      return {
+        type: 'upload',
+        value: node.value,
+        relationTo: node.relationTo,
+      };
+    }
+
     // Default to paragraph for unknown or standard text blocks
     return {
       type: 'paragraph',

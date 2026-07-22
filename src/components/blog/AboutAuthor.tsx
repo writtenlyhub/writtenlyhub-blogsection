@@ -8,7 +8,7 @@ export function AboutAuthor({ data }: { data: Author | null }) {
   const { name, role, bio, avatarUrl } = data;
 
   return (
-    <section className="my-10 max-w-[72ch] w-full bg-surface-container-low rounded-xl border border-outline-variant flex items-center gap-8 p-6 md:p-8">
+    <section className="my-10 max-w-[75ch] w-full bg-surface-container-low rounded-xl border border-outline-variant flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 p-6 md:p-8 text-center sm:text-left">
       <div className="w-16 h-16 relative rounded-full overflow-hidden border border-outline-variant shrink-0">
         <ImageWithFallback 
           alt={name} 

@@ -8,7 +8,7 @@ export function WatchLearn({ data }: { data: CTAData | null }) {
   const { title, description, buttonText, buttonLink } = data;
 
   return (
-    <section className="my-10 max-w-[72ch] w-full p-6 md:p-8 bg-surface-container-low rounded-2xl border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-6">
+    <section className="my-10 max-w-[75ch] mx-auto lg:mx-0 w-full p-6 md:p-8 bg-surface-container-low rounded-2xl border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-6">
       <div className="flex items-center gap-5">
         <div className="w-12 h-12 md:w-14 md:h-14 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0">
           <span className="material-symbols-outlined text-error text-3xl">smart_display</span>
