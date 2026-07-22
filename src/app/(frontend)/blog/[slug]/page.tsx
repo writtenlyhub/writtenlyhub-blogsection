@@ -100,10 +100,10 @@ export default async function BlogDetail({ params }: PageProps) {
 
         <BlogHero {...blogData.hero} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full">
           {/* Desktop Sticky TOC */}
-          <div className="hidden lg:block lg:col-span-3">
-            <div className="sticky top-[112px] pb-8">
+          <div className="hidden lg:block lg:col-span-3 h-full">
+            <div className="sticky top-[112px] pb-8 h-fit self-start">
               <TableOfContents items={blogData.toc} isDesktop={true} />
             </div>
           </div>
