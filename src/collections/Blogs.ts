@@ -46,7 +46,9 @@ export const Blogs: CollectionConfig = {
       // Hide the Preview button if the document has not yet been saved
       if (doc?.id && doc?.slug) {
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-        return `${siteUrl}/api/draft?secret=${process.env.PREVIEW_SECRET}&slug=${doc.slug}`;
+        // Use NEXT_PUBLIC_PREVIEW_SECRET so the client-side admin panel can access it
+        const secret = process.env.NEXT_PUBLIC_PREVIEW_SECRET || process.env.PREVIEW_SECRET;
+        return `${siteUrl}/api/draft?secret=${secret}&slug=${doc.slug}`;
       }
       return null;
     },
