@@ -127,6 +127,28 @@ export async function seedPosts(
       categorySlug: 'copywriting',
       tagSlugs: ['freelancing', 'productivity'],
     },
+    {
+      title: 'Content Personalization at Scale Using AI',
+      slug: 'content-personalization-at-scale-ai',
+      excerpt: 'How to leverage machine learning algorithms to deliver hyper-personalized content experiences without expanding your team.',
+      featuredHero: false,
+      featuredArticle: true,
+      sticky: false,
+      authorEmail: 'mark.seo@writtenlyhub.com',
+      categorySlug: 'ai-writing',
+      tagSlugs: ['ai', 'content-strategy', 'marketing'],
+    },
+    {
+      title: 'The ROI of Video Marketing in B2B',
+      slug: 'roi-video-marketing-b2b',
+      excerpt: 'Why B2B companies are shifting their budgets to video content, and how you can measure the true return on investment.',
+      featuredHero: false,
+      featuredArticle: false,
+      sticky: false,
+      authorEmail: 'admin@writtenlyhub.com',
+      categorySlug: 'digital-marketing',
+      tagSlugs: ['video', 'marketing', 'b2b'],
+    },
   ];
 
   const results: Record<string, number> = {};
