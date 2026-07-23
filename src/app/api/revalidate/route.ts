@@ -9,10 +9,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing or invalid tags array' }, { status: 400 });
     }
     
+    console.log(`[API Revalidation] Received POST request with tags:`, tags);
+    
     for (const tag of tags) {
       // @ts-expect-error Next.js 15 RC types require a second argument but it's optional at runtime
       revalidateTag(tag);
-      console.log(`[API Revalidation] Revalidated tag: ${tag}`);
+      console.log(`[API Revalidation] Executed revalidateTag('${tag}')`);
     }
 
     return NextResponse.json({ revalidated: true, now: Date.now(), tags });

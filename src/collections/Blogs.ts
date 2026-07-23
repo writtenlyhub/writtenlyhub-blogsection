@@ -92,9 +92,12 @@ export const Blogs: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, req, previousDoc }) => {
+      async ({ doc, req, previousDoc, operation }) => {
+        console.log(`[Blogs Hook] afterChange triggered. Operation: ${operation}, Current Status: ${doc._status}, Previous Status: ${previousDoc?._status}`);
+        
         // Ensure only one Featured Hero
         if (doc.featuredHero === true && previousDoc?.featuredHero !== true) {
+          console.log(`[Blogs Hook] Enforcing single featuredHero`);
           const { payload } = req
           const otherHeroes = await payload.find({
             collection: 'blogs',
@@ -115,17 +118,20 @@ export const Blogs: CollectionConfig = {
             })
           }
         }
-        
         // Revalidate cache on publish or update
         if (doc._status === 'published' || previousDoc?._status === 'published') {
-          revalidateCollection(['blogs', `blog-${doc.slug}`])
+          console.log(`[Blogs Hook] Conditions met for revalidation. Slug: ${doc.slug}`);
+          await revalidateCollection(['blogs', `blog-${doc.slug}`]);
+        } else {
+          console.log(`[Blogs Hook] Conditions NOT met for revalidation. Skip.`);
         }
       },
     ],
     afterDelete: [
-      ({ doc }) => {
+      async ({ doc }) => {
+        console.log(`[Blogs Hook] afterDelete triggered. Status: ${doc._status}, Slug: ${doc.slug}`);
         if (doc._status === 'published') {
-          revalidateCollection(['blogs', `blog-${doc.slug}`])
+          await revalidateCollection(['blogs', `blog-${doc.slug}`]);
         }
       }
     ],
