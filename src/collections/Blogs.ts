@@ -42,6 +42,7 @@ export const Blogs: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'category', 'author', '_status'],
     preview: (doc) => {
       // Hide the Preview button if the document has not yet been saved
       if (doc?.id && doc?.slug) {
