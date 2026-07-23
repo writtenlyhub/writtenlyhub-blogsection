@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
   const slug = searchParams.get('slug');
 
   // ── 1. Validate the preview secret ────────────────────────────────────────
-  const previewSecret = process.env.NEXT_PUBLIC_PREVIEW_SECRET || process.env.PREVIEW_SECRET;
+  const previewSecret = process.env.PREVIEW_SECRET;
   if (!previewSecret) {
     return NextResponse.json(
       { message: 'Preview secret is not configured on this server.' },
