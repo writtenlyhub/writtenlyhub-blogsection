@@ -12,6 +12,7 @@ export const getCachedPosts = async (limit?: number, page?: number) => {
 };
 
 export const getCachedArchivePosts = async (limit?: number, page?: number, categorySlug?: string, searchQuery?: string) => {
+  if (process.env.NODE_ENV !== 'production') return getArchivePosts(limit, page, categorySlug, searchQuery);
   const cached = unstable_cache(
     async () => getArchivePosts(limit, page, categorySlug, searchQuery),
     ['archive-posts', String(limit), String(page), String(categorySlug), String(searchQuery)],
@@ -21,6 +22,7 @@ export const getCachedArchivePosts = async (limit?: number, page?: number, categ
 }
 
 export const getCachedPostBySlug = async (slug: string) => {
+  if (process.env.NODE_ENV !== 'production') return getPostBySlug(slug);
   const cached = unstable_cache(
     async () => getPostBySlug(slug),
     ['post-by-slug', slug],
@@ -31,6 +33,7 @@ export const getCachedPostBySlug = async (slug: string) => {
 
 export const getCachedAdjacentPosts = async (publishedAt: string) => {
   const { getAdjacentPosts } = await import('./queries')
+  if (process.env.NODE_ENV !== 'production') return getAdjacentPosts(publishedAt);
   const cached = unstable_cache(
     async () => getAdjacentPosts(publishedAt),
     ['adjacent-posts', publishedAt],
@@ -39,17 +42,25 @@ export const getCachedAdjacentPosts = async (publishedAt: string) => {
   return cached()
 }
 
-export const getCachedCategories = unstable_cache(
-  async () => getCategories(),
-  ['categories-list'],
-  { revalidate: 86400, tags: ['categories'] }
-)
+export const getCachedCategories = async () => {
+  if (process.env.NODE_ENV !== 'production') return getCategories();
+  const cached = unstable_cache(
+    async () => getCategories(),
+    ['categories-list'],
+    { revalidate: 86400, tags: ['categories'] }
+  )
+  return cached()
+}
 
-export const getCachedSiteSettings = unstable_cache(
-  async () => getSiteSettings(),
-  ['site-settings'],
-  { revalidate: 86400, tags: ['site-settings'] }
-)
+export const getCachedSiteSettings = async () => {
+  if (process.env.NODE_ENV !== 'production') return getSiteSettings();
+  const cached = unstable_cache(
+    async () => getSiteSettings(),
+    ['site-settings'],
+    { revalidate: 86400, tags: ['site-settings'] }
+  )
+  return cached()
+}
 
 export const getCachedHomepageSettings = async () => {
   if (process.env.NODE_ENV !== 'production') return getHomepageSettings();
