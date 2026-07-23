@@ -4,7 +4,8 @@ import { revalidateCollection } from '../lib/utils/revalidate'
 export const Media: CollectionConfig = {
   slug: 'media',
   upload: {
-    staticDir: 'media',
+    staticDir: 'public/media',
+    staticURL: '/media',
     imageSizes: [
       {
         name: 'thumbnail',
