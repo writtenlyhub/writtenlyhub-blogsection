@@ -1,8 +1,10 @@
 import { unstable_cache } from 'next/cache'
 import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings } from './queries'
+import { draftMode } from 'next/headers'
 
 export const getCachedPosts = async (limit?: number, page?: number) => {
-  if (process.env.NODE_ENV !== 'production') return getPosts(limit, page);
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getPosts(limit, page);
   const cached = unstable_cache(
     async () => getPosts(limit, page),
     ['posts-list', String(limit), String(page)],
@@ -12,7 +14,8 @@ export const getCachedPosts = async (limit?: number, page?: number) => {
 };
 
 export const getCachedArchivePosts = async (limit?: number, page?: number, categorySlug?: string, searchQuery?: string) => {
-  if (process.env.NODE_ENV !== 'production') return getArchivePosts(limit, page, categorySlug, searchQuery);
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getArchivePosts(limit, page, categorySlug, searchQuery);
   const cached = unstable_cache(
     async () => getArchivePosts(limit, page, categorySlug, searchQuery),
     ['archive-posts', String(limit), String(page), String(categorySlug), String(searchQuery)],
@@ -22,7 +25,8 @@ export const getCachedArchivePosts = async (limit?: number, page?: number, categ
 }
 
 export const getCachedPostBySlug = async (slug: string) => {
-  if (process.env.NODE_ENV !== 'production') return getPostBySlug(slug);
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getPostBySlug(slug);
   const cached = unstable_cache(
     async () => getPostBySlug(slug),
     ['post-by-slug', slug],
@@ -33,7 +37,8 @@ export const getCachedPostBySlug = async (slug: string) => {
 
 export const getCachedAdjacentPosts = async (publishedAt: string) => {
   const { getAdjacentPosts } = await import('./queries')
-  if (process.env.NODE_ENV !== 'production') return getAdjacentPosts(publishedAt);
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getAdjacentPosts(publishedAt);
   const cached = unstable_cache(
     async () => getAdjacentPosts(publishedAt),
     ['adjacent-posts', publishedAt],
@@ -43,7 +48,8 @@ export const getCachedAdjacentPosts = async (publishedAt: string) => {
 }
 
 export const getCachedCategories = async () => {
-  if (process.env.NODE_ENV !== 'production') return getCategories();
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getCategories();
   const cached = unstable_cache(
     async () => getCategories(),
     ['categories-list'],
@@ -53,7 +59,8 @@ export const getCachedCategories = async () => {
 }
 
 export const getCachedSiteSettings = async () => {
-  if (process.env.NODE_ENV !== 'production') return getSiteSettings();
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getSiteSettings();
   const cached = unstable_cache(
     async () => getSiteSettings(),
     ['site-settings'],
@@ -63,7 +70,8 @@ export const getCachedSiteSettings = async () => {
 }
 
 export const getCachedHomepageSettings = async () => {
-  if (process.env.NODE_ENV !== 'production') return getHomepageSettings();
+  const { isEnabled: draft } = await draftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getHomepageSettings();
   const cached = unstable_cache(
     async () => getHomepageSettings(),
     ['homepage-settings'],

@@ -25,18 +25,31 @@ export async function GET(request: NextRequest) {
   const secret = searchParams.get('secret');
   const slug = searchParams.get('slug');
 
-  // ── 1. Validate the preview secret ────────────────────────────────────────
-  const previewSecret = process.env.PREVIEW_SECRET;
-  if (!previewSecret) {
-    return NextResponse.json(
-      { message: 'Preview secret is not configured on this server.' },
-      { status: 500 },
-    );
+  // ── 1. Validate the user session or preview secret ────────────────────────
+  let isAuthorized = false;
+
+  // Mode A: Payload session authentication
+  try {
+    const payload = await getPayloadClient();
+    const { user } = await payload.auth({ headers: request.headers });
+    if (user) {
+      isAuthorized = true;
+    }
+  } catch (err) {
+    console.error('[Draft Mode] Payload auth check failed:', err);
   }
 
-  if (!secret || secret !== previewSecret) {
+  // Mode B: Secret query parameter
+  if (!isAuthorized && secret) {
+    const previewSecret = process.env.PREVIEW_SECRET;
+    if (previewSecret && secret === previewSecret) {
+      isAuthorized = true;
+    }
+  }
+
+  if (!isAuthorized) {
     return NextResponse.json(
-      { message: 'Invalid or missing preview secret.' },
+      { message: 'You are not authorized to preview drafts.' },
       { status: 401 },
     );
   }
