@@ -33,16 +33,21 @@ function isMedia(media: number | Media | undefined | null): media is Media {
  */
 function getMediaUrl(url: string | undefined | null): string {
   if (!url) return '';
+  
+  // Force Vercel to serve images natively from the public/media directory
+  // instead of routing through Payload's serverless API which lacks filesystem access.
+  let finalUrl = url.replace('/api/media/file/', '/media/');
+  
   if (process.env.NODE_ENV === 'development') {
     try {
-      if (url.startsWith('http')) {
-        return new URL(url).pathname;
+      if (finalUrl.startsWith('http')) {
+        return new URL(finalUrl).pathname;
       }
     } catch {
       // ignore
     }
   }
-  return url;
+  return finalUrl;
 }
 
 /**
