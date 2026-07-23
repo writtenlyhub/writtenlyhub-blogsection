@@ -43,24 +43,17 @@ export const Blogs: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'author', '_status'],
-    preview: (doc) => {
-      // Hide the Preview button if the document has not yet been saved
-      if (doc?.id && doc?.slug) {
-        // Automatically detect Vercel deployment URLs to avoid localhost fallback in production
-        const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL 
-          ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
-          : process.env.VERCEL_URL 
-            ? `https://${process.env.VERCEL_URL}` 
-            : null;
-            
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || vercelUrl || 'http://localhost:3000';
-        
-        // Payload 3.x Admin UI is rendered as Server Components, so we can securely access Node.js env vars.
-        // We use PREVIEW_SECRET directly and remove NEXT_PUBLIC_ dependency.
-        const secret = process.env.PREVIEW_SECRET || '';
-        return `${siteUrl}/api/draft?secret=${secret}&slug=${doc.slug}`;
-      }
-      return null;
+    preview: (doc, { req }) => {
+      // DEBUG LOGS
+      console.log("=== PAYLOAD PREVIEW DEBUG ===");
+      console.log("NEXT_PUBLIC_SITE_URL:", process.env.NEXT_PUBLIC_SITE_URL);
+      console.log("VERCEL_URL:", process.env.VERCEL_URL);
+      console.log("VERCEL_PROJECT_PRODUCTION_URL:", process.env.VERCEL_PROJECT_PRODUCTION_URL);
+      console.log("PREVIEW_SECRET:", process.env.PREVIEW_SECRET);
+      console.log("NEXT_PUBLIC_PREVIEW_SECRET:", process.env.NEXT_PUBLIC_PREVIEW_SECRET);
+      console.log("req available?:", !!req);
+      
+      return "https://example.com";
     },
   },
   access: {
