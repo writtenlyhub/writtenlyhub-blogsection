@@ -45,7 +45,7 @@ Thumbs.db
 .vscode/
 
 # Media Uploads
-/public/media
+# /public/media
 /uploads
 
 # Docker Volumes
