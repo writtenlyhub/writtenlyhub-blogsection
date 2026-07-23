@@ -5,6 +5,7 @@ export async function revalidateCollection(tags: string[]) {
   
   try {
     for (const tag of tags) {
+      // @ts-expect-error Next.js 15+ types require a second argument but it's optional at runtime
       revalidateTag(tag);
       console.log(`[Cache Revalidation] Successfully executed revalidateTag('${tag}')`);
     }
