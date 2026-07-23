@@ -44,8 +44,10 @@ export const Blogs: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'author', '_status'],
     preview: (doc) => {
-      console.log("Preview callback executed");
-      return "https://example.com";
+      if (doc?.slug) {
+        return `/api/draft?slug=${doc.slug}`;
+      }
+      return null;
     },
   },
   access: {
