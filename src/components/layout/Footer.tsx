@@ -9,11 +9,10 @@ export function Footer() {
           <div className="flex flex-col gap-6 lg:col-span-1">
             <Image
                 alt="WrittenlyHub"
-                className="object-contain"
+                className="h-10 w-auto object-contain"
                 src="/images/logos/logo.svg"
-                width={210}
-                height={50}
-                style={{ width: "210px", height: "auto" }}
+                width={180}
+                height={60}
               />
             <p className="font-body-md text-body-md text-white/70 leading-relaxed max-w-xs">
               We are a boutique content marketing agency to help you add a premium touch to your brand through our expertise and creativity.

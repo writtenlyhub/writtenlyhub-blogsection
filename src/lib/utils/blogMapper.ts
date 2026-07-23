@@ -29,6 +29,23 @@ function isMedia(media: number | Media | undefined | null): media is Media {
 }
 
 /**
+ * Safely extracts a relative URL for media to avoid depending on temporary hostnames in development.
+ */
+function getMediaUrl(url: string | undefined | null): string {
+  if (!url) return '';
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      if (url.startsWith('http')) {
+        return new URL(url).pathname;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  return url;
+}
+
+/**
  * Type guard for User
  */
 function isUser(user: number | User | undefined | null): user is User {
@@ -130,7 +147,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
         name: post.author.name,
         role: post.author.designation || post.author.role || 'Author',
         bio: post.author.bio || '',
-        avatarUrl: isMedia(post.author.avatar) ? post.author.avatar.url || '' : '',
+        avatarUrl: isMedia(post.author.avatar) ? getMediaUrl(post.author.avatar.url) : '',
       }
     : {
         name: 'Anonymous',
@@ -140,7 +157,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
       };
 
   const categoryName = isCategory(post.category) ? post.category.name : 'Uncategorized';
-  const imageUrl = isMedia(post.featuredImage) ? post.featuredImage.url || '' : '';
+  const imageUrl = isMedia(post.featuredImage) ? getMediaUrl(post.featuredImage.url) : '';
   const imageAlt = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
 
   const rootChildren = post.content?.root?.children || [];
@@ -174,7 +191,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
   const relatedArticles = (post.relatedArticles || []).flatMap((rel) => {
     if (typeof rel === 'object' && rel !== null && 'title' in rel) {
       const relCat = isCategory(rel.category) ? rel.category.name : 'Uncategorized';
-      const relImg = isMedia(rel.featuredImage) ? rel.featuredImage.url || '' : '';
+      const relImg = isMedia(rel.featuredImage) ? getMediaUrl(rel.featuredImage.url) : '';
       return [{
         title: rel.title,
         summary: rel.excerpt || '',
@@ -227,7 +244,7 @@ export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
           name: post.author.name,
           role: post.author.designation || post.author.role || 'Author',
           bio: post.author.bio || '',
-          avatarUrl: isMedia(post.author.avatar) ? post.author.avatar.url || '' : '',
+          avatarUrl: isMedia(post.author.avatar) ? getMediaUrl(post.author.avatar.url) : '',
         }
       : {
           id: 'anon',
@@ -245,7 +262,7 @@ export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
         }
       : { id: 'uncategorized', title: 'Uncategorized', slug: 'uncategorized' };
 
-    const featuredImage = isMedia(post.featuredImage) ? post.featuredImage.url || '' : '';
+    const featuredImage = isMedia(post.featuredImage) ? getMediaUrl(post.featuredImage.url) : '';
     const altText = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
 
     return {

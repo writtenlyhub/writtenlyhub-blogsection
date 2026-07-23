@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { notFound } from 'next/navigation';
+import { draftMode } from 'next/headers';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { ReadingProgress } from '@/components/blog/ReadingProgress';
 import { TableOfContents } from '@/components/blog/TableOfContents';
@@ -11,9 +12,10 @@ import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
 import { mapBlogData, mapBlogList } from '@/lib/utils/blogMapper';
 import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts } from '@/lib/api';
+import { getPayloadClient } from '@/lib/api/payload';
 import { SocialShare } from '@/components/blog/SocialShare';
 import { BlogPostingJsonLd } from '@/components/seo/BlogPostingJsonLd';
-import type { Media, User } from '@/payload-types';
+import type { Media, User, Blog } from '@/payload-types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
@@ -102,13 +104,41 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
 
 export default async function BlogDetail({ params }: PageProps) {
   const { slug } = await params;
-  console.log(`[BlogDetail] Resolving slug:`, slug);
-  const rawPayloadPost = await getCachedPostBySlug(slug); 
-  console.log(`[BlogDetail] getCachedPostBySlug result:`, rawPayloadPost ? 'Found' : 'Null');
-  
+  const { isEnabled: isDraftMode } = await draftMode();
+
+  console.log(`[BlogDetail] Resolving slug: ${slug} | draftMode: ${isDraftMode}`);
+
+  // When Draft Mode is active, bypass the published-only cache and fetch
+  // directly from Payload with overrideAccess so editors can see unpublished posts.
+  let rawPayloadPost: Blog | null = null;
+  if (isDraftMode) {
+    try {
+      const payload = await getPayloadClient();
+      const result = await payload.find({
+        collection: 'blogs',
+        where: { slug: { equals: slug } },
+        overrideAccess: true,
+        draft: true, // Crucial for querying drafts
+        depth: 2,
+        limit: 1,
+      });
+      rawPayloadPost = (result.docs[0] as Blog) || null;
+      console.log(`[BlogDetail] Payload returned ${result.docs.length} docs. Document _status: ${rawPayloadPost?._status}`);
+    } catch (err) {
+      console.error('[BlogDetail] Draft Mode Payload fetch failed:', err);
+    }
+  } else {
+    rawPayloadPost = await getCachedPostBySlug(slug);
+  }
+
+  console.log(`[BlogDetail] Post fetch result:`, rawPayloadPost ? 'Found' : 'Null');
+
   let blogData = null;
   try {
     blogData = mapBlogData(rawPayloadPost);
+    if (blogData) {
+      blogData.hero.isDraft = isDraftMode && rawPayloadPost?._status === 'draft';
+    }
     console.log(`[BlogDetail] mapBlogData result:`, blogData ? 'Success' : 'Null');
   } catch (error) {
     console.error(`[BlogDetail] mapBlogData crashed:`, error);

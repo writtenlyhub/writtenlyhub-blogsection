@@ -20,10 +20,15 @@ export function BlogHero(props: BlogHeroData) {
 
   return (
     <section className="flex flex-col gap-8 mb-12 w-full max-w-4xl mx-auto">
-      <div className="flex justify-start">
+      <div className="flex justify-start items-center gap-3">
         <span className="inline-block px-3 py-1 bg-surface-container-high text-primary text-xs font-bold uppercase tracking-wider rounded-md w-max border border-outline-variant">
           {category || 'Uncategorized'}
         </span>
+        {props.isDraft && (
+          <span className="inline-block px-3 py-1 bg-writtenly-orange/10 text-writtenly-orange text-xs font-bold uppercase tracking-wider rounded-md w-max border border-writtenly-orange/20">
+            Draft
+          </span>
+        )}
       </div>
       
       <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary leading-tight tracking-tight mt-2">

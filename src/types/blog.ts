@@ -59,6 +59,7 @@ export interface BlogHeroData {
   readTime: string;
   imageUrl: string;
   imageAlt: string;
+  isDraft?: boolean;
 }
 
 export interface TocItem {

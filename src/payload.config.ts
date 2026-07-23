@@ -24,6 +24,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  serverURL: process.env.NEXT_PUBLIC_SITE_URL || '',
+  cors: [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean) as string[],
+  csrf: [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean) as string[],
   collections: [
     Users,
     Media,

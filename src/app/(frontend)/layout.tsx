@@ -47,11 +47,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { draftMode } from 'next/headers';
+import { PreviewBanner } from '@/components/ui/PreviewBanner';
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled: isDraftMode } = await draftMode();
   return (
     <html
       lang="en"
@@ -66,6 +70,7 @@ export default function RootLayout({
         <meta name="color-scheme" content="light" />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        {isDraftMode && <PreviewBanner />}
         <SmoothScrollProvider>
           <Header />
           <main className="flex-grow">

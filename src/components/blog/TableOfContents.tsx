@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TocItem } from '@/types/blog';
 import { SocialShare } from '@/components/blog/SocialShare';
+import { PlayArticleButton } from '@/components/blog/PlayArticleButton';
 
 export interface TableOfContentsProps {
   items: TocItem[];
@@ -146,6 +147,10 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
           <div className={`${showToc ? 'pt-6 border-t border-outline-variant' : ''} shrink-0`}>
             <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share</span>
             <SocialShare title="Check out this article" layout="horizontal" />
+          </div>
+
+          <div className="pt-6 border-t border-outline-variant shrink-0">
+            <PlayArticleButton />
           </div>
         </div>
       </aside>

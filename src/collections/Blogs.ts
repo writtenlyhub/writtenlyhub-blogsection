@@ -42,6 +42,14 @@ export const Blogs: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    preview: (doc) => {
+      // Hide the Preview button if the document has not yet been saved
+      if (doc?.id && doc?.slug) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+        return `${siteUrl}/api/draft?secret=${process.env.PREVIEW_SECRET}&slug=${doc.slug}`;
+      }
+      return null;
+    },
   },
   access: {
     read: () => true,
@@ -186,6 +194,16 @@ export const Blogs: CollectionConfig = {
       ],
     },
     // Sidebar fields (Editorial & Homepage Flags)
+    {
+      name: 'unsavedPreviewMessage',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/payload/UnsavedDraftMessage#UnsavedDraftMessage',
+        },
+      },
+    },
     slugField('title'),
     {
       name: 'author',

@@ -16,10 +16,9 @@ export async function Header() {
               <Image
                 alt="WrittenlyHub Logo"
                 src="/images/logos/logo.svg"
-                width={200}
-                height={34}
-                style={{ width: "200px", height: "auto" }}
-                className="object-contain"
+                width={180}
+                height={60}
+                className="h-8 w-auto object-contain"
                 priority
               />
             </Link>
