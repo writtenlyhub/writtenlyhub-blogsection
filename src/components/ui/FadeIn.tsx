@@ -1,6 +1,6 @@
 'use client';
-import { motion, useReducedMotion, useInView } from 'framer-motion';
-import { ReactNode, useState, useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ReactNode, useState, useEffect } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -24,8 +24,6 @@ export function FadeIn({
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.25 });
 
   // Ensure we only mount the animation logic on the client.
   // If JS fails, hydration fails, or we are on the server, the content remains fully visible.
@@ -59,10 +57,10 @@ export function FadeIn({
 
   return (
     <motion.div
-      ref={ref}
       className={className}
       initial={hiddenState}
-      animate={isInView ? visibleState : hiddenState}
+      whileInView={visibleState}
+      viewport={{ once: true, amount: 0.1, margin: "100px" }}
       transition={{ 
         duration, 
         delay, 
