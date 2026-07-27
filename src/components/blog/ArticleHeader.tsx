@@ -15,7 +15,7 @@ export function ArticleHeader({ blog }: { blog: Blog }) {
 
       <div className="flex flex-wrap items-center gap-4 mb-6">
         <Badge variant="solid">{blog.category.title}</Badge>
-        <div className="flex items-center gap-2 text-[13px] font-bold text-on-surface-variant/80 uppercase tracking-wide">
+        <div className="flex items-center gap-2 font-label-md text-label-md font-bold text-on-surface-variant/80 uppercase">
           <span>{blog.publishedDate}</span>
           <span className="text-outline/40">•</span>
           <span className="flex items-center gap-1">
@@ -25,7 +25,7 @@ export function ArticleHeader({ blog }: { blog: Blog }) {
         </div>
       </div>
 
-      <h1 className="font-display-lg text-display-lg text-writtenly-navy font-bold leading-[1.1] tracking-tight mb-8 max-w-4xl">
+      <h1 className="font-display-lg text-display-lg text-writtenly-navy font-bold mb-8 max-w-4xl">
         {blog.title}
       </h1>
 
@@ -37,7 +37,7 @@ export function ArticleHeader({ blog }: { blog: Blog }) {
         />
         <div className="flex flex-col">
           <span className="font-label-md text-label-md font-bold text-writtenly-navy">{blog.author.name}</span>
-          <span className="text-[13px] text-on-surface-variant">{blog.author.role}</span>
+          <span className="font-body-md text-body-md text-on-surface-variant">{blog.author.role}</span>
         </div>
       </div>
 

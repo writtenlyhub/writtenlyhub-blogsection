@@ -6,6 +6,7 @@ import {
   createBlock,
   generateRichText,
 } from './lexical';
+import { realisticLongFormContent } from './mockContent';
 
 export async function seedPosts(
   payload: Payload,
@@ -183,64 +184,7 @@ export async function seedPosts(
           sticky: post.sticky,
           _status: 'published',
           publishedAt: new Date().toISOString(),
-          content: generateRichText([
-            createParagraph('This is the introductory paragraph to the article. It hooks the reader and explains what they will learn.'),
-            createHeading('Why This Matters Today', 'h2'),
-            createParagraph('In a rapidly evolving digital ecosystem, staying ahead of the curve is no longer optional—it is a necessity for survival.'),
-            createBlock('keyTakeaways', {
-              title: 'Key Takeaways',
-              items: [
-                { item: 'First important point to remember.' },
-                { item: 'Second crucial concept.' },
-                { item: 'Third actionable takeaway.' },
-              ],
-            }),
-            createHeading('Deep Dive into the Details', 'h2'),
-            createParagraph('Here are some statistics and insights to consider when planning your strategy.'),
-            createBlock('quickFacts', {
-              title: 'Quick Facts',
-              facts: [
-                { fact: '75% of users never scroll past the first page.' },
-                { fact: 'Content marketing costs 62% less than traditional marketing.' },
-              ],
-            }),
-            createBlock('quote', {
-              quote: 'Content is king, but engagement is queen, and the lady rules the house.',
-              label: 'Mari Smith',
-            }),
-            createBlock('expertInsight', {
-              quote: 'To succeed in modern SEO, you must focus on user intent above all else.',
-              label: 'Expert SEO Analysis',
-            }),
-            createHeading('Common Pitfalls', 'h3'),
-            createParagraph('Many businesses make the mistake of focusing entirely on volume rather than quality.'),
-            createList(['Ignoring search intent', 'Poor mobile optimization', 'Slow page speed']),
-            createBlock('callout', {
-              title: 'Pro Tip',
-              content: 'Always optimize your images and minify your CSS/JS before pushing to production.',
-              type: 'pro-tip',
-            }),
-            createBlock('watchLearn', {
-              title: 'Watch & Learn',
-              description: 'Watch our comprehensive video tutorial to see these strategies in action.',
-              buttonText: 'Watch Video',
-              buttonLink: 'https://youtube.com',
-            }),
-            createHeading('Frequently Asked Questions', 'h2'),
-            createBlock('faq', {
-              title: 'Common Questions',
-              items: [
-                { question: 'How long does SEO take?', answer: 'Typically 3-6 months to see significant results.' },
-                { question: 'Is AI writing safe for SEO?', answer: 'Yes, as long as it is edited for accuracy and provides real value.' },
-              ],
-            }),
-            createBlock('cta', {
-              title: 'Ready to elevate your strategy?',
-              description: 'Contact our team of experts today.',
-              buttonText: 'Get Started',
-              buttonLink: '/contact',
-            }),
-          ]),
+          content: generateRichText(realisticLongFormContent),
         },
       });
       results[post.slug] = created.id;

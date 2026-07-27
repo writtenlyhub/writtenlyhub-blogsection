@@ -22,7 +22,7 @@ export function AuthorProfile({ author }: { author: Author }) {
         <p className="font-body-md text-body-md text-on-surface-variant/80 mb-4 font-bold">
           {author.role}
         </p>
-        <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6 max-w-2xl">
+        <p className="font-body-md text-body-md text-on-surface-variant mb-6 max-w-2xl">
           {author.name} brings years of expertise in digital strategy, consistently helping brands find their unique voice and scale their organic presence. They are passionate about the intersection of human creativity and technological innovation.
         </p>
         <Link 

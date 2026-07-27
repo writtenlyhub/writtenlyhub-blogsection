@@ -23,16 +23,16 @@ export function RelatedArticles({ data }: { data: RelatedArticlesProps | null })
   } = data;
 
   return (
-    <section className="bg-surface-container-lowest py-20 border-t border-outline-variant">
+    <section className="bg-surface-container-lowest py-12 md:py-16 border-t border-outline-variant">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-        <h2 className="text-4xl font-headline-lg font-bold text-primary mb-12 text-center">{title}</h2>
+        <h2 className="font-headline-lg text-headline-lg font-bold text-primary mb-12 text-center">{title}</h2>
         
-        <div className="mb-16">
+        <div className="w-full">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-2xl font-headline-md text-primary border-l-4 border-secondary-container pl-4">
+            <h3 className="font-headline-md text-headline-md font-bold text-primary border-l-4 border-secondary-container pl-4">
               {moreText}
             </h3>
-            <a className="text-secondary-container font-bold hover:underline underline-offset-4 flex items-center gap-1" href={moreLink}>
+            <a className="font-label-md text-label-md text-secondary-container font-bold hover:underline underline-offset-4 flex items-center gap-1" href={moreLink}>
               View All <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </a>
           </div>
@@ -51,13 +51,13 @@ export function RelatedArticles({ data }: { data: RelatedArticlesProps | null })
                     fill 
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-4 left-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full z-10">
+                  <div className="absolute top-4 left-4 bg-primary text-on-primary font-label-md text-label-md font-bold px-3 py-1 rounded-full z-10">
                     {article.category}
                   </div>
                 </div>
                 
                 <div className="p-4 flex flex-col flex-1">
-                  <div className="flex items-center gap-4 text-xs text-on-surface-variant font-medium mb-3">
+                  <div className="flex items-center gap-4 font-label-md text-label-md text-on-surface-variant font-medium mb-3">
                     <span className="flex items-center gap-1">
                       <span className="material-symbols-outlined text-[14px]">calendar_today</span> 
                       {article.date}
@@ -67,10 +67,10 @@ export function RelatedArticles({ data }: { data: RelatedArticlesProps | null })
                       {article.readTime}
                     </span>
                   </div>
-                  <h4 className="text-xl font-headline-md text-primary group-hover:text-secondary-container transition-colors mb-3 line-clamp-2">
+                  <h4 className="font-headline-md text-headline-md font-bold text-primary group-hover:text-secondary-container transition-colors mb-3 line-clamp-2">
                     {article.title}
                   </h4>
-                  <p className="text-on-surface-variant text-sm line-clamp-2 mt-auto">
+                  <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mt-auto">
                     {article.summary}
                   </p>
                 </div>

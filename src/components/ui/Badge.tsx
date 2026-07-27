@@ -7,7 +7,7 @@ interface BadgeProps {
 }
 
 export function Badge({ children, variant = 'text', className = '' }: BadgeProps) {
-  const baseStyles = "font-label-md text-label-md text-[10px] uppercase tracking-wider font-bold text-secondary-container";
+  const baseStyles = "font-label-sm text-label-sm uppercase font-bold text-secondary-container";
   const variants = {
     solid: "px-2.5 py-0.5 bg-surface-container-low rounded",
     text: "",

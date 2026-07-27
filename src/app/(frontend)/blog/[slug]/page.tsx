@@ -238,15 +238,23 @@ export default async function BlogDetail({ params }: PageProps) {
         <BlogHero {...blogData.hero} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative w-full">
-          {/* Desktop Sticky TOC */}
+          {/* Desktop Sticky TOC & Author */}
           <div className="hidden lg:block lg:col-span-3 h-full">
-            <div className="sticky top-[112px] pb-8 h-fit self-start">
+            <div className="sticky top-[112px] pb-8 h-fit self-start flex flex-col gap-8">
               <TableOfContents items={blogData.toc} isDesktop={true} />
+              <div className="pt-6 border-t border-outline-variant shrink-0">
+                <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Author</span>
+                <AboutAuthor 
+                  data={blogData.aboutAuthor} 
+                  layout="vertical"
+                  className="w-full bg-surface-container-low rounded-xl border border-outline-variant flex flex-col gap-4 p-5"
+                />
+              </div>
             </div>
           </div>
           
           {/* Main Article Content */}
-          <div className="lg:col-span-8 lg:col-start-5 w-full min-w-0">
+          <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
             {/* Mobile / Tablet TOC */}
             <div className="lg:hidden mb-10 max-w-[75ch] mx-auto">
               <TableOfContents items={blogData.toc} isMobile={true} />
@@ -261,9 +269,11 @@ export default async function BlogDetail({ params }: PageProps) {
         {/* Bottom Content Grid (breaks sticky boundary) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full">
           <div className="hidden lg:block lg:col-span-3"></div>
-          <div className="lg:col-span-8 lg:col-start-5 w-full min-w-0">
-            <div className="mt-24 border-t border-outline-variant pt-12">
-              <AboutAuthor data={blogData.aboutAuthor} />
+          <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
+            <div className="mt-12 border-t border-outline-variant pt-10">
+              <div className="block lg:hidden mb-12">
+                <AboutAuthor data={blogData.aboutAuthor} />
+              </div>
               
               <div className="lg:hidden mt-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share this article</span>

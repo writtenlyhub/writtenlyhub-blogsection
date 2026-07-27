@@ -210,6 +210,30 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
     return [];
   });
 
+  // Reorder FAQ and CTA to come after Conclusion
+  const conclusionIdx = parsedContent.findIndex((n: any) => 
+    (n.type === 'heading-2' || n.type === 'heading-3') && 
+    n.children?.some((c: any) => c.type === 'text' && c.text?.includes('Conclusion'))
+  );
+
+  if (conclusionIdx > -1) {
+    // Find and extract FAQ
+    const faqIdx = parsedContent.findIndex((n: any) => n.type === 'block-faq');
+    if (faqIdx > -1) {
+      const faqBlock = parsedContent.splice(faqIdx, 1)[0];
+      // Append FAQ to the very end of the article (after Conclusion paragraphs)
+      parsedContent.push(faqBlock);
+    }
+    
+    // Find and extract CTA
+    const ctaIdx = parsedContent.findIndex((n: any) => n.type === 'block-cta');
+    if (ctaIdx > -1) {
+      const ctaBlock = parsedContent.splice(ctaIdx, 1)[0];
+      // Append CTA to the very end of the article (after FAQ)
+      parsedContent.push(ctaBlock);
+    }
+  }
+
   return {
     hero: {
       category: categoryName,

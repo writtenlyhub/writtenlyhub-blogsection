@@ -44,7 +44,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
       {currentPage > 1 && (
         <Link 
           href={createPageUrl(currentPage - 1)}
-          className="flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
+          className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
           aria-label="Previous page"
         >
           <span className="material-symbols-outlined text-[20px]">chevron_left</span>
@@ -55,11 +55,11 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
         <>
           <Link 
             href={createPageUrl(1)}
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm font-label-md"
+            className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm font-label-md text-label-md"
           >
             1
           </Link>
-          {visiblePages[0] > 2 && <span className="text-on-surface-variant px-1">...</span>}
+          {visiblePages[0] > 2 && <span className="font-label-md text-label-md text-on-surface-variant px-1">...</span>}
         </>
       )}
 
@@ -67,7 +67,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
         <Link
           key={page}
           href={createPageUrl(page)}
-          className={`flex items-center justify-center w-10 h-10 rounded-full border transition-colors shadow-sm font-label-md ${
+          className={`flex items-center justify-center w-9 h-9 rounded-full border transition-colors shadow-sm font-label-md text-label-md ${
             page === currentPage
               ? 'bg-writtenly-navy text-white font-bold border-writtenly-navy'
               : 'border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy bg-white'
@@ -81,11 +81,11 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
       {visiblePages[visiblePages.length - 1] < totalPages && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-            <span className="text-on-surface-variant px-1">...</span>
+            <span className="font-label-md text-label-md text-on-surface-variant px-1">...</span>
           )}
           <Link 
             href={createPageUrl(totalPages)}
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm font-label-md"
+            className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm font-label-md text-label-md"
           >
             {totalPages}
           </Link>
@@ -95,7 +95,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
       {currentPage < totalPages && (
         <Link 
           href={createPageUrl(currentPage + 1)}
-          className="flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
+          className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
           aria-label="Next page"
         >
           <span className="material-symbols-outlined text-[20px]">chevron_right</span>

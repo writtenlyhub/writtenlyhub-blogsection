@@ -21,27 +21,27 @@ export function BlogHero(props: BlogHeroData) {
   return (
     <section className="flex flex-col gap-8 mb-12 w-full max-w-4xl mx-auto">
       <div className="flex justify-start items-center gap-3">
-        <span className="inline-block px-3 py-1 bg-surface-container-high text-primary text-xs font-bold uppercase tracking-wider rounded-md w-max border border-outline-variant">
+        <span className="inline-block px-3 py-1 bg-surface-container-high text-primary font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
           {category || 'Uncategorized'}
         </span>
         {props.isDraft && (
-          <span className="inline-block px-3 py-1 bg-writtenly-orange/10 text-writtenly-orange text-xs font-bold uppercase tracking-wider rounded-md w-max border border-writtenly-orange/20">
+          <span className="inline-block px-3 py-1 bg-writtenly-orange/10 text-writtenly-orange font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-writtenly-orange/20">
             Draft
           </span>
         )}
       </div>
       
-      <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary leading-tight tracking-tight mt-2">
+      <h1 className="font-headline-xl text-headline-xl font-bold text-primary mt-2">
         {title}
       </h1>
       
       {summary && (
-        <p className="font-body-lg text-lg md:text-[1.1875rem] text-on-surface-variant leading-relaxed opacity-90">
+        <p className="font-body-xl text-body-xl text-on-surface-variant opacity-90">
           {summary}
         </p>
       )}
       
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 text-sm text-on-surface-variant mt-2 border-t border-b border-outline-variant/30 py-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 font-body-sm text-body-sm text-on-surface-variant mt-2 border-t border-b border-outline-variant/30 py-4">
         {author && (
           <div className="flex items-center gap-3 pr-4 sm:border-r border-outline-variant/50">
             <div className="w-12 h-12 relative rounded-full overflow-hidden shrink-0">
@@ -53,13 +53,13 @@ export function BlogHero(props: BlogHeroData) {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-primary text-base">{author.name}</span>
-              <span className="text-xs text-outline font-medium tracking-wide">Author</span>
+              <span className="font-label-md text-label-md font-bold text-primary">{author.name}</span>
+              <span className="font-label-sm text-label-sm text-outline font-medium">Author</span>
             </div>
           </div>
         )}
         
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs md:text-sm font-medium">
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 font-label-md text-label-md font-medium">
           {publishedAt && (
             <div className="flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-outline">calendar_today</span> 
@@ -84,7 +84,7 @@ export function BlogHero(props: BlogHeroData) {
       </div>
       
       {imageUrl && (
-        <div className="mt-6 relative w-full aspect-[21/9] sm:aspect-video rounded-xl overflow-hidden shadow-sm">
+        <div className="mt-6 relative w-full aspect-[21/9] max-h-[450px] rounded-xl overflow-hidden shadow-sm">
           <ImageWithFallback 
             alt={imageAlt || title} 
             src={imageUrl} 

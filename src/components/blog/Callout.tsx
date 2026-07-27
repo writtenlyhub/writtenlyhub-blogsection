@@ -45,18 +45,18 @@ export function Callout({ data }: CalloutProps) {
   const config = typeConfig[data.type || 'info'] || typeConfig.info;
 
   return (
-    <div className={`my-10 max-w-[75ch] mx-auto lg:mx-0 p-6 rounded-xl border ${config.bg} ${config.border}`}>
+    <div className={`my-8 max-w-[75ch] mx-auto lg:mx-0 p-6 rounded-xl border ${config.bg} ${config.border}`}>
       <div className="flex gap-4">
         <span className={`material-symbols-outlined shrink-0 text-[24px] ${config.iconColor}`}>
           {config.icon}
         </span>
         <div className="flex flex-col gap-2">
           {data.title && (
-            <span className={`font-bold uppercase tracking-wider text-sm ${config.text}`}>
+            <span className={`text-sm font-bold tracking-wide ${config.text}`}>
               {data.title}
             </span>
           )}
-          <p className={`text-base leading-relaxed ${config.text} opacity-90`}>
+          <p className={`text-base md:text-lg ${config.text} opacity-90`}>
             {data.content}
           </p>
         </div>

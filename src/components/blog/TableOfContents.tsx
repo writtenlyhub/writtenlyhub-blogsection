@@ -51,7 +51,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
         });
       },
       {
-        rootMargin: '-140px 0px -80% 0px',
+        rootMargin: '-100px 0px -40% 0px',
         threshold: 0
       }
     );
@@ -89,11 +89,11 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
             <a
               href={`#${item.id}`}
               onClick={() => setMobileExpanded(false)}
-              className={`block py-2.5 px-4 text-[15px] border-l-[3px] transition-all duration-200 ${
+              className={`block py-1 px-3 text-[13px] leading-tight border-l-[3px] transition-all duration-75 ${
                 isItemActive
-                  ? 'border-writtenly-orange bg-surface-container-low text-primary font-medium'
+                  ? 'border-writtenly-orange bg-surface-container-low text-primary font-bold'
                   : isGroupActive
-                  ? 'border-transparent text-primary font-medium'
+                  ? 'border-transparent text-primary font-bold'
                   : 'border-transparent text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
               }`}
             >
@@ -102,7 +102,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
             
             {hasChildren && (
               <div 
-                className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`flex flex-col overflow-hidden transition-all duration-150 ease-in-out ${
                   isGroupActive || !isDesktop ? 'max-h-[1000px] opacity-100 py-1' : 'max-h-0 opacity-0'
                 }`}
               >
@@ -113,7 +113,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
                       key={child.id}
                       href={`#${child.id}`}
                       onClick={() => setMobileExpanded(false)}
-                      className={`block py-2 pl-6 pr-4 text-[14px] border-l-[3px] transition-all duration-200 ${
+                      className={`block py-0.5 pl-5 pr-2 text-xs leading-tight border-l-[3px] transition-all duration-75 ${
                         isChildActive
                           ? 'border-writtenly-orange bg-surface-container-low text-primary font-medium'
                           : 'border-transparent text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
@@ -134,23 +134,25 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
   if (isDesktop) {
     return (
       <aside className="hidden lg:block w-full max-w-[320px]">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           {showToc && (
-            <div className="bg-transparent flex flex-col gap-stack-md">
-              <h3 className="font-headline-md text-[18px] font-bold text-primary mb-3 border-b border-outline-variant pb-4">
+            <div className="bg-transparent flex flex-col gap-stack-sm">
+              <h3 className="font-headline-md text-base font-bold text-primary mb-2 border-b border-outline-variant pb-3 shrink-0">
                 Table of Contents
               </h3>
-              {renderTocList()}
+              <div className="pr-2">
+                {renderTocList()}
+              </div>
             </div>
           )}
 
           <div className={`${showToc ? 'pt-6 border-t border-outline-variant' : ''} shrink-0`}>
-            <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share</span>
-            <SocialShare title="Check out this article" layout="horizontal" />
+            <PlayArticleButton />
           </div>
 
           <div className="pt-6 border-t border-outline-variant shrink-0">
-            <PlayArticleButton />
+            <span className="font-label-sm text-label-sm font-bold uppercase text-outline mb-4 block">Share</span>
+            <SocialShare title="Check out this article" layout="horizontal" />
           </div>
         </div>
       </aside>
@@ -166,7 +168,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
       >
         <div className="flex items-center gap-3">
           <span className="material-symbols-outlined text-outline text-[20px]">menu_book</span>
-          <h3 className="font-headline-md text-sm font-bold text-primary uppercase tracking-widest m-0">
+          <h3 className="font-label-md text-label-md font-bold text-primary uppercase m-0">
             Table of Contents
           </h3>
         </div>

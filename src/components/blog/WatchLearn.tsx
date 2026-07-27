@@ -8,22 +8,22 @@ export function WatchLearn({ data }: { data: CTAData | null }) {
   const { title, description, buttonText, buttonLink } = data;
 
   return (
-    <section className="my-10 max-w-[75ch] mx-auto lg:mx-0 w-full p-6 md:p-8 bg-surface-container-low rounded-2xl border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-6">
-      <div className="flex items-center gap-5">
-        <div className="w-12 h-12 md:w-14 md:h-14 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0">
-          <span className="material-symbols-outlined text-error text-3xl">smart_display</span>
-        </div>
-        <div>
-          <h3 className="font-headline-md text-xl md:text-2xl text-primary mb-2">{title}</h3>
-          <p className="text-on-surface-variant text-base md:text-lg leading-relaxed">{description}</p>
-        </div>
+    <section className="max-w-[75ch] mx-auto lg:mx-0 w-full p-6 bg-surface-container-low rounded-2xl border border-outline-variant flex flex-col sm:flex-row items-start gap-4 md:gap-5">
+      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0">
+        <span className="material-symbols-outlined text-error text-[28px]">smart_display</span>
       </div>
-      <div className="shrink-0 w-full md:w-auto">
-        <a href={buttonLink} className="no-underline w-full">
-          <Button variant="primary" className="text-base px-6 py-2.5 w-full">
-            {buttonText}
-          </Button>
-        </a>
+      <div className="flex flex-col gap-4 flex-1">
+        <div className="flex flex-col gap-1">
+          <h3 className="font-headline-md text-lg font-bold text-primary m-0">{title}</h3>
+          <p className="text-on-surface-variant font-body-xl text-base m-0 leading-relaxed">{description}</p>
+        </div>
+        <div className="mt-1">
+          <a href={buttonLink} className="no-underline block w-full md:w-auto">
+            <Button variant="primary" className="text-sm px-6 py-2.5 w-full md:w-fit">
+              {buttonText}
+            </Button>
+          </a>
+        </div>
       </div>
     </section>
   );

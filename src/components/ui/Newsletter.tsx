@@ -16,12 +16,12 @@ export function Newsletter({ source = 'homepage' }: { source?: string }) {
   return (
     <section className="w-full px-gutter py-section-gap mb-16">
       <div className="max-w-container-max mx-auto bg-writtenly-navy rounded-[2rem] md:rounded-3xl overflow-hidden relative shadow-lg">
-        <div className="p-6 md:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
+        <div className="p-6 md:p-10 lg:p-12 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
           <div className="max-w-2xl text-center lg:text-left">
-            <h3 className="font-headline-xl-mobile md:font-display-lg text-headline-xl-mobile md:text-display-lg text-white mb-5 font-bold tracking-tight">
+            <h3 className="font-display-lg text-display-lg text-white mb-5 font-bold tracking-tight">
               Stay ahead of the curve.
             </h3>
-            <p className="font-body-lg text-body-lg text-white/80 text-lg leading-relaxed">
+            <p className="font-body-xl text-body-xl text-white/80">
               Join 5,000+ marketers receiving our weekly insights on content strategy, SEO, and the future of digital writing.
             </p>
           </div>
@@ -30,14 +30,14 @@ export function Newsletter({ source = 'homepage' }: { source?: string }) {
               <input type="hidden" name="source" value={source} />
               <input 
                 name="email"
-                className="w-full md:min-w-[300px] px-5 py-3.5 md:px-6 md:py-4 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:bg-white/15 focus:border-writtenly-orange focus:ring-2 focus:ring-writtenly-orange/50 font-body-md text-body-md transition-all outline-none" 
+                className="w-full md:min-w-[300px] px-5 py-3 md:px-6 md:py-3.5 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:bg-white/15 focus:border-writtenly-orange focus:ring-2 focus:ring-writtenly-orange/50 font-body-md text-body-md transition-all outline-none" 
                 placeholder="Your work email" 
                 required 
                 type="email" 
                 disabled={isPending}
               />
               <button 
-                className="w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-writtenly-orange text-white rounded-full font-label-md text-label-md font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-md hover:shadow-lg hover:-translate-y-[1px] outline-none min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed" 
+                className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-3.5 bg-writtenly-orange text-white rounded-full font-label-md text-label-md font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-md hover:shadow-lg hover:-translate-y-[1px] outline-none min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed" 
                 type="submit"
                 disabled={isPending}
               >
@@ -47,13 +47,13 @@ export function Newsletter({ source = 'homepage' }: { source?: string }) {
             
             <div className="h-6 mt-4 w-full max-w-md flex items-center justify-center lg:justify-start">
               {state?.error && (
-                <p className="text-red-400 font-body-md text-[13px]">{state.error}</p>
+                <p className="font-body-sm text-body-sm text-red-400">{state.error}</p>
               )}
               {state?.success && (
-                <p className="text-green-400 font-body-md text-[13px]">{state.success}</p>
+                <p className="font-body-sm text-body-sm text-green-400">{state.success}</p>
               )}
               {!state?.error && !state?.success && (
-                <p className="text-[13px] text-white/60 font-body-md">No spam. Unsubscribe anytime.</p>
+                <p className="font-body-sm text-body-sm text-white/60">No spam. Unsubscribe anytime.</p>
               )}
             </div>
           </div>

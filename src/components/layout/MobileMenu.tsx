@@ -70,7 +70,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-white/10">
-            <span className="text-white font-bold font-headline-md tracking-tight">Menu</span>
+            <span className="font-headline-md text-headline-md text-white font-bold tracking-tight">Menu</span>
             <button
               onClick={closeMenu}
               aria-label="Close menu"
@@ -82,12 +82,12 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
 
           {/* Links */}
           <nav className="flex flex-col p-6 gap-6 overflow-y-auto">
-            <Link onClick={closeMenu} className="text-white/80 hover:text-writtenly-orange transition-colors font-headline-md font-bold" href="#">About</Link>
-            <Link onClick={closeMenu} className="text-white/80 hover:text-writtenly-orange transition-colors font-headline-md font-bold" href="#">Services</Link>
-            <Link onClick={closeMenu} className="text-white/80 hover:text-writtenly-orange transition-colors font-headline-md font-bold" href="#">Case Studies</Link>
-            <Link onClick={closeMenu} className="text-writtenly-orange font-bold font-headline-md" href="/">Blog</Link>
-            <Link onClick={closeMenu} className="text-white/80 hover:text-writtenly-orange transition-colors font-headline-md font-bold" href="#">Career</Link>
-            <Link onClick={closeMenu} className="text-white/80 hover:text-writtenly-orange transition-colors font-headline-md font-bold" href="#">Write For Us</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Case Studies</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-writtenly-orange" href="/">Blog</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Career</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
           </nav>
 
           {/* Footer CTA */}
@@ -95,9 +95,9 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
             <a 
               href={`mailto:${contactEmail}`}
               onClick={closeMenu}
-              className="flex w-full items-center justify-center px-6 py-4 bg-writtenly-orange text-white rounded-full font-label-md font-bold hover:opacity-90 transition-opacity"
+              className="flex w-full items-center justify-center px-6 py-4 font-label-md text-label-md font-bold bg-writtenly-orange text-white rounded-md hover:opacity-90 transition-opacity"
             >
-              Contact Us
+              Get my strategy
             </a>
           </div>
         </div>

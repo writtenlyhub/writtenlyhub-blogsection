@@ -73,7 +73,7 @@ export default async function RootLayout({
         {isDraftMode && <PreviewBanner />}
         <SmoothScrollProvider>
           <Header />
-          <main className="flex-grow">
+          <main className="flex-grow pt-16">
             {children}
           </main>
           <Footer />

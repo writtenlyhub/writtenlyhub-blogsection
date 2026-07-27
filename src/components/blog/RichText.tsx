@@ -23,32 +23,32 @@ export function RichText({ content, className = '' }: RichTextProps) {
           return <span key={index} className="block mb-6">{children}</span>;
         }
         return (
-          <p key={index} className="max-w-[75ch] mx-auto lg:mx-0 font-body-lg text-[1.125rem] leading-[1.85] mb-8 text-on-surface/90">
+          <p key={index} className="max-w-[75ch] mx-auto lg:mx-0 font-body-xl text-body-xl mb-8 text-on-surface/90">
             {children}
           </p>
         );
       }
       case 'heading-2':
         return (
-          <h2 key={index} id={node.id} className="text-3xl font-headline-lg font-bold text-primary mt-14 mb-6 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height leading-snug tracking-tight">
+          <h2 key={index} id={node.id} className="font-headline-lg text-headline-lg font-bold text-primary mt-14 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-2'))}
           </h2>
         );
       case 'heading-3':
         return (
-          <h3 key={index} id={node.id} className="text-2xl font-bold text-primary mt-12 mb-4 font-headline-md max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height leading-snug tracking-tight">
+          <h3 key={index} id={node.id} className="font-headline-md text-headline-md font-bold text-primary mt-12 mb-3 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-3'))}
           </h3>
         );
       case 'ul':
         return (
-          <ul key={index} className="max-w-[75ch] mx-auto lg:mx-0 list-disc list-outside pl-6 mb-8 font-body-lg text-[1.125rem] leading-[1.85] text-on-surface/90 space-y-3">
+          <ul key={index} className="max-w-[75ch] mx-auto lg:mx-0 list-disc list-outside pl-6 mb-8 font-body-xl text-body-xl text-on-surface/90 space-y-3">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'ul'))}
           </ul>
         );
       case 'ol':
         return (
-          <ol key={index} className="max-w-[75ch] mx-auto lg:mx-0 list-decimal list-outside pl-6 mb-8 font-body-lg text-[1.125rem] leading-[1.85] text-on-surface/90 space-y-3">
+          <ol key={index} className="max-w-[75ch] mx-auto lg:mx-0 list-decimal list-outside pl-6 mb-8 font-body-xl text-body-xl text-on-surface/90 space-y-3">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'ol'))}
           </ol>
         );
@@ -61,7 +61,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
       case 'blockquote':
         return (
           <blockquote key={index} className="max-w-[75ch] mx-auto lg:mx-0 border-l-4 border-writtenly-orange pl-6 py-2 my-8 bg-transparent">
-            <div className="text-xl md:text-[1.375rem] italic font-medium text-primary leading-relaxed">
+            <div className="font-headline-md text-headline-md italic font-medium text-primary">
               {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'blockquote'))}
             </div>
           </blockquote>
@@ -132,7 +132,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
   };
 
   return (
-    <div className={`font-body-lg text-[1.125rem] leading-[1.85] text-on-surface/90 w-full ${className}`}>
+    <div className={`font-body-xl text-body-xl text-on-surface/90 w-full ${className}`}>
       {content.map((node, index) => renderNode(node, index))}
     </div>
   );

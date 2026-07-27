@@ -31,7 +31,7 @@ export function ReadingProgress() {
 
   return (
     <div 
-      className="fixed top-16 left-0 h-[2px] w-full bg-writtenly-orange z-50 origin-left transition-transform duration-150 ease-out"
+      className="fixed top-16 left-0 h-1 w-full bg-writtenly-orange z-50 origin-left transition-transform duration-150 ease-out"
       style={{ transform: `scaleX(${progress / 100})` }}
     />
   );

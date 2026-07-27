@@ -124,7 +124,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
       >
         <span className="material-symbols-outlined text-[20px]">{copied ? 'check' : 'link'}</span>
         {copied && (
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest text-on-surface text-xs py-1 px-2 rounded opacity-100 transition-opacity">
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest text-on-surface font-label-md text-label-md py-1 px-2 rounded opacity-100 transition-opacity">
             Copied!
           </span>
         )}

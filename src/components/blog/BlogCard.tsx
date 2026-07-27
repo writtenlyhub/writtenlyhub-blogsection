@@ -18,29 +18,29 @@ export function BlogCard({ blog }: { blog: Blog }) {
         />
       </div>
       
-      <div className="p-5 md:p-6 flex flex-col flex-grow">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="border border-writtenly-navy/30 text-writtenly-navy rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-widest uppercase bg-transparent">
+      <div className="p-4 md:p-5 flex flex-col flex-grow">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="border border-writtenly-navy/30 text-writtenly-navy rounded-full px-2.5 py-0.5 font-label-sm text-label-sm font-bold uppercase bg-transparent">
             {blog.category.title}
           </span>
         </div>
         
-        <h4 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 leading-[1.3] group-hover:text-writtenly-orange transition-colors">
+        <h4 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 group-hover:text-writtenly-orange transition-colors">
           {blog.title}
         </h4>
         
-        <div className="flex items-center gap-1.5 text-[13px] text-on-surface-variant mb-4">
+        <div className="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant mb-4">
           <span className="font-bold text-writtenly-navy/80">{blog.author.name}</span>
           <span className="text-outline/50 px-1">•</span>
           <span>{blog.publishedDate}</span>
         </div>
         
-        <p className="font-body-md text-body-md text-on-surface-variant/80 mb-6 leading-relaxed">
+        <p className="font-body-md text-body-md text-on-surface-variant/80 mb-4">
           {blog.excerpt}
         </p>
         
         <div className="mt-auto flex justify-start items-center pt-2">
-          <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-3 py-1.5 text-[12px] font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
+          <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-3 py-1.5 font-label-md text-label-md font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
             <span>Read more</span>
             <span className="material-symbols-outlined text-[14px]">
               chevron_right
