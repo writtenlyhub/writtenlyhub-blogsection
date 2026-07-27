@@ -3,6 +3,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import { BlogHero } from '@/components/blog/BlogHero';
+import { Breadcrumbs } from '@/components/blog/Breadcrumbs';
 import { ReadingProgress } from '@/components/blog/ReadingProgress';
 import { TableOfContents } from '@/components/blog/TableOfContents';
 import { ArticleContent } from '@/components/blog/ArticleContent';
@@ -237,7 +238,12 @@ export default async function BlogDetail({ params }: PageProps) {
       <ReadingProgress />
 
       <main className="mt-8 max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
-
+        <Breadcrumbs items={[
+          { label: 'Home', href: '/' },
+          { label: 'Blog', href: '/blog' },
+          ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/blog?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
+          { label: blogData.hero.title, href: `/blog/${rawPayloadPost.slug}` },
+        ]} />
 
         <BlogHero {...blogData.hero} />
 

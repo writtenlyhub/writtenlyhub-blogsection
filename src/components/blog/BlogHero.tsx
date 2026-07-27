@@ -1,5 +1,6 @@
 import React from 'react';
 import { BlogHeroData } from '@/types/blog';
+import Link from 'next/link';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 export function BlogHero(props: BlogHeroData) {
@@ -21,9 +22,15 @@ export function BlogHero(props: BlogHeroData) {
   return (
     <section className="flex flex-col gap-8 mb-12 w-full max-w-4xl mx-auto">
       <div className="flex justify-start items-center gap-3">
-        <span className="inline-block px-3 py-1 bg-surface-container-high text-primary font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
-          {category || 'Uncategorized'}
-        </span>
+        {category ? (
+          <Link href={`/blog?category=${category.toLowerCase().replace(/\s+/g, '-')}`} className="inline-block px-3 py-1 bg-surface-container-high text-primary hover:bg-surface-container-highest transition-colors font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
+            {category}
+          </Link>
+        ) : (
+          <span className="inline-block px-3 py-1 bg-surface-container-high text-primary font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
+            Uncategorized
+          </span>
+        )}
         {props.isDraft && (
           <span className="inline-block px-3 py-1 bg-writtenly-orange/10 text-writtenly-orange font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-writtenly-orange/20">
             Draft

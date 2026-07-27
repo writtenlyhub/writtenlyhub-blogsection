@@ -21,9 +21,19 @@ interface BlogArchivePageProps {
 }
 
 export async function generateMetadata({ searchParams }: BlogArchivePageProps): Promise<Metadata> {
-  const { q } = await searchParams;
-  const archiveUrl = `${SITE_URL}/blog`;
+  const { q, page, category } = await searchParams;
   const isSearchPage = Boolean(q);
+  const isCategoryPage = Boolean(category && category !== 'all');
+  const currentPage = parseInt(page || '1', 10);
+  
+  let archiveUrl = `${SITE_URL}/blog`;
+  if (isCategoryPage) {
+    archiveUrl = `${SITE_URL}/blog?category=${category}`;
+  }
+  // If we are on page > 1, the canonical should technically self-reference.
+  // But standard practice to consolidate link equity is to point to the base category/archive if content isn't substantially different, OR self-reference.
+  // We will self-reference to ensure Google can crawl paginated links correctly.
+  const canonicalUrl = currentPage > 1 ? `${archiveUrl}${isCategoryPage ? '&' : '?'}page=${currentPage}` : archiveUrl;
 
   return {
     title: isSearchPage
@@ -32,13 +42,13 @@ export async function generateMetadata({ searchParams }: BlogArchivePageProps): 
     description:
       'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
     alternates: {
-      canonical: archiveUrl,
+      canonical: isSearchPage ? undefined : canonicalUrl, // Do not output canonical on search pages
     },
     openGraph: {
       title: 'Blog Archive | WrittenlyHub',
       description:
         'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
-      url: archiveUrl,
+      url: canonicalUrl,
       siteName: 'WrittenlyHub',
       type: 'website',
       images: [
@@ -57,7 +67,7 @@ export async function generateMetadata({ searchParams }: BlogArchivePageProps): 
         'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
       images: [`${SITE_URL}/images/og/default-og.jpg`],
     },
-    // noindex search result pages — allow crawl so Google can read this directive
+    // noindex search result pages to prevent crawl bloat, follow to crawl links
     ...(isSearchPage ? { robots: { index: false, follow: true } } : {}),
   };
 }

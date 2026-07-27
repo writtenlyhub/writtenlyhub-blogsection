@@ -8,6 +8,7 @@ import { FAQ } from '@/components/blog/FAQ';
 import { ExpertInsight } from '@/components/blog/ExpertInsight';
 import { QuickFacts } from '@/components/blog/QuickFacts';
 import { Callout } from '@/components/blog/Callout';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 export interface RichTextProps {
   content: MockContentNode[];
@@ -85,11 +86,12 @@ export function RichText({ content, className = '' }: RichTextProps) {
         // For Payload media nodes
         return (
           <figure key={index} className="w-full my-12 relative rounded-xl overflow-hidden shadow-sm border border-outline-variant/40">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img 
+             <ImageWithFallback 
                 src={node.value?.url || ''} 
-                alt={node.value?.alt || 'Blog Image'} 
-                className="w-full h-auto object-cover max-h-[70vh]"
+                alt={node.value?.alt || ''} 
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
+                className="w-full h-auto object-contain max-h-[70vh] !relative"
              />
              {node.value?.caption && (
                <figcaption className="text-center text-sm text-on-surface-variant mt-4 px-4 pb-4 font-medium italic">

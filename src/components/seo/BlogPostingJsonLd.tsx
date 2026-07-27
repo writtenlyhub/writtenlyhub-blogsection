@@ -58,10 +58,8 @@ export function BlogPostingJsonLd({
       image: {
         '@type': 'ImageObject',
         url: imageUrl || `${SITE_URL}/images/og/default-og.jpg`,
-        // Declared as 1200×630 per OG standard — actual upload dimensions are not verified at runtime
         width: 1200,
         height: 630,
-        caption: imageAlt || title,
       },
       datePublished: publishedAt,
       dateModified: modifiedAt || publishedAt,
@@ -114,7 +112,7 @@ export function BlogPostingJsonLd({
   ];
 
   // Conditionally add FAQPage schema
-  if (faqs.length > 0) {
+  if (faqs && faqs.length > 0) {
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
