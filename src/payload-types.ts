@@ -649,6 +649,13 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  newsletterPopup: {
+    isActive?: boolean | null;
+    title: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -682,6 +689,15 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  newsletterPopup?:
+    | T
+    | {
+        isActive?: T;
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
       };
   updatedAt?: T;
   createdAt?: T;

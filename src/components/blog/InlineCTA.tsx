@@ -1,52 +1,23 @@
-"use client";
-
-import React, { useState } from 'react';
+import React from 'react';
 import { CTAData } from '@/types/blog';
 import { Button } from '@/components/ui/Button';
 
 export function InlineCTA({ data }: { data: CTAData | null }) {
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
-
-  if (!data || !data.title || isDismissed) return null;
+  if (!data || !data.title) return null;
 
   const { title, description, buttonText, buttonLink } = data;
 
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[100] w-[calc(100%-2rem)] max-w-[340px] bg-surface-container-lowest border-t-[6px] border-t-writtenly-orange border-l border-r border-b border-outline-variant/30 rounded-b-xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300">
-      {/* Header section (Clickable to toggle) */}
-      <button 
-        onClick={() => setIsMinimized(!isMinimized)}
-        className="flex items-center justify-between w-full px-5 py-4 hover:bg-surface-container-low transition-colors"
-      >
-        <span className="font-label-md text-[11px] font-bold uppercase tracking-widest text-primary truncate">
-          {title}
-        </span>
-        <div className="flex items-center gap-1 shrink-0 ml-4">
-          <span className={`material-symbols-outlined text-outline transition-transform duration-300 text-[20px] ${isMinimized ? 'rotate-180' : ''}`}>
-            expand_more
-          </span>
-          <span 
-            className="material-symbols-outlined text-outline hover:text-error transition-colors text-[18px] ml-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsDismissed(true);
-            }}
-          >
-            close
-          </span>
-        </div>
-      </button>
-
-      {/* Expandable content area */}
-      <div 
-        className={`transition-all duration-300 ease-in-out px-5 overflow-hidden ${isMinimized ? 'max-h-0 py-0 opacity-0' : 'max-h-[500px] pb-6 opacity-100'}`}
-      >
-        <p className="text-[14px] md:text-[15px] text-on-surface-variant leading-relaxed mb-6">
+    <div className="max-w-[75ch] mx-auto lg:mx-0 w-full p-6 md:p-8 bg-writtenly-navy text-white rounded-2xl shadow-md border border-primary-container flex flex-col items-center justify-between gap-6">
+      <div>
+        <h3 className="font-headline-md text-xl md:text-2xl mb-4 text-white text-center">{title}</h3>
+        <p className="text-base md:text-lg opacity-90 leading-relaxed m-0 text-center">
           {description}
         </p>
-        <a href={buttonLink} className="no-underline block w-full">
-          <Button variant="primary" className="w-full text-sm font-bold uppercase tracking-wider py-3.5">
+      </div>
+      <div className="w-full text-center flex justify-center">
+        <a href={buttonLink} className="no-underline">
+          <Button variant="primary" className="text-base px-6 py-2.5 w-full md:w-auto">
             {buttonText}
           </Button>
         </a>

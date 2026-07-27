@@ -11,9 +11,10 @@ import { AboutAuthor } from '@/components/blog/AboutAuthor';
 import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
 import { mapBlogData, mapBlogList } from '@/lib/utils/blogMapper';
-import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts } from '@/lib/api';
+import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts, getCachedSiteSettings } from '@/lib/api';
 import { getPayloadClient } from '@/lib/api/payload';
 import { SocialShare } from '@/components/blog/SocialShare';
+import { NewsletterPopup } from '@/components/blog/NewsletterPopup';
 import { BlogPostingJsonLd } from '@/components/seo/BlogPostingJsonLd';
 import type { Media, User, Blog } from '@/payload-types';
 
@@ -151,6 +152,9 @@ export default async function BlogDetail({ params }: PageProps) {
 
   const { getCachedAdjacentPosts } = await import('@/lib/api');
   const adjacent = rawPayloadPost.publishedAt ? await getCachedAdjacentPosts(rawPayloadPost.publishedAt) : { prev: null, next: null };
+
+  const siteSettings = await getCachedSiteSettings();
+  const newsletterPopupData = siteSettings?.newsletterPopup || undefined;
 
   let finalRelatedArticles = blogData.relatedArticles || [];
   
@@ -315,6 +319,8 @@ export default async function BlogDetail({ params }: PageProps) {
       {finalRelatedArticles.length > 0 && (
         <RelatedArticles data={{ articles: finalRelatedArticles }} />
       )}
+      
+      <NewsletterPopup data={newsletterPopupData} />
     </>
   );
 }
