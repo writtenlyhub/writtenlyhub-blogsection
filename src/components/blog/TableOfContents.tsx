@@ -78,7 +78,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
   }, [activeId, nestedItems]);
 
   const renderTocList = () => (
-    <nav className="flex flex-col gap-1">
+    <nav aria-labelledby="toc-heading" className="flex flex-col gap-1">
       {nestedItems.map(item => {
         const isGroupActive = activeParentId === item.id;
         const hasChildren = item.children.length > 0;
@@ -137,9 +137,9 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
         <div className="flex flex-col gap-6">
           {showToc && (
             <div className="bg-transparent flex flex-col gap-stack-sm">
-              <h3 className="font-headline-md text-base font-bold text-primary mb-2 border-b border-outline-variant pb-3 shrink-0">
+              <h2 id="toc-heading" className="font-headline-md text-base font-bold text-primary mb-2 border-b border-outline-variant pb-3 shrink-0">
                 Table of Contents
-              </h3>
+              </h2>
               <div className="pr-2">
                 {renderTocList()}
               </div>
@@ -164,13 +164,15 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
     <aside className="block lg:hidden w-full border-y border-outline-variant/40 py-2 mb-8 mt-2">
       <button 
         onClick={() => setMobileExpanded(!mobileExpanded)}
+        aria-expanded={mobileExpanded}
+        aria-controls="toc-mobile-content"
         className="w-full flex items-center justify-between py-4"
       >
         <div className="flex items-center gap-3">
           <span className="material-symbols-outlined text-outline text-[20px]">menu_book</span>
-          <h3 className="font-label-md text-label-md font-bold text-primary uppercase m-0">
+          <h2 id="toc-heading-mobile" className="font-label-md text-label-md font-bold text-primary uppercase m-0">
             Table of Contents
-          </h3>
+          </h2>
         </div>
         <span className={`material-symbols-outlined text-outline transition-transform duration-300 md:hidden ${mobileExpanded ? 'rotate-180' : ''}`}>
           expand_more
@@ -178,6 +180,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
       </button>
       
       <div 
+        id="toc-mobile-content"
         className={`md:max-h-[2000px] md:opacity-100 transition-all duration-300 ease-in-out overflow-hidden ${
           mobileExpanded ? 'max-h-[2000px] opacity-100 pb-6' : 'max-h-0 opacity-0 md:pb-6'
         }`}

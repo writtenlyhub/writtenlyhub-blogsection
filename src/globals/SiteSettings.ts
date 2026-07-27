@@ -99,7 +99,7 @@ export const SiteSettings: GlobalConfig = {
                 {
                   name: 'buttonLink',
                   type: 'text',
-                  defaultValue: '/newsletter',
+                  defaultValue: '#newsletter',
                   required: true,
                 },
               ]

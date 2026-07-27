@@ -19,7 +19,7 @@ export function Footer() {
             </p>
           </div>
           <div className="flex flex-col gap-6">
-            <h4 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">COMPANY</h4>
+            <h2 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">COMPANY</h2>
             <ul className="flex flex-col font-body-md text-body-md text-white/80">
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">SEO Content Writing</Link></li>
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Social Media Marketing</Link></li>
@@ -30,7 +30,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="flex flex-col gap-6">
-            <h4 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">QUICK LINK</h4>
+            <h2 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">QUICK LINK</h2>
             <ul className="flex flex-col font-body-md text-body-md text-white/80">
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">About Us</Link></li>
               <li><Link className="block py-2 hover:text-writtenly-orange transition-colors" href="#">Case Studies</Link></li>
@@ -40,7 +40,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="flex flex-col gap-6">
-            <h4 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">GET IN TOUCH</h4>
+            <h2 className="font-label-md text-label-md font-bold text-white/50 tracking-wider">GET IN TOUCH</h2>
             <a className="block py-2 font-body-md text-body-md text-white/80 hover:text-writtenly-orange transition-colors" href="mailto:services@writtenlyhub.com">services@writtenlyhub.com</a>
           </div>
         </div>

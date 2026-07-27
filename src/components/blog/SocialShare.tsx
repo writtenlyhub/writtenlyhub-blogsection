@@ -82,7 +82,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
           key={link.name}
           href={link.href}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="text-on-surface-variant hover:text-secondary-container transition-colors flex items-center gap-2"
           aria-label={`Share on ${link.name}`}
           title={`Share on ${link.name}`}

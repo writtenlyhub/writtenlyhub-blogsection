@@ -129,7 +129,7 @@ export const realisticLongFormContent = [
     title: 'Ready to modernize your content engine?',
     description: 'Stop playing by the old rules. Join 10,000+ marketers receiving our weekly insights on building future-proof, high-ROI content strategies.',
     buttonText: 'Subscribe Now',
-    buttonLink: '/newsletter',
+    buttonLink: '#newsletter',
   }),
 
   createHeading('Conclusion: The Path Forward', 'h2'),

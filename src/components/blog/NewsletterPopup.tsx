@@ -12,7 +12,7 @@ export function NewsletterPopup({ data }: { data?: any }) {
   const title = data?.title || 'Subscribe to Newsletter';
   const description = data?.description || 'Join 5,000+ marketers receiving our weekly insights on content strategy, SEO, and digital writing.';
   const buttonText = data?.buttonText || 'Subscribe Now';
-  const buttonLink = data?.buttonLink || '/newsletter';
+  const buttonLink = data?.buttonLink || '#newsletter';
   const isActive = data?.isActive !== false; // Default to true if undefined
 
   // Delay the popup appearance by 3 seconds so it's not instantly aggressive

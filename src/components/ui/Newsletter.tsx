@@ -14,7 +14,7 @@ export function Newsletter({ source = 'homepage' }: { source?: string }) {
   }, [state?.success]);
 
   return (
-    <section className="w-full px-gutter py-section-gap mb-16">
+    <section id="newsletter" className="w-full px-gutter py-section-gap mb-16">
       <div className="max-w-container-max mx-auto bg-writtenly-navy rounded-[2rem] md:rounded-3xl overflow-hidden relative shadow-lg">
         <div className="p-6 md:p-10 lg:p-12 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
           <div className="max-w-2xl text-center lg:text-left">
