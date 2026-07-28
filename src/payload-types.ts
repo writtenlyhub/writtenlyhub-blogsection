@@ -231,16 +231,89 @@ export interface Category {
   color?: string | null;
   seo?: {
     /**
-     * Recommended length: 50-60 characters.
+     * Recommended length: 50-60 characters. Falls back to post title.
      */
-    title?: string | null;
+    metaTitle?: string | null;
     /**
-     * Recommended length: 150-160 characters.
+     * Recommended length: 150-160 characters. Falls back to excerpt.
      */
-    description?: string | null;
-    image?: (number | null) | Media;
+    metaDescription?: string | null;
+    /**
+     * Leave blank to auto-generate from site URL and slug.
+     */
     canonicalUrl?: string | null;
-    noIndex?: boolean | null;
+    /**
+     * Enter the main keyword you want this page to rank for.
+     */
+    focusKeyword?: string | null;
+    dismissedWarnings?:
+      | {
+          ruleId?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Falls back to Meta Title
+     */
+    ogTitle?: string | null;
+    /**
+     * Falls back to Meta Description
+     */
+    ogDescription?: string | null;
+    /**
+     * Falls back to Featured Image, then Global Default, then Generated Image
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Falls back to Open Graph Title
+     */
+    twitterTitle?: string | null;
+    /**
+     * Falls back to Open Graph Description
+     */
+    twitterDescription?: string | null;
+    /**
+     * Falls back to Open Graph Image
+     */
+    twitterImage?: (number | null) | Media;
+    robots?: {
+      index?: boolean | null;
+      noindex?: boolean | null;
+      follow?: boolean | null;
+      nofollow?: boolean | null;
+      noarchive?: boolean | null;
+      nosnippet?: boolean | null;
+      noimageindex?: boolean | null;
+      maxSnippet?: number | null;
+      maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      maxVideoPreview?: number | null;
+    };
+    jsonLd?: {
+      faq?:
+        | {
+            question: string;
+            answer: string;
+            id?: string | null;
+          }[]
+        | null;
+      howTo?: {
+        name?: string | null;
+        description?: string | null;
+        step?:
+          | {
+              name: string;
+              text: string;
+              url?: string | null;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+      };
+      /**
+       * Valid JSON array or object to merge/append with generated schemas.
+       */
+      advancedOverride?: string | null;
+    };
   };
   updatedAt: string;
   createdAt: string;
@@ -285,17 +358,96 @@ export interface Blog {
   };
   seo?: {
     /**
-     * Recommended length: 50-60 characters.
+     * Recommended length: 50-60 characters. Falls back to post title.
      */
-    title?: string | null;
+    metaTitle?: string | null;
     /**
-     * Recommended length: 150-160 characters.
+     * Recommended length: 150-160 characters. Falls back to excerpt.
      */
-    description?: string | null;
-    image?: (number | null) | Media;
+    metaDescription?: string | null;
+    /**
+     * Leave blank to auto-generate from site URL and slug.
+     */
     canonicalUrl?: string | null;
-    noIndex?: boolean | null;
+    /**
+     * Enter the main keyword you want this page to rank for.
+     */
+    focusKeyword?: string | null;
+    dismissedWarnings?:
+      | {
+          ruleId?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Falls back to Meta Title
+     */
+    ogTitle?: string | null;
+    /**
+     * Falls back to Meta Description
+     */
+    ogDescription?: string | null;
+    /**
+     * Falls back to Featured Image, then Global Default, then Generated Image
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Falls back to Open Graph Title
+     */
+    twitterTitle?: string | null;
+    /**
+     * Falls back to Open Graph Description
+     */
+    twitterDescription?: string | null;
+    /**
+     * Falls back to Open Graph Image
+     */
+    twitterImage?: (number | null) | Media;
+    robots?: {
+      index?: boolean | null;
+      noindex?: boolean | null;
+      follow?: boolean | null;
+      nofollow?: boolean | null;
+      noarchive?: boolean | null;
+      nosnippet?: boolean | null;
+      noimageindex?: boolean | null;
+      maxSnippet?: number | null;
+      maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      maxVideoPreview?: number | null;
+    };
+    jsonLd?: {
+      faq?:
+        | {
+            question: string;
+            answer: string;
+            id?: string | null;
+          }[]
+        | null;
+      howTo?: {
+        name?: string | null;
+        description?: string | null;
+        step?:
+          | {
+              name: string;
+              text: string;
+              url?: string | null;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+      };
+      /**
+       * Valid JSON array or object to merge/append with generated schemas.
+       */
+      advancedOverride?: string | null;
+    };
   };
+  previousSlugs?:
+    | {
+        slug?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Auto-generated from title if left blank.
    */
@@ -329,11 +481,19 @@ export interface Blog {
 export interface Subscriber {
   id: number;
   email: string;
-  status: 'active' | 'unsubscribed';
   /**
-   * Where this subscriber signed up from (e.g., homepage, footer)
+   * First name of the subscriber (optional)
+   */
+  firstName?: string | null;
+  status: 'active' | 'pending' | 'unsubscribed';
+  /**
+   * Where this subscriber signed up from (e.g., Blog Popup, Inline Form, Footer, Article CTA)
    */
   source?: string | null;
+  subscribedAt?: string | null;
+  confirmationToken?: string | null;
+  confirmationTokenExpiresAt?: string | null;
+  confirmedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -522,11 +682,63 @@ export interface CategoriesSelect<T extends boolean = true> {
   seo?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
+        metaTitle?: T;
+        metaDescription?: T;
         canonicalUrl?: T;
-        noIndex?: T;
+        focusKeyword?: T;
+        dismissedWarnings?:
+          | T
+          | {
+              ruleId?: T;
+              id?: T;
+            };
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        twitterTitle?: T;
+        twitterDescription?: T;
+        twitterImage?: T;
+        robots?:
+          | T
+          | {
+              index?: T;
+              noindex?: T;
+              follow?: T;
+              nofollow?: T;
+              noarchive?: T;
+              nosnippet?: T;
+              noimageindex?: T;
+              maxSnippet?: T;
+              maxImagePreview?: T;
+              maxVideoPreview?: T;
+            };
+        jsonLd?:
+          | T
+          | {
+              faq?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              howTo?:
+                | T
+                | {
+                    name?: T;
+                    description?: T;
+                    step?:
+                      | T
+                      | {
+                          name?: T;
+                          text?: T;
+                          url?: T;
+                          image?: T;
+                          id?: T;
+                        };
+                  };
+              advancedOverride?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -553,11 +765,69 @@ export interface BlogsSelect<T extends boolean = true> {
   seo?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
+        metaTitle?: T;
+        metaDescription?: T;
         canonicalUrl?: T;
-        noIndex?: T;
+        focusKeyword?: T;
+        dismissedWarnings?:
+          | T
+          | {
+              ruleId?: T;
+              id?: T;
+            };
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        twitterTitle?: T;
+        twitterDescription?: T;
+        twitterImage?: T;
+        robots?:
+          | T
+          | {
+              index?: T;
+              noindex?: T;
+              follow?: T;
+              nofollow?: T;
+              noarchive?: T;
+              nosnippet?: T;
+              noimageindex?: T;
+              maxSnippet?: T;
+              maxImagePreview?: T;
+              maxVideoPreview?: T;
+            };
+        jsonLd?:
+          | T
+          | {
+              faq?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              howTo?:
+                | T
+                | {
+                    name?: T;
+                    description?: T;
+                    step?:
+                      | T
+                      | {
+                          name?: T;
+                          text?: T;
+                          url?: T;
+                          image?: T;
+                          id?: T;
+                        };
+                  };
+              advancedOverride?: T;
+            };
+      };
+  previousSlugs?:
+    | T
+    | {
+        slug?: T;
+        id?: T;
       };
   slug?: T;
   author?: T;
@@ -585,8 +855,13 @@ export interface BlogsSelect<T extends boolean = true> {
  */
 export interface SubscribersSelect<T extends boolean = true> {
   email?: T;
+  firstName?: T;
   status?: T;
   source?: T;
+  subscribedAt?: T;
+  confirmationToken?: T;
+  confirmationTokenExpiresAt?: T;
+  confirmedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -638,9 +913,52 @@ export interface SiteSetting {
   id: number;
   heroTitle?: string | null;
   heroDescription?: string | null;
-  defaultTitle?: string | null;
-  defaultDescription?: string | null;
+  /**
+   * The default site name used in SEO titles.
+   */
+  siteTitle?: string | null;
+  /**
+   * The default meta description for the site.
+   */
+  siteDescription?: string | null;
+  /**
+   * The default Open Graph image used when a page lacks a specific image.
+   */
   defaultOgImage?: (number | null) | Media;
+  defaultTwitterCard?: ('summary' | 'summary_large_image') | null;
+  defaultRobots?: {
+    index?: boolean | null;
+    noindex?: boolean | null;
+    follow?: boolean | null;
+    nofollow?: boolean | null;
+    noarchive?: boolean | null;
+    nosnippet?: boolean | null;
+    noimageindex?: boolean | null;
+    maxSnippet?: number | null;
+    maxImagePreview?: ('none' | 'standard' | 'large') | null;
+    maxVideoPreview?: number | null;
+  };
+  verificationTags?: {
+    /**
+     * Google Search Console verification ID
+     */
+    google?: string | null;
+    /**
+     * Bing Webmaster Tools verification ID
+     */
+    bing?: string | null;
+  };
+  organizationSchema?: {
+    name?: string | null;
+    url?: string | null;
+    logo?: (number | null) | Media;
+    sameAs?:
+      | {
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   contactEmail?: string | null;
   socialLinks?:
     | {
@@ -679,9 +997,43 @@ export interface HomepageSetting {
 export interface SiteSettingsSelect<T extends boolean = true> {
   heroTitle?: T;
   heroDescription?: T;
-  defaultTitle?: T;
-  defaultDescription?: T;
+  siteTitle?: T;
+  siteDescription?: T;
   defaultOgImage?: T;
+  defaultTwitterCard?: T;
+  defaultRobots?:
+    | T
+    | {
+        index?: T;
+        noindex?: T;
+        follow?: T;
+        nofollow?: T;
+        noarchive?: T;
+        nosnippet?: T;
+        noimageindex?: T;
+        maxSnippet?: T;
+        maxImagePreview?: T;
+        maxVideoPreview?: T;
+      };
+  verificationTags?:
+    | T
+    | {
+        google?: T;
+        bing?: T;
+      };
+  organizationSchema?:
+    | T
+    | {
+        name?: T;
+        url?: T;
+        logo?: T;
+        sameAs?:
+          | T
+          | {
+              url?: T;
+              id?: T;
+            };
+      };
   contactEmail?: T;
   socialLinks?:
     | T

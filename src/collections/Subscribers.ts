@@ -20,11 +20,19 @@ export const Subscribers: CollectionConfig = {
       unique: true,
     },
     {
+      name: 'firstName',
+      type: 'text',
+      admin: {
+        description: 'First name of the subscriber (optional)',
+      },
+    },
+    {
       name: 'status',
       type: 'select',
-      defaultValue: 'active',
+      defaultValue: 'pending',
       options: [
         { label: 'Active', value: 'active' },
+        { label: 'Pending', value: 'pending' },
         { label: 'Unsubscribed', value: 'unsubscribed' },
       ],
       required: true,
@@ -33,7 +41,35 @@ export const Subscribers: CollectionConfig = {
       name: 'source',
       type: 'text',
       admin: {
-        description: 'Where this subscriber signed up from (e.g., homepage, footer)',
+        description: 'Where this subscriber signed up from (e.g., Blog Popup, Inline Form, Footer, Article CTA)',
+      },
+    },
+    {
+      name: 'subscribedAt',
+      type: 'date',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'confirmationToken',
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'confirmationTokenExpiresAt',
+      type: 'date',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'confirmedAt',
+      type: 'date',
+      admin: {
+        readOnly: true,
       },
     },
   ],

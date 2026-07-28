@@ -48,6 +48,6 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
-    push: false, // Enforce explicit migrations
+    push: false, // Auto-sync DB schema disabled to prevent hanging
   }),
 })

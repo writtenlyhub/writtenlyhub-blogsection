@@ -9,13 +9,19 @@ export function BlogCard({ blog }: { blog: Blog }) {
       className="flex flex-col h-full bg-surface-container-lowest rounded-xl border border-outline-variant/60 overflow-hidden hover:border-writtenly-navy/30 hover:shadow-lg transition-all duration-300 group"
     >
       <div className="aspect-[3/2] shrink-0 bg-surface-container-high relative overflow-hidden">
-        <Image 
-          className="object-cover transition-transform duration-500 group-hover:scale-105" 
-          src={blog.featuredImage} 
-          alt={blog.altText || blog.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+        {blog.featuredImage ? (
+          <Image 
+            className="object-cover transition-transform duration-500 group-hover:scale-105" 
+            src={blog.featuredImage} 
+            alt={blog.altText || blog.title || "Blog Image"}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-400 font-medium">
+            No Image
+          </div>
+        )}
       </div>
       
       <div className="p-4 md:p-5 flex flex-col flex-grow">

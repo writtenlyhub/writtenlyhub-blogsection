@@ -58,12 +58,68 @@ export const Blogs: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      ({ data, originalDoc }) => {
-        // 1. Slug Generation
-        if (data.title && !data.slug) {
-          data.slug = formatSlug(data.title)
-        } else if (data.slug) {
-          data.slug = formatSlug(data.slug)
+      async ({ data, originalDoc, req }) => {
+        // Publish validation checks
+        if (data._status === 'published') {
+          // 1. Missing Slug
+          if (!data.slug) {
+            throw new Error('Validation Error: A slug is required to publish this post.');
+          }
+
+          // 2. Duplicate Slug
+          if (data.slug) {
+            const existing = await req.payload.find({
+              collection: 'blogs',
+              where: {
+                slug: { equals: data.slug },
+                id: { not_equals: originalDoc?.id },
+              },
+              limit: 1,
+            });
+            if (existing.docs.length > 0) {
+              throw new Error(`Validation Error: The slug "${data.slug}" is already in use by another post.`);
+            }
+          }
+
+          // 3. Check invalid canonical URL
+          if (data.seo?.canonicalUrl) {
+            try {
+              new URL(data.seo.canonicalUrl);
+            } catch (e) {
+              throw new Error('Validation Error: The provided Canonical URL is not a valid URL.');
+            }
+          }
+
+          // 4. JSON-LD Validation
+          const advancedOverride = data.seo?.jsonLd?.advancedOverride;
+          if (advancedOverride) {
+            try {
+              const parsed = JSON.parse(advancedOverride);
+              if (typeof parsed !== 'object' || parsed === null) {
+                throw new Error('Must be a valid JSON object or array of objects.');
+              }
+              const items = Array.isArray(parsed) ? parsed : [parsed];
+              for (const item of items) {
+                if (!item['@context'] || !item['@type']) {
+                  throw new Error('Each JSON-LD object must contain "@context" and "@type".');
+                }
+              }
+            } catch (e: any) {
+              throw new Error(`Validation Error: Invalid JSON-LD in Advanced Override. ${e.message}`);
+            }
+          }
+        }
+
+        // Redirect Deduplication & Flattening
+        const oldSlug = originalDoc?.slug;
+        if (oldSlug && data.slug && oldSlug !== data.slug) {
+          if (!data.previousSlugs) {
+            data.previousSlugs = originalDoc?.previousSlugs || [];
+          }
+          const prevSlugsSet = new Set(data.previousSlugs.map((s: any) => s.slug));
+          if (!prevSlugsSet.has(oldSlug)) {
+            data.previousSlugs.push({ slug: oldSlug });
+          }
         }
 
         // 2. Read Time Calculation
@@ -198,7 +254,6 @@ export const Blogs: CollectionConfig = {
         },
       ],
     },
-    // Sidebar fields (Editorial & Homepage Flags)
     {
       name: 'unsavedPreviewMessage',
       type: 'ui',
@@ -208,6 +263,30 @@ export const Blogs: CollectionConfig = {
           Field: '@/components/payload/UnsavedDraftMessage#UnsavedDraftMessage',
         },
       },
+    },
+    {
+      name: 'seoValidationWarnings',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/payload/SeoValidationWarnings#SeoValidationWarnings',
+        },
+      },
+    },
+    {
+      name: 'previousSlugs',
+      type: 'array',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'slug',
+          type: 'text',
+        },
+      ],
     },
     slugField('title'),
     {

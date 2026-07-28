@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getPayloadClient } from '@/lib/api/payload';
 
+export const revalidate = 3600;
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
-const SITE_NAME = 'WrittenlyHub Blog';
-const SITE_DESCRIPTION =
+const FALLBACK_SITE_NAME = 'WrittenlyHub Blog';
+const FALLBACK_SITE_DESCRIPTION =
   'Expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.';
 
 /** Convert a Date to RFC 822 format required by RSS 2.0 */
@@ -26,6 +28,10 @@ export async function GET(): Promise<NextResponse> {
 
   try {
     const payload = await getPayloadClient();
+    const siteSettings = await payload.findGlobal({ slug: 'site-settings', depth: 0 }) as any;
+    const siteName = siteSettings?.siteTitle || FALLBACK_SITE_NAME;
+    const siteDesc = siteSettings?.siteDescription || FALLBACK_SITE_DESCRIPTION;
+
     const posts = await payload.find({
       collection: 'blogs',
       where: { _status: { equals: 'published' } },
@@ -62,12 +68,16 @@ export async function GET(): Promise<NextResponse> {
     console.error('[feed.xml] Failed to fetch posts:', err);
   }
 
+  const siteSettings = await getPayloadClient().then(p => p.findGlobal({ slug: 'site-settings', depth: 0 })).catch(() => ({})) as any;
+  const finalSiteName = siteSettings?.siteTitle || FALLBACK_SITE_NAME;
+  const finalSiteDesc = siteSettings?.siteDescription || FALLBACK_SITE_DESCRIPTION;
+
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escapeXml(SITE_NAME)}</title>
+    <title>${escapeXml(finalSiteName)}</title>
     <link>${SITE_URL}</link>
-    <description>${escapeXml(SITE_DESCRIPTION)}</description>
+    <description>${escapeXml(finalSiteDesc)}</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />

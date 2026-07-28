@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { Breadcrumbs } from '@/components/blog/Breadcrumbs';
@@ -16,8 +16,10 @@ import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts, getCachedSi
 import { getPayloadClient } from '@/lib/api/payload';
 import { SocialShare } from '@/components/blog/SocialShare';
 import { NewsletterPopup } from '@/components/blog/NewsletterPopup';
-import { BlogPostingJsonLd } from '@/components/seo/BlogPostingJsonLd';
-import type { Media, User, Blog } from '@/payload-types';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { buildMetadata } from '@/lib/seo/buildMetadata';
+import { buildJsonLd } from '@/lib/seo/buildJsonLd';
+import type { Blog } from '@/payload-types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
@@ -47,61 +49,34 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
   const post = await getCachedPostBySlug(slug);
 
   if (!post) {
+    // Check for redirects
+    const { getPayloadClient } = await import('@/lib/api/payload');
+    const payload = await getPayloadClient();
+    const redirectResult = await payload.find({
+      collection: 'blogs',
+      where: {
+        'previousSlugs.slug': { equals: slug }
+      },
+      depth: 0,
+      limit: 1,
+    });
+    if (redirectResult.docs.length > 0) {
+      const correctSlug = redirectResult.docs[0].slug;
+      if (correctSlug && correctSlug !== slug) {
+        permanentRedirect(`/blog/${correctSlug}`);
+      }
+    }
     return { title: 'Blog Not Found' };
   }
 
-  // ── Resolve SEO field overrides from Payload CMS ──────────────────────────
-  const seo = (post as any).seo ?? {};
+  // Fetch global settings
+  const siteSettings = await getCachedSiteSettings();
 
-  const seoTitle: string = seo.title || post.title;
-  const seoDescription: string = seo.description || post.excerpt || '';
-  const seoNoIndex: boolean = seo.noIndex || false;
-  const canonicalUrl: string = seo.canonicalUrl || `${SITE_URL}/blog/${post.slug}`;
-
-  // OG image: prefer CMS SEO image, fallback to featuredImage, fallback to default
-  const seoImageMedia = seo.image && typeof seo.image === 'object' ? seo.image as Media : null;
-  const featuredImageMedia = post.featuredImage && typeof post.featuredImage === 'object' ? post.featuredImage as Media : null;
-  const ogImageUrl: string =
-    seoImageMedia?.url ||
-    featuredImageMedia?.url ||
-    `${SITE_URL}/images/og/default-og.jpg`;
-
-  // Author name for OG
-  const authorName: string =
-    post.author && typeof post.author === 'object' ? (post.author as User).name : 'WrittenlyHub';
-
-  return {
-    title: seoTitle,
-    description: seoDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    ...(seoNoIndex ? { robots: { index: false, follow: true } } : {}),
-    openGraph: {
-      title: seoTitle,
-      description: seoDescription,
-      type: 'article',
-      url: canonicalUrl,
-      siteName: 'WrittenlyHub',
-      publishedTime: post.publishedAt || undefined,
-      modifiedTime: post.lastUpdated || post.updatedAt || undefined,
-      authors: [authorName],
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: seoTitle,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
-      images: [ogImageUrl],
-    },
-  };
+  return buildMetadata({
+    post,
+    siteSettings,
+    slug,
+  });
 }
 
 export default async function BlogDetail({ params }: PageProps) {
@@ -147,6 +122,24 @@ export default async function BlogDetail({ params }: PageProps) {
   }
 
   if (!rawPayloadPost || !blogData) {
+    // Check for redirects before returning 404
+    if (!isDraftMode) {
+      const payload = await getPayloadClient();
+      const redirectResult = await payload.find({
+        collection: 'blogs',
+        where: {
+          'previousSlugs.slug': { equals: slug }
+        },
+        depth: 0,
+        limit: 1,
+      });
+      if (redirectResult.docs.length > 0) {
+        const correctSlug = redirectResult.docs[0].slug;
+        if (correctSlug && correctSlug !== slug) {
+          permanentRedirect(`/blog/${correctSlug}`);
+        }
+      }
+    }
     console.log(`[BlogDetail] Calling notFound() because rawPayloadPost=${!!rawPayloadPost}, blogData=${!!blogData}`);
     notFound();
   }
@@ -197,43 +190,17 @@ export default async function BlogDetail({ params }: PageProps) {
     }
   }
 
-  // Extract FAQ items from parsed content for FAQPage schema
-  const faqItems = blogData.content
-    .filter((node) => node.type === 'block-faq' && node.data?.items)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .flatMap((node) => (node.data.items as any[]).map((i: any) => ({ question: i.question, answer: i.answer })));
-
-  // Resolve structured data fields from raw Payload post
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const post = rawPayloadPost as any;
-  const seoFields = post.seo ?? {};
-  const canonicalUrl = seoFields.canonicalUrl || `${SITE_URL}/blog/${rawPayloadPost.slug}`;
-  const featuredImageMedia = rawPayloadPost.featuredImage && typeof rawPayloadPost.featuredImage === 'object' ? rawPayloadPost.featuredImage as import('@/payload-types').Media : null;
-  const seoImageMedia = seoFields.image && typeof seoFields.image === 'object' ? seoFields.image as import('@/payload-types').Media : null;
-  const jsonLdImageUrl = seoImageMedia?.url || featuredImageMedia?.url || `${SITE_URL}/images/og/default-og.jpg`;
-  const jsonLdAuthor = {
-    name: blogData.aboutAuthor?.name || 'WrittenlyHub',
-    bio: blogData.aboutAuthor?.bio,
-    avatarUrl: blogData.aboutAuthor?.avatarUrl,
-  };
-  const jsonLdTags = (rawPayloadPost.tags || []).map((t: any) => t.tag).filter(Boolean);
+  const jsonLdSchemas = buildJsonLd({
+    post: rawPayloadPost,
+    siteSettings,
+    slug: rawPayloadPost.slug || slug,
+    extractedFaqs: blogData.faqs ? blogData.faqs.items : [],
+  });
 
   return (
     <>
       {/* JSON-LD Structured Data */}
-      <BlogPostingJsonLd
-        title={seoFields.title || rawPayloadPost.title}
-        description={seoFields.description || rawPayloadPost.excerpt || ''}
-        slug={rawPayloadPost.slug || ''}
-        imageUrl={jsonLdImageUrl}
-        imageAlt={featuredImageMedia?.alt || rawPayloadPost.title}
-        publishedAt={rawPayloadPost.publishedAt || rawPayloadPost.createdAt}
-        modifiedAt={rawPayloadPost.lastUpdated || rawPayloadPost.updatedAt}
-        author={jsonLdAuthor}
-        category={blogData.hero.category}
-        tags={jsonLdTags}
-        faqs={faqItems}
-      />
+      <JsonLd data={jsonLdSchemas} />
 
       <ReadingProgress />
 

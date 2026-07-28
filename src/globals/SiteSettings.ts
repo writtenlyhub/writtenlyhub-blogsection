@@ -28,18 +28,80 @@ export const SiteSettings: GlobalConfig = {
           label: 'Global SEO',
           fields: [
             {
-              name: 'defaultTitle',
+              name: 'siteTitle',
               type: 'text',
+              defaultValue: 'WrittenlyHub',
+              admin: { description: 'The default site name used in SEO titles.' },
             },
             {
-              name: 'defaultDescription',
+              name: 'siteDescription',
               type: 'textarea',
+              admin: { description: 'The default meta description for the site.' },
             },
             {
               name: 'defaultOgImage',
               type: 'upload',
               relationTo: 'media',
+              admin: { description: 'The default Open Graph image used when a page lacks a specific image.' },
             },
+            {
+              name: 'defaultTwitterCard',
+              type: 'select',
+              defaultValue: 'summary_large_image',
+              options: [
+                { label: 'Summary', value: 'summary' },
+                { label: 'Summary Large Image', value: 'summary_large_image' },
+              ],
+            },
+            {
+              name: 'defaultRobots',
+              type: 'group',
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'index', type: 'checkbox', defaultValue: true },
+                    { name: 'noindex', type: 'checkbox' },
+                    { name: 'follow', type: 'checkbox', defaultValue: true },
+                    { name: 'nofollow', type: 'checkbox' },
+                  ]
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'noarchive', type: 'checkbox' },
+                    { name: 'nosnippet', type: 'checkbox' },
+                    { name: 'noimageindex', type: 'checkbox' },
+                  ]
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'maxSnippet', type: 'number' },
+                    { name: 'maxImagePreview', type: 'select', options: ['none', 'standard', 'large'] },
+                    { name: 'maxVideoPreview', type: 'number' },
+                  ]
+                }
+              ]
+            },
+            {
+              name: 'verificationTags',
+              type: 'group',
+              fields: [
+                { name: 'google', type: 'text', admin: { description: 'Google Search Console verification ID' } },
+                { name: 'bing', type: 'text', admin: { description: 'Bing Webmaster Tools verification ID' } },
+              ]
+            },
+            {
+              name: 'organizationSchema',
+              type: 'group',
+              fields: [
+                { name: 'name', type: 'text', defaultValue: 'WrittenlyHub' },
+                { name: 'url', type: 'text' },
+                { name: 'logo', type: 'upload', relationTo: 'media' },
+                { name: 'sameAs', type: 'array', fields: [{ name: 'url', type: 'text' }] },
+              ]
+            }
           ],
         },
         {

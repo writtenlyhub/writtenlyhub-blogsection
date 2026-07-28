@@ -11,12 +11,14 @@ export const Users: CollectionConfig = {
   access: {
     read: () => true,
     create: async ({ req }) => {
-      const isBootstrap = (await req.payload.count({ collection: 'users' })).totalDocs === 0
-      return req.user ? true : isBootstrap
+      if (req.user) return true
+      const { totalDocs } = await req.payload.find({ collection: 'users', limit: 1, depth: 0 })
+      return totalDocs === 0
     },
     update: async ({ req }) => {
-      const isBootstrap = (await req.payload.count({ collection: 'users' })).totalDocs === 0
-      return req.user ? true : isBootstrap
+      if (req.user) return true
+      const { totalDocs } = await req.payload.find({ collection: 'users', limit: 1, depth: 0 })
+      return totalDocs === 0
     },
     delete: ({ req }) => Boolean(req.user),
   },

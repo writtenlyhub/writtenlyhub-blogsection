@@ -8,9 +8,9 @@ export async function seedSiteSettings(payload: Payload, mediaIds: Record<string
       slug: 'site-settings',
       data: {
         heroTitle: 'WrittenlyHub Blog & Insights',
-        heroDescription: 'Expert strategies, industry insights, and the latest trends in content marketing, SEO, and copywriting.',
-        defaultTitle: 'WrittenlyHub Blog | Elevate Your Content',
-        defaultDescription: 'Discover expert articles on content strategy, SEO, and digital marketing.',
+        heroDescription: 'Expert strategies, industry insights, and the latest trends in content and digital marketing.',
+        siteTitle: 'WrittenlyHub Blog | Elevate Your Content',
+        siteDescription: 'Discover expert articles on content strategy, SEO, and digital marketing. Let WrittenlyHub help you grow your online presence.',
         defaultOgImage: mediaIds['cover-1.svg'] as any,
         contactEmail: 'hello@writtenlyhub.com',
         socialLinks: [
