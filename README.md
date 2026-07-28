@@ -96,14 +96,16 @@ http://localhost:3000/admin
 - Frontend design system
 - Static blog listing page
 - Responsive layout foundation
+- Dynamic blog pages
+- Custom SEO & Readability Engine
+- Automated Metadata & JSON-LD Generation
+- Email Newsletter Integration
 
 ### 🚧 In Progress
 
 - Editorial UI refinement
 - Payload data integration
-- Dynamic blog pages
 - Search functionality
-- SEO enhancements
 
 ---
 
