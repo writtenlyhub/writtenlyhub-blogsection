@@ -1,0 +1,24 @@
+feat(seo): implement enterprise-grade SEO and Readability CMS plugin
+
+This commit introduces a comprehensive, production-ready SEO architecture
+for Payload CMS and Next.js, replacing the legacy SEO implementation with
+a custom, dynamic scoring engine and advanced editorial UI.
+
+Core Features & Architecture:
+- Custom SEO Plugin: Removed `@payloadcms/plugin-seo` in favor of a bespoke, deeply integrated SEO module tailored for editorial workflows.
+- Unified Scoring Engine: Implemented a robust calculateUnifiedScore (75% SEO / 25% Readability) that grades content based on weighted heuristics (Title length, keyword density, sentence complexity, transition words, etc.).
+- Immutable Scoring: The scoring engine is bound mathematically to the text. Ignored warnings are filtered from the UI via localStorage but still affect the score to prevent artificial inflation.
+- Explain Score Breakdown: Added a transparent UI panel detailing exactly how positive and negative impacts contribute to the overall score.
+
+Publish Validation & Safeguards:
+- Hard Publishing Blocks: Implemented beforeChange hooks to prevent publishing posts with missing slugs, duplicate slugs, or broken JSON-LD syntax.
+- Draft Mode Handling: Updated page.tsx to correctly query draft docs with overrideAccess when Next.js Draft Mode is active.
+
+Frontend SEO & Metadata Output:
+- Next.js Metadata: Overhauled generateMetadata to map global SiteSettings fallbacks and dynamic Open Graph images (/api/og).
+- Structured Data (JSON-LD): Added automated JSON-LD schema generation with support for manual advanced overrides.
+- Automated Feeds: Updated sitemap.xml and feed.xml generators to integrate cleanly with the new data models.
+
+Additional Enhancements:
+- Newsletter API: Setup robust NewsletterPopup with API integration and rate limiting.
+- Migrations: Generated Payload migrations for the new SEO schema and database changes.

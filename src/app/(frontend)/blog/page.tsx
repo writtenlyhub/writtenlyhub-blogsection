@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
@@ -143,9 +144,12 @@ export default async function BlogArchivePage({ searchParams }: BlogArchivePageP
               <span className="material-symbols-outlined text-[32px] text-writtenly-orange">search_off</span>
             </div>
             <h3 className="font-headline-lg text-writtenly-navy font-bold mb-3">No articles found</h3>
-            <p className="text-on-surface-variant max-w-md mx-auto">
-              We couldn't find any articles matching your current filters. Try adjusting your search query or selecting a different category.
+            <p className="text-on-surface-variant max-w-md mx-auto mb-8">
+              We couldn't find any articles matching "{searchQuery}". Try checking your spelling, using fewer words, or clearing your filters.
             </p>
+            <Link href="/blog" className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors">
+              Clear Search & Filters
+            </Link>
           </FadeIn>
         )}
       </section>

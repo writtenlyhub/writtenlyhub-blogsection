@@ -9,6 +9,8 @@ import { ExpertInsight } from '@/components/blog/ExpertInsight';
 import { QuickFacts } from '@/components/blog/QuickFacts';
 import { Callout } from '@/components/blog/Callout';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { TableBlock } from '@/components/blog/TableBlock';
+import { DataGraphBlock } from '@/components/blog/DataGraphBlock';
 
 export interface RichTextProps {
   content: MockContentNode[];
@@ -128,6 +130,10 @@ export function RichText({ content, className = '' }: RichTextProps) {
         return <QuickFacts key={index} data={node.data} />;
       case 'block-callout':
         return <Callout key={index} data={node.data} />;
+      case 'block-tableBlock':
+        return <TableBlock key={index} data={node.data} />;
+      case 'block-dataGraph':
+        return <DataGraphBlock key={index} data={node.data} />;
       default:
         return null;
     }

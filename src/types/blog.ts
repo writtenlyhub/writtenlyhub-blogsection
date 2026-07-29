@@ -1,5 +1,5 @@
 export interface MockContentNode {
-  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text' | 'ul' | 'ol' | 'li' | 'blockquote' | 'hr' | 'code-block' | 'upload' | 'block-quote' | 'block-keyTakeaways' | 'block-cta' | 'block-watchLearn' | 'block-faq' | 'block-expertInsight' | 'block-quickFacts' | 'block-callout';
+  type: 'paragraph' | 'heading-2' | 'heading-3' | 'link' | 'text' | 'ul' | 'ol' | 'li' | 'blockquote' | 'hr' | 'code-block' | 'upload' | 'block-quote' | 'block-keyTakeaways' | 'block-cta' | 'block-watchLearn' | 'block-faq' | 'block-expertInsight' | 'block-quickFacts' | 'block-callout' | 'block-tableBlock' | 'block-dataGraph';
   id?: string;
   text?: string;
   url?: string;

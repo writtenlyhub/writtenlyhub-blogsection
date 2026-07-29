@@ -11,6 +11,8 @@ import {
   QuickFactsBlock,
   CalloutBlock,
   FAQBlock,
+  TableBlock,
+  DataGraphBlock,
 } from '../blocks'
 import { revalidateCollection } from '../lib/utils/revalidate'
 
@@ -33,11 +35,7 @@ const extractText = (node: any): string => {
 export const Blogs: CollectionConfig = {
   slug: 'blogs',
   versions: {
-    drafts: {
-      autosave: {
-        interval: 10000, // Autosave every 10 seconds
-      },
-    },
+    drafts: true,
     maxPerDoc: 50,
   },
   admin: {
@@ -144,6 +142,50 @@ export const Blogs: CollectionConfig = {
           data.publishedDate = new Date().toISOString()
         }
 
+        // 5. Populate searchDocument for unified full-text search
+        try {
+          const title = data.title || '';
+          const excerpt = data.excerpt || '';
+          
+          let authorName = '';
+          if (data.author && req?.payload) {
+             const authorDoc = typeof data.author === 'object' && data.author !== null
+                ? data.author
+                : await req.payload.findByID({ collection: 'users', id: data.author });
+             authorName = authorDoc?.name || '';
+          }
+          
+          let categoryName = '';
+          if (data.category && req?.payload) {
+             const catDoc = typeof data.category === 'object' && data.category !== null
+                ? data.category
+                : await req.payload.findByID({ collection: 'categories', id: data.category });
+             categoryName = catDoc?.title || '';
+          }
+
+          let tagsString = '';
+          if (data.tags && Array.isArray(data.tags)) {
+            tagsString = data.tags.map((t: any) => t.tag || '').join(' ');
+          }
+
+          let plainText = '';
+          if (data.content && data.content.root) {
+            plainText = extractText(data.content.root);
+          }
+
+          const rawSearchString = `${title} ${excerpt} ${authorName} ${categoryName} ${tagsString} ${plainText}`;
+          
+          // Normalize: lowercase, remove extra spaces, trim, remove diacritics
+          data.searchDocument = rawSearchString
+             .toLowerCase()
+             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+             .replace(/\s+/g, ' ')
+             .trim();
+             
+        } catch (e) {
+           console.error('[Blogs Hook] Error generating searchDocument', e);
+        }
+
         return data
       },
     ],
@@ -240,6 +282,8 @@ export const Blogs: CollectionConfig = {
                       QuickFactsBlock,
                       CalloutBlock,
                       FAQBlock,
+                      TableBlock,
+                      DataGraphBlock,
                     ],
                   }),
                 ],
@@ -389,6 +433,14 @@ export const Blogs: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+    },
+    {
+      name: 'searchDocument',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      index: false,
     },
   ],
 }

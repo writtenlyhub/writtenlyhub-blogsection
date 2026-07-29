@@ -276,16 +276,49 @@ export interface Category {
      * Falls back to Open Graph Image
      */
     twitterImage?: (number | null) | Media;
+    /**
+     * Override global robot meta tags for this specific page.
+     */
     robots?: {
+      /**
+       * Allow search engines to index pages
+       */
       index?: boolean | null;
+      /**
+       * Prevent indexing
+       */
       noindex?: boolean | null;
+      /**
+       * Allow following links
+       */
       follow?: boolean | null;
+      /**
+       * Prevent following links
+       */
       nofollow?: boolean | null;
+      /**
+       * Do not show a cached link in search results
+       */
       noarchive?: boolean | null;
+      /**
+       * Do not show a text snippet or video preview
+       */
       nosnippet?: boolean | null;
+      /**
+       * Do not index images on this page
+       */
       noimageindex?: boolean | null;
+      /**
+       * Maximum text-snippet length (in characters)
+       */
       maxSnippet?: number | null;
+      /**
+       * Maximum size of an image preview
+       */
       maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      /**
+       * Maximum video snippet length (in seconds)
+       */
       maxVideoPreview?: number | null;
     };
     jsonLd?: {
@@ -403,16 +436,49 @@ export interface Blog {
      * Falls back to Open Graph Image
      */
     twitterImage?: (number | null) | Media;
+    /**
+     * Override global robot meta tags for this specific page.
+     */
     robots?: {
+      /**
+       * Allow search engines to index pages
+       */
       index?: boolean | null;
+      /**
+       * Prevent indexing
+       */
       noindex?: boolean | null;
+      /**
+       * Allow following links
+       */
       follow?: boolean | null;
+      /**
+       * Prevent following links
+       */
       nofollow?: boolean | null;
+      /**
+       * Do not show a cached link in search results
+       */
       noarchive?: boolean | null;
+      /**
+       * Do not show a text snippet or video preview
+       */
       nosnippet?: boolean | null;
+      /**
+       * Do not index images on this page
+       */
       noimageindex?: boolean | null;
+      /**
+       * Maximum text-snippet length (in characters)
+       */
       maxSnippet?: number | null;
+      /**
+       * Maximum size of an image preview
+       */
       maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      /**
+       * Maximum video snippet length (in seconds)
+       */
       maxVideoPreview?: number | null;
     };
     jsonLd?: {
@@ -470,6 +536,7 @@ export interface Blog {
   featuredArticle?: boolean | null;
   sticky?: boolean | null;
   relatedArticles?: (number | Blog)[] | null;
+  searchDocument?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -845,6 +912,7 @@ export interface BlogsSelect<T extends boolean = true> {
   featuredArticle?: T;
   sticky?: T;
   relatedArticles?: T;
+  searchDocument?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -926,16 +994,49 @@ export interface SiteSetting {
    */
   defaultOgImage?: (number | null) | Media;
   defaultTwitterCard?: ('summary' | 'summary_large_image') | null;
+  /**
+   * Configure default robots meta tags for search engines.
+   */
   defaultRobots?: {
+    /**
+     * Allow search engines to index pages
+     */
     index?: boolean | null;
+    /**
+     * Prevent indexing
+     */
     noindex?: boolean | null;
+    /**
+     * Allow following links
+     */
     follow?: boolean | null;
+    /**
+     * Prevent following links
+     */
     nofollow?: boolean | null;
+    /**
+     * Do not show a cached link in search results
+     */
     noarchive?: boolean | null;
+    /**
+     * Do not show a text snippet or video preview
+     */
     nosnippet?: boolean | null;
+    /**
+     * Do not index images on this page
+     */
     noimageindex?: boolean | null;
+    /**
+     * Maximum text-snippet length (in characters)
+     */
     maxSnippet?: number | null;
+    /**
+     * Maximum size of an image preview
+     */
     maxImagePreview?: ('none' | 'standard' | 'large') | null;
+    /**
+     * Maximum video snippet length (in seconds)
+     */
     maxVideoPreview?: number | null;
   };
   verificationTags?: {

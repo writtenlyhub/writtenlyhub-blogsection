@@ -121,7 +121,7 @@ function transformLexicalToMockNodes(lexicalNodes: any[]): MockContentNode[] {
     }
     if (node.type === 'block') {
       const blockType = node.fields?.blockType;
-      if (['quote', 'expertInsight', 'cta', 'watchLearn', 'keyTakeaways', 'quickFacts', 'callout', 'faq'].includes(blockType)) {
+      if (['quote', 'expertInsight', 'cta', 'watchLearn', 'keyTakeaways', 'quickFacts', 'callout', 'faq', 'tableBlock', 'dataGraph'].includes(blockType)) {
         return { type: `block-${blockType}` as any, data: node.fields };
       }
     }

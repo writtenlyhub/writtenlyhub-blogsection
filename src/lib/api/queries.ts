@@ -49,7 +49,7 @@ export const getArchivePosts = async (limit: number = 9, page: number = 1, categ
   }
 
   if (searchQuery) {
-    whereOptions.title = { contains: searchQuery };
+    whereOptions.searchDocument = { like: searchQuery.toLowerCase().trim() };
   }
 
   return await payload.find({

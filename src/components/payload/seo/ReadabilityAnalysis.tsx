@@ -19,7 +19,7 @@ export const ReadabilityAnalysis: React.FC<ReadabilityAnalysisProps> = ({ result
               <strong style={{ fontWeight: '600' }}>{item.title}: </strong>
               <span style={{ color: 'var(--theme-elevation-400, #6b7280)' }}>{item.message}</span>
               {status !== 'pass' && status !== 'fail' && (
-                <button 
+                <button type="button" 
                   onClick={(e) => { e.preventDefault(); onDismiss(item.id); }}
                   style={{ marginLeft: '8px', fontSize: '12px', background: 'transparent', border: '1px solid var(--theme-elevation-200, #d1d5db)', padding: '2px 8px', borderRadius: '4px', cursor: 'pointer', color: 'var(--theme-elevation-500, #4b5563)' }}
                 >

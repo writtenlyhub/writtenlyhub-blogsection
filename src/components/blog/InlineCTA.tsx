@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CTAData } from '@/types/blog';
 import { Button } from '@/components/ui/Button';
@@ -7,8 +9,26 @@ export function InlineCTA({ data }: { data: CTAData | null }) {
 
   const { title, description, buttonText, buttonLink } = data;
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const link = buttonLink?.toLowerCase() || '';
+    const text = buttonText?.toLowerCase() || '';
+    
+    // Intercept if link or text mentions subscribe/newsletter
+    if (
+      link.includes('subscribe') || 
+      link.includes('newsletter') || 
+      text.includes('subscribe') || 
+      text.includes('newsletter') ||
+      link === '#' ||
+      link === ''
+    ) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent('open-newsletter-modal'));
+    }
+  };
+
   return (
-    <div className="max-w-[75ch] mx-auto lg:mx-0 w-full p-6 md:p-8 bg-writtenly-navy text-white rounded-2xl shadow-md border border-primary-container flex flex-col items-center justify-between gap-6">
+    <div data-newsletter-cta="true" className="max-w-[75ch] mx-auto lg:mx-0 w-full p-6 md:p-8 bg-writtenly-navy text-white rounded-2xl shadow-md border border-primary-container flex flex-col items-center justify-between gap-6">
       <div>
         <h3 className="font-headline-md text-xl md:text-2xl mb-4 text-white text-center">{title}</h3>
         <p className="text-base md:text-lg opacity-90 leading-relaxed m-0 text-center">
@@ -16,7 +36,7 @@ export function InlineCTA({ data }: { data: CTAData | null }) {
         </p>
       </div>
       <div className="w-full text-center flex justify-center">
-        <a href={buttonLink} className="no-underline">
+        <a href={buttonLink} onClick={handleClick} className="no-underline">
           <Button variant="primary" className="text-base px-6 py-2.5 w-full md:w-auto">
             {buttonText}
           </Button>

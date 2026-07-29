@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { trackEvent } from '@/lib/analytics';
 
 export function Newsletter({ source = 'Inline Form' }: { source?: string }) {
@@ -41,8 +41,27 @@ export function Newsletter({ source = 'Inline Form' }: { source?: string }) {
     }
   };
 
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        window.dispatchEvent(new CustomEvent('newsletter-visibility', { 
+          detail: { isVisible: entry.isIntersecting } 
+        }));
+      },
+      { threshold: 0 }
+    );
+    
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="newsletter" className="w-full px-gutter py-section-gap mb-16">
+    <section ref={sectionRef} id="newsletter" data-newsletter-cta="true" className="w-full px-gutter py-section-gap mb-16">
       <div className="max-w-container-max mx-auto bg-writtenly-navy rounded-[2rem] md:rounded-3xl overflow-hidden relative shadow-lg">
         <div className="p-6 md:p-10 lg:p-12 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
           <div className="max-w-2xl text-center lg:text-left">

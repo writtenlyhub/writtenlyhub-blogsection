@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Button } from '../ui/Button';
 import { MobileMenu } from './MobileMenu';
 import { getCachedSiteSettings } from '@/lib/api';
+import { GlobalSearch } from './GlobalSearch';
 
 export async function Header() {
   const siteSettings = await getCachedSiteSettings();
@@ -37,6 +38,7 @@ export async function Header() {
               <Button variant="primary" className="font-label-md text-label-md px-4 py-2 md:px-5 md:py-2">Get my strategy</Button>
             </a>
           </div>
+          <GlobalSearch />
           <MobileMenu contactEmail={contactEmail} />
         </div>
       </div>

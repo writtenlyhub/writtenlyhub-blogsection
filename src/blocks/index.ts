@@ -177,3 +177,6 @@ export const FAQBlock: Block = {
     },
   ],
 }
+
+export * from './TableBlock'
+export * from './DataGraphBlock'
