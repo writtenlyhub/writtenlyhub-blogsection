@@ -1,6 +1,8 @@
 'use client';
-import { motion, useReducedMotion } from 'framer-motion';
+import { m, LazyMotion, useReducedMotion } from 'framer-motion';
 import { ReactNode, useState, useEffect } from 'react';
+
+const loadFeatures = () => import('framer-motion').then((res) => res.domAnimation);
 
 interface FadeInProps {
   children: ReactNode;
@@ -56,18 +58,20 @@ export function FadeIn({
   const visibleState = { opacity: 1, x: 0, y: 0 };
 
   return (
-    <motion.div
-      className={className}
-      initial={hiddenState}
-      whileInView={visibleState}
-      viewport={{ once: true, amount: 0.1, margin: "100px" }}
-      transition={{ 
-        duration, 
-        delay, 
-        ease: 'easeOut' 
-      }}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={loadFeatures} strict>
+      <m.div
+        className={className}
+        initial={hiddenState}
+        whileInView={visibleState}
+        viewport={{ once: true, amount: 0.1, margin: "100px" }}
+        transition={{ 
+          duration, 
+          delay, 
+          ease: 'easeOut' 
+        }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   );
 }

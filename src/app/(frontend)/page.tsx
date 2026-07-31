@@ -123,9 +123,7 @@ export default async function BlogListingPage() {
         </section>
 
         {heroBlog && (
-          <FadeIn direction="up" delay={0.15}>
-            <HeroCard blog={heroBlog} />
-          </FadeIn>
+          <HeroCard blog={heroBlog} />
         )}
       </div>
 

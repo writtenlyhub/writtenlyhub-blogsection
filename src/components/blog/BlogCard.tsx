@@ -31,13 +31,13 @@ export function BlogCard({ blog }: { blog: Blog }) {
           </span>
         </div>
         
-        <h4 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 group-hover:text-writtenly-orange transition-colors">
+        <h3 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 group-hover:text-writtenly-orange transition-colors">
           {blog.title}
-        </h4>
+        </h3>
         
         <div className="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant mb-4">
           <span className="font-bold text-writtenly-navy/80">{blog.author.name}</span>
-          <span className="text-outline/50 px-1">•</span>
+          <span className="text-outline/80 px-1">•</span>
           <span>{blog.publishedDate}</span>
         </div>
         

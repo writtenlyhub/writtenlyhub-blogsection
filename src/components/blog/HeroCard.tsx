@@ -16,7 +16,7 @@ export function HeroCard({ blog }: { blog: Blog }) {
             alt={blog.altText || blog.title}
             fill
             sizes="(max-width: 1024px) 100vw, 60vw"
-            priority={blog.featuredHero}
+            priority={true}
           />
         </div>
         
@@ -33,9 +33,9 @@ export function HeroCard({ blog }: { blog: Blog }) {
 
           <div className="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant mb-5">
             <span className="font-bold text-writtenly-navy/80">{blog.author.name}</span>
-            <span className="text-outline/50 px-1">•</span>
+            <span className="text-outline/80 px-1">•</span>
             <span>{blog.publishedDate}</span>
-            <span className="text-outline/50 px-1">•</span>
+            <span className="text-outline/80 px-1">•</span>
             <span>{blog.readTime}</span>
           </div>
           
