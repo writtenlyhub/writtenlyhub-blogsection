@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/Button';
+import { Home, FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Page Not Found | WrittenlyHub',
@@ -42,14 +43,14 @@ export default function NotFoundPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
           <Link href="/" aria-label="Return to the WrittenlyHub homepage">
             <Button variant="primary">
-              <span className="material-symbols-outlined text-[18px] mr-1.5" aria-hidden="true">home</span>
+              <Home className="text-[18px] mr-1.5" />
               Go to Homepage
             </Button>
           </Link>
 
           <Link href="/blog" aria-label="Browse all WrittenlyHub articles">
             <Button variant="outline">
-              <span className="material-symbols-outlined text-[18px] mr-1.5" aria-hidden="true">article</span>
+              <FileText className="text-[18px] mr-1.5" />
               Browse All Articles
             </Button>
           </Link>

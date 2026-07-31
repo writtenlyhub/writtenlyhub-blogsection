@@ -9,6 +9,7 @@ import { getCachedPosts, getCachedCategories, getCachedHomepageSettings } from '
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 import Link from 'next/link';
 import { HomepageJsonLd } from '@/components/seo/HomepageJsonLd';
+import { ArrowRight } from 'lucide-react';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
@@ -167,7 +168,7 @@ export default async function BlogListingPage() {
                 {categoryTitle}
               </h2>
               <Link className="text-writtenly-orange font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all font-bold group" href={`/blog?category=${categorySlug}`}>
-                View All <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                View All <ArrowRight className="text-[16px] group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
             <FadeIn direction="up">

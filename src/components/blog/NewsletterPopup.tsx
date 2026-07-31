@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 import { NewsletterModal } from '@/components/ui/NewsletterModal';
 import { trackEvent } from '@/lib/analytics';
+import { HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export function NewsletterPopup({ data }: { data?: any }) {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -118,19 +120,8 @@ export function NewsletterPopup({ data }: { data?: any }) {
             {title}
           </span>
           <div className="flex items-center gap-1 shrink-0 ml-4">
-            <span className={`material-symbols-outlined text-outline transition-transform duration-300 text-[20px] ${isMinimized ? 'rotate-180' : ''}`}>
-              expand_more
-            </span>
-            <span 
-              className="material-symbols-outlined text-outline hover:text-error transition-colors text-[18px] ml-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDismissed(true);
-                trackEvent('newsletter_closed', { source: 'Blog Popup' });
-              }}
-            >
-              close
-            </span>
+            <ChevronDown size={20} className={`text-outline transition-transform duration-300 ${isMinimized ? 'rotate-180' : ''}`} />
+            <HelpCircle className="text-outline hover:text-error transition-colors text-[18px] ml-1" />
           </div>
         </button>
 

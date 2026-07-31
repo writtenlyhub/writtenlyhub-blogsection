@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { Link as LinkIcon, Check } from 'lucide-react';
 
 export interface SocialShareProps {
   title: string;
@@ -93,9 +94,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="fill-current">
                <path d="M12.031 0C5.385 0 0 5.385 0 12.035C0 14.159 0.556 16.208 1.583 17.989L0.001 23.999L6.155 22.384C7.871 23.326 9.897 23.834 12.025 23.834H12.03C18.675 23.834 24 18.449 24 11.803C24 8.577 22.744 5.549 20.463 3.268C18.181 0.987 15.154 0 12.031 0ZM12.031 21.844H12.025C10.155 21.844 8.358 21.341 6.804 20.419L6.444 20.205L2.793 21.162L3.766 17.608L3.531 17.234C2.502 15.6 1.956 13.684 1.956 11.803C1.956 6.242 6.478 1.72 12.04 1.72C14.733 1.72 17.257 2.769 19.162 4.674C21.066 6.579 22.115 9.103 22.115 11.796C22.114 17.359 17.592 21.844 12.031 21.844ZM17.561 14.28C17.258 14.128 15.772 13.396 15.495 13.295C15.218 13.195 15.016 13.144 14.814 13.447C14.612 13.749 14.032 14.43 13.855 14.631C13.679 14.833 13.502 14.858 13.199 14.707C12.897 14.556 11.922 14.237 10.771 13.212C9.876 12.415 9.268 11.417 9.092 11.114C8.916 10.812 9.073 10.648 9.225 10.497C9.362 10.362 9.528 10.145 9.68 9.969C9.831 9.792 9.881 9.666 9.982 9.465C10.083 9.263 10.033 9.087 9.957 8.936C9.881 8.784 9.275 7.298 9.023 6.694C8.777 6.104 8.525 6.183 8.343 6.171C8.172 6.159 7.97 6.158 7.768 6.158C7.567 6.158 7.239 6.234 6.962 6.536C6.685 6.838 5.88 7.594 5.88 9.131C5.88 10.668 6.987 12.155 7.138 12.357C7.289 12.558 9.345 15.719 12.522 17.092C13.278 17.419 13.869 17.616 14.333 17.763C15.092 18.004 15.782 17.97 16.326 17.892C16.936 17.805 18.257 17.1 18.535 16.344C18.812 15.588 18.812 14.933 18.736 14.781C18.66 14.63 18.459 14.555 18.156 14.404" />
              </svg>
-          ) : (
-             <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
-          )}
+          ) : null}
         </a>
       ))}
       
@@ -107,7 +106,7 @@ export function SocialShare({ title, url: propUrl, className = '', layout = 'hor
         aria-label="Copy link"
         title="Copy link"
       >
-        <span className="material-symbols-outlined text-[20px]">{copied ? 'check' : 'link'}</span>
+        {copied ? <Check size={20} /> : <LinkIcon size={20} />}
         {copied && (
           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest text-on-surface font-label-md text-label-md py-1 px-2 rounded opacity-100 transition-opacity">
             Copied!

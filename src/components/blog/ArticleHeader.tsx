@@ -1,15 +1,16 @@
 import { UI_Blog as Blog } from '@/types/blog';
 import { Badge } from '@/components/ui/Badge';
 import Link from 'next/link';
+import { ChevronRight, Clock } from 'lucide-react';
 
 export function ArticleHeader({ blog }: { blog: Blog }) {
   return (
     <header className="mb-12 md:mb-16">
       <div className="flex flex-wrap items-center gap-2 mb-6 font-label-md text-label-md font-bold text-on-surface-variant/70">
         <Link href="/" className="hover:text-writtenly-orange transition-colors">Home</Link>
-        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+        <ChevronRight className="text-[14px]" />
         <Link href="/" className="hover:text-writtenly-orange transition-colors">Blog</Link>
-        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+        <ChevronRight className="text-[14px]" />
         <span className="text-writtenly-navy">{blog.category.title}</span>
       </div>
 
@@ -19,7 +20,7 @@ export function ArticleHeader({ blog }: { blog: Blog }) {
           <span>{blog.publishedDate}</span>
           <span className="text-outline/40">•</span>
           <span className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-[16px]">schedule</span>
+            <Clock className="text-[16px]" />
             {blog.readTime}
           </span>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 export interface BreadcrumbItem {
   label: string;
@@ -32,9 +33,7 @@ export function Breadcrumbs({ items, className = '', inverted = false }: Breadcr
                   <Link href={item.href} className={`transition-colors underline-offset-4 hover:underline ${inverted ? 'hover:text-white' : 'hover:text-primary'}`}>
                     {item.label}
                   </Link>
-                  <span className={`material-symbols-outlined text-[14px] ${inverted ? 'text-white/40' : 'text-outline-variant/60'}`}>
-                    chevron_right
-                  </span>
+                  <ChevronRight size={14} className={inverted ? 'text-white/40' : 'text-outline-variant/60'} />
                 </>
               )}
             </li>

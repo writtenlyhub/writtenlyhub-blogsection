@@ -1,5 +1,6 @@
 import React from 'react';
 import { FAQItem } from '@/types/blog';
+import { CircleHelp } from 'lucide-react';
 
 export interface FAQProps {
   title?: string;
@@ -21,7 +22,7 @@ export function FAQ({ data }: { data: FAQProps | null }) {
           return (
             <div key={index} className="mb-10 last:mb-0">
               <h4 className="font-headline-md text-headline-md font-bold text-writtenly-navy mb-3 flex items-start gap-2">
-                <span className="text-writtenly-orange material-symbols-outlined text-[24px] select-none mt-0.5">help</span>
+                <CircleHelp className="text-writtenly-orange text-[24px] select-none mt-0.5" />
                 <span>{item.question}</span>
               </h4>
               <p className="text-on-surface-variant font-body-xl text-body-xl whitespace-pre-wrap pl-[32px]">

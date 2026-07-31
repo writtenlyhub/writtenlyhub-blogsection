@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
+import { Square, Play, Pause } from 'lucide-react';
 
 export function PlayArticleButton({ layout = 'default', inverted = false }: { layout?: 'default' | 'compact', inverted?: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -142,9 +143,11 @@ export function PlayArticleButton({ layout = 'default', inverted = false }: { la
           className={`${layout === 'compact' ? '!px-3 py-1.5 text-xs' : 'flex-1 !px-4 py-2 text-sm'} ${!inverted ? 'border-outline-variant hover:border-writtenly-orange hover:text-writtenly-orange hover:bg-writtenly-orange/5' : 'hover:border-writtenly-orange hover:text-writtenly-orange'} transition-colors flex items-center justify-center gap-2`}
           onClick={handlePlayPause}
         >
-          <span className={`material-symbols-outlined ${layout === 'compact' ? 'text-[18px]' : 'text-[20px]'}`}>
-            {isPlaying && !isPaused ? 'pause' : 'play_arrow'}
-          </span>
+          {isPlaying && !isPaused ? (
+            <Pause size={layout === 'compact' ? 18 : 20} />
+          ) : (
+            <Play size={layout === 'compact' ? 18 : 20} />
+          )}
           {isPlaying && !isPaused ? 'Pause' : isPlaying && isPaused ? 'Resume' : 'Listen'}
         </Button>
         
@@ -156,7 +159,7 @@ export function PlayArticleButton({ layout = 'default', inverted = false }: { la
             title="Stop"
             aria-label="Stop playback"
           >
-            <span className={`material-symbols-outlined ${layout === 'compact' ? 'text-[18px]' : 'text-[20px]'}`}>stop</span>
+            <Square size={layout === 'compact' ? 18 : 20} />
           </Button>
         )}
       </div>

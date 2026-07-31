@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { HelpCircle, RefreshCcw, Home } from 'lucide-react';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -25,9 +26,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
         {/* Icon */}
         <div className="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mx-auto mb-8">
-          <span className="material-symbols-outlined text-[40px] text-writtenly-orange" aria-hidden="true">
-            error_outline
-          </span>
+          <HelpCircle className="text-[40px] text-writtenly-orange" />
         </div>
 
         {/* Heading */}
@@ -48,13 +47,13 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             onClick={reset}
             aria-label="Retry loading the current page"
           >
-            <span className="material-symbols-outlined text-[18px] mr-1.5" aria-hidden="true">refresh</span>
+            <RefreshCcw className="text-[18px] mr-1.5" />
             Try Again
           </Button>
 
           <Link href="/" aria-label="Return to the WrittenlyHub homepage">
             <Button variant="outline">
-              <span className="material-symbols-outlined text-[18px] mr-1.5" aria-hidden="true">home</span>
+              <Home className="text-[18px] mr-1.5" />
               Go to Homepage
             </Button>
           </Link>

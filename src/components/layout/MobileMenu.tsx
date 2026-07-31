@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface MobileMenuProps {
@@ -56,7 +57,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
         aria-label="Open mobile menu"
         className="md:hidden text-white bg-white/10 p-2.5 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
       >
-        <span className="material-symbols-outlined text-[20px]">menu</span>
+        <Menu size={20} />
       </button>
 
       <dialog
@@ -76,7 +77,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
               aria-label="Close menu"
               className="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center w-9 h-9"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <X size={20} />
             </button>
           </div>
 

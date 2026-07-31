@@ -1,6 +1,7 @@
 import React from 'react';
 import { CTAData } from '@/types/blog';
 import { Button } from '@/components/ui/Button';
+import { MonitorPlay } from 'lucide-react';
 
 export function WatchLearn({ data }: { data: CTAData | null }) {
   if (!data || !data.title) return null;
@@ -10,7 +11,7 @@ export function WatchLearn({ data }: { data: CTAData | null }) {
   return (
     <section className="max-w-[75ch] mx-auto lg:mx-0 w-full p-6 bg-surface-container-low rounded-2xl border border-outline-variant flex flex-col sm:flex-row items-start gap-4 md:gap-5">
       <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0">
-        <span className="material-symbols-outlined text-error text-[28px]">smart_display</span>
+        <MonitorPlay className="text-error text-[28px]" />
       </div>
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex flex-col gap-1">

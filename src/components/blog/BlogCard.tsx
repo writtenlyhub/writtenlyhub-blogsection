@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { UI_Blog as Blog } from '@/types/blog';
+import { ChevronRight } from 'lucide-react';
 
 export function BlogCard({ blog }: { blog: Blog }) {
   return (
@@ -48,9 +49,7 @@ export function BlogCard({ blog }: { blog: Blog }) {
         <div className="mt-auto flex justify-start items-center pt-2">
           <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-3 py-1.5 font-label-md text-label-md font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
             <span>Read more</span>
-            <span className="material-symbols-outlined text-[14px]">
-              chevron_right
-            </span>
+            <ChevronRight className="text-[14px]" />
           </div>
         </div>
       </div>

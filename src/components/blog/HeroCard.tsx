@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
 import { UI_Blog as Blog } from '@/types/blog';
+import { ChevronRight } from 'lucide-react';
 
 export function HeroCard({ blog }: { blog: Blog }) {
   return (
@@ -46,9 +47,7 @@ export function HeroCard({ blog }: { blog: Blog }) {
           <div className="mt-auto flex justify-start items-center pt-2">
             <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-4 py-2 font-label-md text-label-md font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
               <span>Read more</span>
-              <span className="material-symbols-outlined text-[16px]">
-                chevron_right
-              </span>
+              <ChevronRight className="text-[16px]" />
             </div>
           </div>
         </div>

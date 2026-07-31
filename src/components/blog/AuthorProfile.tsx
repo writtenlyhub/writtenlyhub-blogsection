@@ -1,6 +1,7 @@
 import { UI_Author as Author } from '@/types/blog';
 import Link from 'next/link';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
+import { ArrowRight } from 'lucide-react';
 
 export function AuthorProfile({ author }: { author: Author }) {
   return (
@@ -30,9 +31,7 @@ export function AuthorProfile({ author }: { author: Author }) {
           className="inline-flex items-center justify-center md:justify-start gap-1 font-label-md text-label-md font-bold text-writtenly-navy hover:text-writtenly-orange transition-colors group"
         >
           View all articles by {author.name}
-          <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
-            arrow_forward
-          </span>
+          <ArrowRight className="text-[16px] group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </div>

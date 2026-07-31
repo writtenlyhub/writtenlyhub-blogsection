@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TocItem } from '@/types/blog';
 import { SocialShare } from '@/components/blog/SocialShare';
+import { BookOpen } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export interface TableOfContentsProps {
   items: TocItem[];
@@ -164,14 +166,12 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
         className="w-full flex items-center justify-between py-4"
       >
         <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-outline text-[20px]">menu_book</span>
+          <BookOpen className="text-outline text-[20px]" />
           <h2 id="toc-heading-mobile" className="font-label-md text-label-md font-bold text-primary uppercase m-0">
             Table of Contents
           </h2>
         </div>
-        <span className={`material-symbols-outlined text-outline transition-transform duration-300 md:hidden ${mobileExpanded ? 'rotate-180' : ''}`}>
-          expand_more
-        </span>
+        <ChevronDown size={20} className={`text-outline transition-transform duration-300 md:hidden ${mobileExpanded ? 'rotate-180' : ''}`} />
       </button>
       
       <div 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Info, TriangleAlert, Lightbulb, Sparkles } from 'lucide-react';
 
 export interface CalloutProps {
   data: {
@@ -13,28 +14,28 @@ export function Callout({ data }: CalloutProps) {
 
   const typeConfig = {
     info: {
-      icon: 'info',
+      icon: Info,
       bg: 'bg-surface-container-high',
       border: 'border-outline-variant/50',
       text: 'text-writtenly-navy',
       iconColor: 'text-writtenly-navy',
     },
     warning: {
-      icon: 'warning',
+      icon: TriangleAlert,
       bg: 'bg-error-container',
       border: 'border-error/20',
       text: 'text-on-error-container',
       iconColor: 'text-error',
     },
     tip: {
-      icon: 'lightbulb',
+      icon: Lightbulb,
       bg: 'bg-secondary-fixed',
       border: 'border-secondary-fixed-dim/50',
       text: 'text-on-secondary-fixed',
       iconColor: 'text-writtenly-orange',
     },
     'pro-tip': {
-      icon: 'stars',
+      icon: Sparkles,
       bg: 'bg-primary-fixed',
       border: 'border-primary-fixed-dim/50',
       text: 'text-on-primary-fixed',
@@ -47,9 +48,7 @@ export function Callout({ data }: CalloutProps) {
   return (
     <div className={`my-8 max-w-[75ch] mx-auto lg:mx-0 p-6 rounded-xl border ${config.bg} ${config.border}`}>
       <div className="flex gap-4">
-        <span className={`material-symbols-outlined shrink-0 text-[24px] ${config.iconColor}`}>
-          {config.icon}
-        </span>
+        <config.icon className={`shrink-0 ${config.iconColor}`} size={24} />
         <div className="flex flex-col gap-2">
           {data.title && (
             <span className={`text-sm font-bold tracking-wide ${config.text}`}>

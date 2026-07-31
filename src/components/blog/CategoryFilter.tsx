@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { UI_Category as Category } from '@/types/blog';
+import { X } from 'lucide-react';
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -230,9 +231,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
               className="w-9 h-9 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-writtenly-orange"
               aria-label="Close categories"
             >
-              <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
-                close
-              </span>
+              <X className="text-[20px] text-on-surface-variant" />
             </button>
           </div>
 

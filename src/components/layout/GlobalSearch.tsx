@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 import { SearchModal } from '../ui/SearchModal';
 
 export function GlobalSearch() {
@@ -29,7 +30,7 @@ export function GlobalSearch() {
         className="w-10 h-10 flex items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors"
         aria-label="Search"
       >
-        <span className="material-symbols-outlined text-[24px]">search</span>
+        <Search size={20} strokeWidth={2.5} />
       </button>
 
       <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

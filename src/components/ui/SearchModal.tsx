@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Search, X, SearchX, History, TrendingUp, CornerDownLeft, ChevronsUpDown } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface SearchResult {
@@ -232,7 +233,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         <h2 id="search-modal-title" className="sr-only">Search Articles</h2>
         {/* Search Input Area */}
         <div className="flex items-center px-4 py-4 border-b border-outline-variant bg-surface-container-lowest">
-          <span className="material-symbols-outlined text-on-surface-variant text-[24px] mr-3">search</span>
+          <Search size={20} className="text-on-surface-variant mr-3" />
           <input
             ref={inputRef}
             type="text"
@@ -246,7 +247,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               onClick={() => { setQuery(''); inputRef.current?.focus(); }}
               className="p-1 rounded hover:bg-surface-container-low text-on-surface-variant transition-colors"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <X size={18} />
             </button>
           )}
           <div className="ml-3 px-2 py-1 bg-surface-container-low rounded text-[10px] font-bold text-on-surface-variant border border-outline-variant hidden sm:block">
@@ -315,7 +316,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             </div>
           ) : query.trim() && !isLoading ? (
              <div className="p-8 text-center flex flex-col items-center">
-                <span className="material-symbols-outlined text-[48px] text-outline-variant mb-4">search_off</span>
+                <SearchX size={48} className="text-outline-variant mb-4" strokeWidth={1} />
                 <p className="font-headline-sm text-on-surface mb-2">No results found for "{query}"</p>
                 <div className="text-on-surface-variant text-sm flex flex-col gap-1">
                   <span>Suggestions:</span>
@@ -345,7 +346,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                           }}
                           onMouseEnter={() => setSelectedIndex(idx)}
                         >
-                          <span className="material-symbols-outlined text-[16px] text-outline-variant">history</span>
+                          <History size={16} className="text-outline-variant" />
                           {rs}
                         </button>
                       </li>
@@ -375,7 +376,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                           }}
                           onMouseEnter={() => setSelectedIndex(globalIdx)}
                         >
-                          <span className="material-symbols-outlined text-[16px] text-writtenly-orange">trending_up</span>
+                          <TrendingUp size={16} className="text-writtenly-orange" />
                           {ts}
                         </button>
                       </li>
@@ -390,11 +391,11 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         {/* Footer shortcuts */}
         <div className="px-4 py-3 bg-surface-container-lowest border-t border-outline-variant flex items-center gap-6 hidden sm:flex">
           <div className="flex items-center gap-2 text-xs font-label-md text-outline">
-            <span className="material-symbols-outlined text-[14px]">keyboard_return</span>
+            <CornerDownLeft size={14} />
             <span>to select</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-label-md text-outline">
-            <span className="material-symbols-outlined text-[14px]">unfold_more</span>
+            <ChevronsUpDown size={14} />
             <span>to navigate</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-label-md text-outline">

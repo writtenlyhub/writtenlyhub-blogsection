@@ -1,5 +1,6 @@
 import React from 'react';
 import { KeyTakeawaysData } from '@/types/blog';
+import { Star } from 'lucide-react';
 
 export function KeyTakeaways({ data }: { data: KeyTakeawaysData | null }) {
   if (!data || !data.items || data.items.length === 0) return null;
@@ -10,7 +11,7 @@ export function KeyTakeaways({ data }: { data: KeyTakeawaysData | null }) {
     <div className="max-w-[75ch] mx-auto lg:mx-0 p-6 bg-surface-container-low rounded-xl border border-outline-variant shadow-sm h-auto">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 rounded-lg bg-white border border-outline-variant flex items-center justify-center shadow-sm">
-          <span className="material-symbols-outlined text-writtenly-orange text-[20px]">star</span>
+          <Star className="text-writtenly-orange text-[20px]" />
         </div>
         <h3 className="font-headline-md text-headline-md font-bold text-primary !m-0">{title}</h3>
       </div>

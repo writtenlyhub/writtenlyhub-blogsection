@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
   totalPages: number;
@@ -47,7 +48,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
           className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
           aria-label="Previous page"
         >
-          <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+          <ChevronLeft className="text-[20px]" />
         </Link>
       )}
 
@@ -98,7 +99,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
           className="flex items-center justify-center w-9 h-9 rounded-full border border-outline-variant/40 text-on-surface-variant hover:border-writtenly-navy/50 hover:text-writtenly-navy transition-colors bg-white shadow-sm"
           aria-label="Next page"
         >
-          <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+          <ChevronRight className="text-[20px]" />
         </Link>
       )}
     </div>

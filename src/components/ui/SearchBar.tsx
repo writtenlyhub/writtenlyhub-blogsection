@@ -2,6 +2,7 @@
 
 import { InputHTMLAttributes, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Search } from 'lucide-react';
 
 export function SearchBar(props: InputHTMLAttributes<HTMLInputElement>) {
   const router = useRouter();
@@ -23,9 +24,7 @@ export function SearchBar(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <form onSubmit={handleSubmit} className="relative group w-full">
       <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-        <span className="material-symbols-outlined text-on-surface-variant/50 group-focus-within:text-writtenly-orange transition-colors text-[20px]">
-          search
-        </span>
+        <Search className="text-on-surface-variant/50 group-focus-within:text-writtenly-orange transition-colors text-[20px]" />
       </div>
       <input
         name="q"

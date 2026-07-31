@@ -3,6 +3,7 @@ import { BlogHeroData } from '@/types/blog';
 import Link from 'next/link';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { PlayArticleButton } from '@/components/blog/PlayArticleButton';
+import { Calendar, Clock } from 'lucide-react';
 
 export function BlogHero(props: BlogHeroData) {
   const {
@@ -70,14 +71,14 @@ export function BlogHero(props: BlogHeroData) {
         <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 font-label-md text-label-md font-medium w-full sm:w-auto">
           {(updatedAt || publishedAt) && (
             <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-white/60">calendar_today</span> 
+              <Calendar className="text-[16px] text-white/60" /> 
               <span>{updatedAt || publishedAt}</span>
             </div>
           )}
           
           {readTime && (
             <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-white/60">schedule</span> 
+              <Clock className="text-[16px] text-white/60" /> 
               <span>{readTime}</span>
             </div>
           )}

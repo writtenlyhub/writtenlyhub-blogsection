@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArticleCard } from '@/types/blog';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { ArrowRight, Calendar, Clock } from 'lucide-react';
 
 export interface RelatedArticlesProps {
   title?: string;
@@ -33,7 +34,7 @@ export function RelatedArticles({ data }: { data: RelatedArticlesProps | null })
               {moreText}
             </h3>
             <a className="font-label-md text-label-md text-secondary-container font-bold hover:underline underline-offset-4 flex items-center gap-1" href={moreLink}>
-              View All <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              View All <ArrowRight className="text-[18px]" />
             </a>
           </div>
           
@@ -59,11 +60,11 @@ export function RelatedArticles({ data }: { data: RelatedArticlesProps | null })
                 <div className="p-4 flex flex-col flex-1">
                   <div className="flex items-center gap-4 font-label-md text-label-md text-on-surface-variant font-medium mb-3">
                     <span className="flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">calendar_today</span> 
+                      <Calendar className="text-[14px]" /> 
                       {article.date}
                     </span>
                     <span className="flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">schedule</span> 
+                      <Clock className="text-[14px]" /> 
                       {article.readTime}
                     </span>
                   </div>

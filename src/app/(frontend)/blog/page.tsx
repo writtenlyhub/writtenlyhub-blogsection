@@ -10,6 +10,7 @@ import { Pagination } from '@/components/ui/Pagination';
 import { getCachedArchivePosts, getCachedCategories } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 import { ArchiveJsonLd } from '@/components/seo/ArchiveJsonLd';
+import { SearchX } from 'lucide-react';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
@@ -141,7 +142,7 @@ export default async function BlogArchivePage({ searchParams }: BlogArchivePageP
         ) : (
           <FadeIn direction="up" className="flex flex-col items-center justify-center py-20 text-center">
             <div className="w-16 h-16 bg-surface-container-low rounded-full flex items-center justify-center mb-6">
-              <span className="material-symbols-outlined text-[32px] text-writtenly-orange">search_off</span>
+              <SearchX className="text-[32px] text-writtenly-orange" />
             </div>
             <h3 className="font-headline-lg text-writtenly-navy font-bold mb-3">No articles found</h3>
             <p className="text-on-surface-variant max-w-md mx-auto mb-8">

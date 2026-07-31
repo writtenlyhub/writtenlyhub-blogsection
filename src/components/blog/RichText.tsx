@@ -11,6 +11,7 @@ import { Callout } from '@/components/blog/Callout';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { TableBlock } from '@/components/blog/TableBlock';
 import { DataGraphBlockWrapper } from '@/components/blog/DataGraphBlockWrapper';
+import { Quote as QuoteIcon } from 'lucide-react';
 
 export interface RichTextProps {
   content: MockContentNode[];
@@ -64,9 +65,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
       case 'blockquote':
         return (
           <blockquote key={index} className="max-w-[75ch] mx-auto lg:mx-0 my-8 flex gap-4 bg-transparent">
-            <span className="material-symbols-outlined text-[48px] text-outline-variant/40 leading-none shrink-0 select-none -mt-2">
-              format_quote
-            </span>
+            <QuoteIcon className="text-[48px] text-outline-variant/40 leading-none shrink-0 select-none -mt-2" />
             <div className="font-body-xl text-body-xl italic text-on-surface-variant flex flex-col gap-4">
               {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'blockquote'))}
             </div>
