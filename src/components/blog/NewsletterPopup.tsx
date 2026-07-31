@@ -4,8 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 import { NewsletterModal } from '@/components/ui/NewsletterModal';
 import { trackEvent } from '@/lib/analytics';
-import { HelpCircle } from 'lucide-react';
-import { ChevronDown } from 'lucide-react';
+import { HelpCircle, ChevronDown, X } from 'lucide-react';
 
 export function NewsletterPopup({ data }: { data?: any }) {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -121,7 +120,16 @@ export function NewsletterPopup({ data }: { data?: any }) {
           </span>
           <div className="flex items-center gap-1 shrink-0 ml-4">
             <ChevronDown size={20} className={`text-outline transition-transform duration-300 ${isMinimized ? 'rotate-180' : ''}`} />
-            <HelpCircle className="text-outline hover:text-error transition-colors text-[18px] ml-1" />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDismissed(true);
+              }}
+              className="text-outline hover:text-error transition-colors ml-1 flex items-center justify-center p-1"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
           </div>
         </button>
 
