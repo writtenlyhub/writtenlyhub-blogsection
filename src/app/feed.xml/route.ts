@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPayloadClient } from '@/lib/api/payload';
 
-export const revalidate = 3600;
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 const FALLBACK_SITE_NAME = 'WrittenlyHub Blog';
 const FALLBACK_SITE_DESCRIPTION =

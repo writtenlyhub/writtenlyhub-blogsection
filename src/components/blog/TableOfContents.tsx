@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TocItem } from '@/types/blog';
 import { SocialShare } from '@/components/blog/SocialShare';
-import { PlayArticleButton } from '@/components/blog/PlayArticleButton';
 
 export interface TableOfContentsProps {
   items: TocItem[];
@@ -78,7 +77,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
   }, [activeId, nestedItems]);
 
   const renderTocList = () => (
-    <nav aria-labelledby="toc-heading" className="flex flex-col gap-1">
+    <nav aria-labelledby="toc-heading" className="flex flex-col gap-0.5">
       {nestedItems.map(item => {
         const isGroupActive = activeParentId === item.id;
         const hasChildren = item.children.length > 0;
@@ -89,12 +88,12 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
             <a
               href={`#${item.id}`}
               onClick={() => setMobileExpanded(false)}
-              className={`block py-1 px-3 text-[13px] leading-tight border-l-[3px] transition-all duration-75 ${
+              className={`block py-2 px-3 text-[14px] leading-snug transition-all duration-75 ${
                 isItemActive
-                  ? 'border-writtenly-orange bg-surface-container-low text-primary font-bold'
+                  ? 'bg-primary/5 text-primary font-medium'
                   : isGroupActive
-                  ? 'border-transparent text-primary font-bold'
-                  : 'border-transparent text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
+                  ? 'text-primary font-medium'
+                  : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
               }`}
             >
               {item.title}
@@ -103,7 +102,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
             {hasChildren && (
               <div 
                 className={`flex flex-col overflow-hidden transition-all duration-150 ease-in-out ${
-                  isGroupActive || !isDesktop ? 'max-h-[1000px] opacity-100 py-1' : 'max-h-0 opacity-0'
+                  isGroupActive || !isDesktop ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
                 {item.children.map(child => {
@@ -113,10 +112,10 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
                       key={child.id}
                       href={`#${child.id}`}
                       onClick={() => setMobileExpanded(false)}
-                      className={`block py-0.5 pl-5 pr-2 text-xs leading-tight border-l-[3px] transition-all duration-75 ${
+                      className={`block py-1.5 pl-6 pr-3 text-[13px] leading-snug transition-all duration-75 ${
                         isChildActive
-                          ? 'border-writtenly-orange bg-surface-container-low text-primary font-medium'
-                          : 'border-transparent text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
+                          ? 'bg-primary/5 text-primary font-medium'
+                          : 'text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
                       }`}
                     >
                       {child.title}
@@ -136,9 +135,9 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
       <aside className="hidden lg:block w-full max-w-[320px]">
         <div className="flex flex-col gap-6">
           {showToc && (
-            <div className="bg-transparent flex flex-col gap-stack-sm">
-              <h2 id="toc-heading" className="font-headline-md text-base font-bold text-primary mb-2 border-b border-outline-variant pb-3 shrink-0">
-                Table of Contents
+            <div className="bg-transparent flex flex-col gap-1">
+              <h2 id="toc-heading" className="font-bold text-[16px] text-on-surface mb-2 shrink-0 px-3">
+                Contents
               </h2>
               <div className="pr-2">
                 {renderTocList()}
@@ -147,10 +146,6 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
           )}
 
           <div className={`${showToc ? 'pt-6 border-t border-outline-variant' : ''} shrink-0`}>
-            <PlayArticleButton />
-          </div>
-
-          <div className="pt-6 border-t border-outline-variant shrink-0">
             <span className="font-label-sm text-label-sm font-bold uppercase text-outline mb-4 block">Share</span>
             <SocialShare title="Check out this article" layout="horizontal" />
           </div>

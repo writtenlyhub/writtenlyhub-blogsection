@@ -151,10 +151,10 @@ export default async function BlogDetail({ params }: PageProps) {
   const newsletterPopupData = siteSettings?.newsletterPopup || undefined;
 
   let finalRelatedArticles = blogData.relatedArticles || [];
-  
+
   if (finalRelatedArticles.length === 0) {
     const categorySlug = rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : undefined;
-    
+
     if (categorySlug) {
       const categoryPosts = await getCachedArchivePosts(4, 1, categorySlug);
       const filteredCatPosts = categoryPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
@@ -171,21 +171,21 @@ export default async function BlogDetail({ params }: PageProps) {
         }));
       }
     }
-    
+
     if (finalRelatedArticles.length === 0) {
       const latestPosts = await getCachedPosts(4, 1);
       const filteredLatest = latestPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
       if (filteredLatest.length > 0) {
-         const mappedList = mapBlogList(filteredLatest);
-         finalRelatedArticles = mappedList.map(item => ({
-            title: item.title,
-            summary: item.excerpt,
-            category: item.category.title,
-            date: item.publishedDate,
-            readTime: item.readTime,
-            imageUrl: item.featuredImage,
-            link: `/blog/${item.slug}`
-         }));
+        const mappedList = mapBlogList(filteredLatest);
+        finalRelatedArticles = mappedList.map(item => ({
+          title: item.title,
+          summary: item.excerpt,
+          category: item.category.title,
+          date: item.publishedDate,
+          readTime: item.readTime,
+          imageUrl: item.featuredImage,
+          link: `/blog/${item.slug}`
+        }));
       }
     }
   }
@@ -196,6 +196,30 @@ export default async function BlogDetail({ params }: PageProps) {
     slug: rawPayloadPost.slug || slug,
     extractedFaqs: blogData.faqs ? blogData.faqs.items : [],
   });
+  const content = blogData.content || [];
+
+  // Group content into chunks. 
+  // 'text' chunks go inside the grid with the sidebar.
+  // 'fullwidth' chunks (CTA) break out of the grid and span the full container.
+  const chunks: { type: 'text' | 'fullwidth', nodes: any[] }[] = [];
+  let currentTextChunk: any[] = [];
+  let seenFaq = false;
+
+  content.forEach((node: any) => {
+    if (node.type === 'block-cta') {
+      if (currentTextChunk.length > 0) {
+        chunks.push({ type: 'text', nodes: currentTextChunk });
+        currentTextChunk = [];
+      }
+      chunks.push({ type: 'fullwidth', nodes: [node] });
+    } else {
+      currentTextChunk.push(node);
+    }
+  });
+
+  if (currentTextChunk.length > 0) {
+    chunks.push({ type: 'text', nodes: currentTextChunk });
+  }
 
   return (
     <>
@@ -204,95 +228,94 @@ export default async function BlogDetail({ params }: PageProps) {
 
       <ReadingProgress />
 
-      <main className="mt-8 max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
-        <Breadcrumbs items={[
-          { label: 'Home', href: '/' },
-          { label: 'Blog', href: '/blog' },
-          ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/blog?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
-          { label: blogData.hero.title, href: `/blog/${rawPayloadPost.slug}` },
-        ]} />
+      <div className="w-full bg-writtenly-navy pt-8 pb-12 mb-8">
+        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
+          <Breadcrumbs inverted items={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/blog?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
+            { label: blogData.hero.title, href: `/blog/${rawPayloadPost.slug}` },
+          ]} />
 
-        <BlogHero {...blogData.hero} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative w-full">
-          {/* Desktop Sticky TOC & Author */}
-          <div className="hidden lg:block lg:col-span-3 h-full">
-            <div className="sticky top-[112px] pb-8 h-fit self-start flex flex-col gap-8">
-              <TableOfContents items={blogData.toc} isDesktop={true} />
-              <div className="pt-6 border-t border-outline-variant shrink-0">
-                <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Author</span>
-                <AboutAuthor 
-                  data={blogData.aboutAuthor} 
-                  layout="vertical"
-                  className="w-full bg-surface-container-low rounded-xl border border-outline-variant flex flex-col gap-4 p-5"
-                />
-              </div>
-            </div>
-          </div>
-          
-          {/* Main Article Content */}
-          <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
-            {/* Mobile / Tablet TOC */}
-            <div className="lg:hidden mb-10 max-w-[75ch] mx-auto">
-              <TableOfContents items={blogData.toc} isMobile={true} />
-            </div>
-            
-            <ArticleContent>
-              <RichText content={blogData.content} />
-            </ArticleContent>
-          </div>
+          <BlogHero {...blogData.hero} />
         </div>
+      </div>
+
+      <main className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
+
+        {chunks.map((chunk, index) => {
+          if (chunk.type === 'text') {
+            return (
+              <div key={index} className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative w-full mb-10">
+                {/* Desktop Sticky TOC & Author (only render in the first text chunk) */}
+                {index === 0 ? (
+                  <div className="hidden lg:block lg:col-span-3 h-full">
+                    <div className="sticky top-[112px] pb-8 h-fit self-start flex flex-col gap-8">
+                      <TableOfContents items={blogData.toc} isDesktop={true} />
+                      <div className="pt-5 border-t border-outline-variant shrink-0">
+                        <span className="text-xs font-bold uppercase tracking-widest text-outline mb-3 block">Author</span>
+                        <AboutAuthor
+                          data={blogData.aboutAuthor}
+                          layout="vertical"
+                          className="w-full bg-surface-container-low rounded-xl border border-outline-variant flex flex-col gap-3 p-4"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="hidden lg:block lg:col-span-3"></div>
+                )}
+
+                {/* Main Article Content */}
+                <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
+                  {/* Mobile / Tablet TOC (only render in the first text chunk) */}
+                  {index === 0 && (
+                    <div className="lg:hidden mb-10 max-w-[75ch] mx-auto">
+                      <TableOfContents items={blogData.toc} isMobile={true} />
+                    </div>
+                  )}
+
+                  <ArticleContent>
+                    <RichText content={chunk.nodes} />
+                  </ArticleContent>
+                </div>
+              </div>
+            );
+          } else {
+            return (
+              <div key={index} className="w-full my-4">
+                <ArticleContent>
+                  <RichText content={chunk.nodes} />
+                </ArticleContent>
+              </div>
+            );
+          }
+        })}
 
         {/* Bottom Content Grid (breaks sticky boundary) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full lg:hidden">
           <div className="hidden lg:block lg:col-span-3"></div>
           <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
-            <div className="mt-12 border-t border-outline-variant pt-10">
+            <div className="mt-12 lg:border-t-0 border-t border-outline-variant pt-10">
               <div className="block lg:hidden mb-12">
                 <AboutAuthor data={blogData.aboutAuthor} />
               </div>
-              
+
               <div className="lg:hidden mt-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Share this article</span>
                 <SocialShare title={blogData.hero.title} layout="horizontal" />
               </div>
-              
-              <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-y border-outline-variant py-8 mb-16 mt-8">
-                {adjacent.prev ? (
-                <Link className="group flex flex-col items-start gap-2 w-full md:w-1/2 text-left hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href={`/blog/${adjacent.prev.slug}`}>
-                  <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
-                    <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
-                    Previous Article
-                  </div>
-                  <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">{adjacent.prev.title}</h4>
-                </Link>
-              ) : (
-                <div className="w-full md:w-1/2" />
-              )}
-              
-              <div className="hidden md:block w-px h-16 bg-outline-variant"></div>
-              
-              {adjacent.next ? (
-                <Link className="group flex flex-col items-end gap-2 w-full md:w-1/2 text-right hover:bg-surface-container-low p-4 rounded-xl transition-colors no-underline" href={`/blog/${adjacent.next.slug}`}>
-                  <div className="flex items-center gap-2 text-secondary-container font-bold text-sm tracking-wide uppercase">
-                    Next Article
-                    <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                  </div>
-                  <h4 className="font-headline-md text-primary text-lg group-hover:text-secondary-container transition-colors line-clamp-2">{adjacent.next.title}</h4>
-                </Link>
-              ) : (
-                <div className="w-full md:w-1/2" />
-              )}
+
+
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
 
       {finalRelatedArticles.length > 0 && (
         <RelatedArticles data={{ articles: finalRelatedArticles }} />
       )}
-      
+
       <NewsletterPopup data={newsletterPopupData} />
     </>
   );

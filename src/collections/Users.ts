@@ -4,7 +4,12 @@ import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
+  auth: {
+    cookies: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax',
+    },
+  },
   admin: {
     useAsTitle: 'email',
   },
@@ -27,6 +32,13 @@ export const Users: CollectionConfig = {
     afterDelete: [() => revalidateCollection(['blogs'])],
   },
   fields: [
+    {
+      name: 'email',
+      type: 'email',
+      access: {
+        read: ({ req }) => Boolean(req.user),
+      },
+    },
     {
       name: 'name',
       type: 'text',

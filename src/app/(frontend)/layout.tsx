@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "WrittenlyHub",
     images: [
       {
-        url: "/images/og/default-og.jpg",
+        url: "/images/og/default-og.webp",
         width: 1200,
         height: 630,
         alt: "WrittenlyHub Blog",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: "Insightful articles, expert guides, and SEO strategies to grow your business.",
     creator: "@WrittenlyHub",
     site: "@WrittenlyHub",
-    images: ["/images/og/default-og.jpg"],
+    images: ["/images/og/default-og.webp"],
   },
 };
 
@@ -77,9 +77,6 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
         <link rel="alternate" type="application/rss+xml" title="WrittenlyHub Blog RSS Feed" href="/feed.xml" />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>

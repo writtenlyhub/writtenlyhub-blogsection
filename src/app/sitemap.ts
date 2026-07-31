@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getPayloadClient } from '@/lib/api/payload';
 
-export const revalidate = 3600; // ISR cache for 1 hour
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

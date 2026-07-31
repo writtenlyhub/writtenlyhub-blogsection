@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface MobileMenuProps {
   contactEmail: string;
@@ -14,12 +15,13 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
   const openMenu = useCallback(() => {
     setIsOpen(true);
     dialogRef.current?.showModal();
-    document.body.style.overflow = 'hidden'; // Lock scroll
   }, []);
 
   const closeMenu = useCallback(() => {
     dialogRef.current?.close();
   }, []);
+
+  useBodyScrollLock(isOpen);
 
   // Sync state and handle cleanup
   useEffect(() => {
@@ -30,14 +32,12 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
     const onClose = () => {
       if (!mounted) return;
       setIsOpen(false);
-      document.body.style.overflow = ''; // Restore scroll
     };
 
     dialog.addEventListener('close', onClose);
     return () => {
       mounted = false;
       dialog.removeEventListener('close', onClose);
-      document.body.style.overflow = ''; // Ensure scroll is restored on unmount
     };
   }, []);
 
@@ -81,7 +81,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
           </div>
 
           {/* Links */}
-          <nav className="flex flex-col p-6 gap-6 overflow-y-auto">
+          <nav className="flex flex-col p-6 gap-6 overflow-y-auto" data-lenis-prevent="true">
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Case Studies</Link>

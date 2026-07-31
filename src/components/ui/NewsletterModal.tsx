@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '@/lib/analytics';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface NewsletterModalProps {
   isOpen: boolean;
@@ -17,16 +18,17 @@ export function NewsletterModal({ isOpen, onClose, source = 'Modal', triggerRef 
   const [successMessage, setSuccessMessage] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Body scroll lock & ESC key
+  // Body scroll lock
+  useBodyScrollLock(isOpen);
+
+  // ESC key
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') onClose();
       };
       document.addEventListener('keydown', handleKeyDown);
       return () => {
-        document.body.style.overflow = 'unset';
         document.removeEventListener('keydown', handleKeyDown);
       };
     }

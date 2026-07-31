@@ -29,7 +29,7 @@ export function ImageWithFallback({
   let finalSrc = fallbackSrc;
   let finalAlt = alt;
 
-  if (!error && src) {
+  if (src) {
     if (typeof src === 'string') {
       finalSrc = src;
     } else if (typeof src === 'object' && src !== null && src.url) {
@@ -40,10 +40,13 @@ export function ImageWithFallback({
 
   return (
     <Image
-      src={finalSrc}
-      alt={finalAlt}
+      src={error || !finalSrc ? fallbackSrc : finalSrc}
+      alt={error ? 'Image not available' : finalAlt}
       className={className}
-      onError={() => setError(true)}
+      onError={() => {
+        // Prevent infinite loops if the fallback itself fails
+        if (!error) setError(true);
+      }}
       {...props}
     />
   );

@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'outline' | 'ghost';
+type ButtonVariant = 'primary' | 'outline' | 'ghost' | 'invertedOutline';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -15,6 +15,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary: "bg-writtenly-orange text-white border border-writtenly-orange hover:opacity-90",
       outline: "bg-white text-on-surface-variant border border-outline-variant hover:border-writtenly-orange hover:text-writtenly-orange",
       ghost: "bg-transparent text-secondary-container hover:opacity-80 shadow-none px-0 py-0",
+      invertedOutline: "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30",
     };
 
     return (

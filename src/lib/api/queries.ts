@@ -13,11 +13,23 @@ export const getPosts = async (limit: number = 10, page: number = 1) => {
 
   return await payload.find({
     collection: 'blogs',
-    depth: 2,
+    depth: 1,
     limit,
     page,
     where: whereOptions,
     sort: '-publishedAt',
+    select: {
+      title: true,
+      excerpt: true,
+      slug: true,
+      category: true,
+      author: true,
+      publishedAt: true,
+      updatedAt: true,
+      readTime: true,
+      featuredImage: true,
+      featuredHero: true,
+    },
     draft,
     overrideAccess: draft,
   })
@@ -54,11 +66,23 @@ export const getArchivePosts = async (limit: number = 9, page: number = 1, categ
 
   return await payload.find({
     collection: 'blogs',
-    depth: 2,
+    depth: 1,
     limit,
     page,
     where: whereOptions,
     sort: '-publishedAt',
+    select: {
+      title: true,
+      excerpt: true,
+      slug: true,
+      category: true,
+      author: true,
+      publishedAt: true,
+      updatedAt: true,
+      readTime: true,
+      featuredImage: true,
+      featuredHero: true,
+    },
     draft,
     overrideAccess: draft,
   })
@@ -131,6 +155,7 @@ export const getAdjacentPosts = async (publishedAt: string) => {
       sort: '-publishedAt',
       limit: 1,
       depth: 0,
+      select: { title: true, slug: true, publishedAt: true, _status: true },
       draft,
       overrideAccess: draft,
     }),
@@ -141,6 +166,7 @@ export const getAdjacentPosts = async (publishedAt: string) => {
       sort: 'publishedAt',
       limit: 1,
       depth: 0,
+      select: { title: true, slug: true, publishedAt: true, _status: true },
       draft,
       overrideAccess: draft,
     })

@@ -10,7 +10,7 @@ import { QuickFacts } from '@/components/blog/QuickFacts';
 import { Callout } from '@/components/blog/Callout';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { TableBlock } from '@/components/blog/TableBlock';
-import { DataGraphBlock } from '@/components/blog/DataGraphBlock';
+import { DataGraphBlockWrapper } from '@/components/blog/DataGraphBlockWrapper';
 
 export interface RichTextProps {
   content: MockContentNode[];
@@ -63,8 +63,11 @@ export function RichText({ content, className = '' }: RichTextProps) {
         );
       case 'blockquote':
         return (
-          <blockquote key={index} className="max-w-[75ch] mx-auto lg:mx-0 border-l-4 border-writtenly-orange pl-6 py-2 my-8 bg-transparent">
-            <div className="font-headline-md text-headline-md italic font-medium text-primary">
+          <blockquote key={index} className="max-w-[75ch] mx-auto lg:mx-0 my-8 flex gap-4 bg-transparent">
+            <span className="material-symbols-outlined text-[48px] text-outline-variant/40 leading-none shrink-0 select-none -mt-2">
+              format_quote
+            </span>
+            <div className="font-body-xl text-body-xl italic text-on-surface-variant flex flex-col gap-4">
               {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'blockquote'))}
             </div>
           </blockquote>
@@ -119,7 +122,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
       case 'block-keyTakeaways':
         return <div key={index} className="my-10"><KeyTakeaways data={{ title: node.data?.title, items: node.data?.items?.map((i: any) => i.item) || [] }} /></div>;
       case 'block-cta':
-        return <div key={index} className="my-10"><InlineCTA data={node.data} /></div>;
+        return <div key={index} className="my-4"><InlineCTA data={node.data} /></div>;
       case 'block-watchLearn':
         return <div key={index} className="my-10"><WatchLearn data={node.data} /></div>;
       case 'block-faq':
@@ -133,7 +136,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
       case 'block-tableBlock':
         return <TableBlock key={index} data={node.data} />;
       case 'block-dataGraph':
-        return <DataGraphBlock key={index} data={node.data} />;
+        return <DataGraphBlockWrapper key={index} data={node.data} />;
       default:
         return null;
     }

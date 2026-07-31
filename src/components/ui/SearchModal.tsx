@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface SearchResult {
   id: string;
@@ -37,6 +38,8 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  useBodyScrollLock(isOpen);
 
   // Load recent searches
   useEffect(() => {
@@ -103,12 +106,19 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     return () => { active = false; };
   }, [debouncedQuery]);
 
-  // Focus input on open
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Focus management and trap
   useEffect(() => {
     if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
       setTimeout(() => inputRef.current?.focus(), 50);
       setQuery('');
       setSelectedIndex(-1);
+    } else if (previousFocusRef.current) {
+      // Focus restoration
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
     }
   }, [isOpen]);
 
@@ -120,7 +130,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     router.push(url);
   }, [query, recentSearches, router, onClose]);
 
-  // Keyboard navigation
+  // Keyboard navigation & Focus Trap
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -128,6 +138,29 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       if (e.key === 'Escape') {
         onClose();
         return;
+      }
+
+      // Focus Trap implementation
+      if (e.key === 'Tab' && resultsRef.current) {
+        // Find all focusable elements inside the modal container
+        const modalContainer = inputRef.current?.closest('[role="dialog"]') as HTMLElement;
+        if (modalContainer) {
+          const focusableElements = modalContainer.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusableElements.length > 0) {
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (e.shiftKey && document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            } else if (!e.shiftKey && document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
       }
 
       // Determine what list is currently shown
@@ -186,10 +219,17 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" 
         onClick={onClose}
+        aria-hidden="true"
       />
       
       {/* Modal */}
-      <div className="relative bg-surface w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] border border-outline-variant transform transition-all">
+      <div 
+        className="relative bg-surface w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] border border-outline-variant transform transition-all"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="search-modal-title"
+      >
+        <h2 id="search-modal-title" className="sr-only">Search Articles</h2>
         {/* Search Input Area */}
         <div className="flex items-center px-4 py-4 border-b border-outline-variant bg-surface-container-lowest">
           <span className="material-symbols-outlined text-on-surface-variant text-[24px] mr-3">search</span>
@@ -215,7 +255,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         </div>
 
         {/* Results Area */}
-        <div ref={resultsRef} className="flex-1 overflow-y-auto p-2">
+        <div ref={resultsRef} className="flex-1 overflow-y-auto p-2" data-lenis-prevent="true">
           
           {isLoading && query.trim() ? (
             <div className="p-4 flex flex-col gap-4">

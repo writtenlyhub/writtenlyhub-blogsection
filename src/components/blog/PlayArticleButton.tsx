@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 
-export function PlayArticleButton() {
+export function PlayArticleButton({ layout = 'default', inverted = false }: { layout?: 'default' | 'compact', inverted?: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speechSynthesisAvailable, setSpeechSynthesisAvailable] = useState(false);
@@ -56,12 +56,20 @@ export function PlayArticleButton() {
     };
     
     utterance.onerror = (e) => {
-       if (!isCanceled && e.error !== 'canceled') {
+       if (!isCanceled && e.error !== 'canceled' && e.error !== 'interrupted') {
          setIsPlaying(false);
+         setIsPaused(false);
        }
     };
 
+    // Workaround for Chrome sometimes getting stuck after cancel
+    synth.resume();
     synth.speak(utterance);
+
+    // If it was paused when chunk changed, pause it again
+    if (isPaused) {
+      synth.pause();
+    }
 
     return () => {
       isCanceled = true;
@@ -123,35 +131,39 @@ export function PlayArticleButton() {
   if (!speechSynthesisAvailable) return null;
 
   return (
-    <div className="flex flex-col shrink-0">
-      <span className="text-xs font-bold uppercase tracking-widest text-outline mb-4 block">Listen</span>
-      <div className="flex items-center gap-2">
+    <div className={`shrink-0 ${layout === 'compact' ? 'flex items-center gap-2 sm:gap-3 w-auto' : 'flex flex-col w-full'}`}>
+      {layout !== 'compact' && (
+        <span className={`text-xs font-bold uppercase tracking-widest ${inverted ? 'text-white/60' : 'text-outline'} mb-4 block`}>Listen</span>
+      )}
+      
+      <div className="flex items-center gap-2 shrink-0">
         <Button 
-          variant="outline" 
-          className="flex-1 !px-4 py-2 text-sm border-outline-variant hover:border-writtenly-orange hover:text-writtenly-orange hover:bg-writtenly-orange/5 transition-colors flex items-center justify-center gap-2"
+          variant={inverted ? 'invertedOutline' : 'outline'} 
+          className={`${layout === 'compact' ? '!px-3 py-1.5 text-xs' : 'flex-1 !px-4 py-2 text-sm'} ${!inverted ? 'border-outline-variant hover:border-writtenly-orange hover:text-writtenly-orange hover:bg-writtenly-orange/5' : 'hover:border-writtenly-orange hover:text-writtenly-orange'} transition-colors flex items-center justify-center gap-2`}
           onClick={handlePlayPause}
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className={`material-symbols-outlined ${layout === 'compact' ? 'text-[18px]' : 'text-[20px]'}`}>
             {isPlaying && !isPaused ? 'pause' : 'play_arrow'}
           </span>
-          {isPlaying && !isPaused ? 'Pause' : isPlaying && isPaused ? 'Resume' : 'Play Article'}
+          {isPlaying && !isPaused ? 'Pause' : isPlaying && isPaused ? 'Resume' : 'Listen'}
         </Button>
+        
         {isPlaying && (
           <Button 
-            variant="outline" 
-            className="!px-3 py-2 text-sm border-outline-variant hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-colors flex items-center justify-center"
+            variant={inverted ? 'invertedOutline' : 'outline'} 
+            className={`${layout === 'compact' ? '!px-2 py-1.5' : '!px-3 py-2'} text-sm ${!inverted ? 'border-outline-variant hover:border-red-500 hover:text-red-500 hover:bg-red-50' : 'hover:border-red-400 hover:text-red-400 hover:bg-red-500/20'} transition-colors flex items-center justify-center`}
             onClick={handleStop}
             title="Stop"
             aria-label="Stop playback"
           >
-            <span className="material-symbols-outlined text-[20px]">stop</span>
+            <span className={`material-symbols-outlined ${layout === 'compact' ? 'text-[18px]' : 'text-[20px]'}`}>stop</span>
           </Button>
         )}
       </div>
 
       {isPlaying && chunks.length > 0 && (
-        <div className="mt-4 flex items-center gap-3 px-1">
-          <span className="text-[11px] font-bold text-on-surface-variant min-w-[32px] text-right tabular-nums">
+        <div className={`${layout === 'compact' ? 'flex items-center gap-2 w-[100px] sm:w-[150px]' : 'mt-4 flex items-center gap-3 px-1 w-full'}`}>
+          <span className={`${layout === 'compact' ? 'text-[10px] min-w-[28px]' : 'text-[11px] min-w-[32px]'} font-bold ${inverted ? 'text-white/80' : 'text-on-surface-variant'} text-right tabular-nums shrink-0`}>
             {totalChars > 0 ? Math.round((currentCharIndex / totalChars) * 100) : 0}%
           </span>
           <div className="relative flex-1 flex items-center h-4">
@@ -183,7 +195,7 @@ export function PlayArticleButton() {
               }}
               className="absolute w-full h-1.5 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-writtenly-orange [&::-webkit-slider-thumb]:rounded-full focus:outline-none focus:ring-2 focus:ring-writtenly-orange/30 z-10"
               style={{
-                background: `linear-gradient(to right, #fe6b00 ${totalChars > 0 ? (currentCharIndex / totalChars) * 100 : 0}%, #e5e7eb ${totalChars > 0 ? (currentCharIndex / totalChars) * 100 : 0}%)`
+                background: `linear-gradient(to right, #fe6b00 ${totalChars > 0 ? (currentCharIndex / totalChars) * 100 : 0}%, ${inverted ? 'rgba(255,255,255,0.15)' : '#e5e7eb'} ${totalChars > 0 ? (currentCharIndex / totalChars) * 100 : 0}%)`
               }}
             />
           </div>

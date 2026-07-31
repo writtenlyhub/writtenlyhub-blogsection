@@ -7,6 +7,7 @@ import * as migration_20260728_173908_seo_refactor_fix from './20260728_173908_s
 import * as migration_20260728_205210_readability_update from './20260728_205210_readability_update';
 import * as migration_20260728_210844_drop_legacy_seo from './20260728_210844_drop_legacy_seo';
 import * as migration_20260728_234937_search_document_index from './20260728_234937_search_document_index';
+import * as migration_20260731_052321 from './20260731_052321';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260728_234937_search_document_index.up,
     down: migration_20260728_234937_search_document_index.down,
-    name: '20260728_234937_search_document_index'
+    name: '20260728_234937_search_document_index',
+  },
+  {
+    up: migration_20260731_052321.up,
+    down: migration_20260731_052321.down,
+    name: '20260731_052321'
   },
 ];

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "material-symbols";
 @plugin "@tailwindcss/typography";
 @theme inline {
   /* Colors */
@@ -153,7 +154,6 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+  /* Lenis virtual scroll overrides native smooth scrolling.
+     Setting scroll-behavior: smooth here causes scroll lock bugs. */
 }

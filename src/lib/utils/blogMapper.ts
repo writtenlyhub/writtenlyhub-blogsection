@@ -201,7 +201,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
         title: rel.title,
         summary: rel.excerpt || '',
         category: relCat,
-        date: rel.publishedAt ? new Date(rel.publishedAt).toLocaleDateString() : '',
+        date: (rel.updatedAt || rel.publishedAt) ? new Date(rel.updatedAt || rel.publishedAt!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
         readTime: rel.readTime || '5 min read',
         imageUrl: relImg,
         link: `/blog/${rel.slug}`,
@@ -241,7 +241,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
       summary: post.excerpt || '',
       author: author,
       publishedAt: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
-      updatedAt: post.updatedAt ? new Date(post.updatedAt).toLocaleDateString() : '',
+      updatedAt: post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
       readTime: post.readTime || '5 min read',
       imageUrl: imageUrl,
       imageAlt: imageAlt,
@@ -261,7 +261,8 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
   };
 }
 
-export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
   if (!posts || posts.length === 0) {
     return [];
   }
@@ -301,7 +302,7 @@ export function mapBlogList(posts: Blog[] | undefined): UI_Blog[] {
       slug: post.slug || '',
       category,
       author,
-      publishedDate: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+      publishedDate: (post.updatedAt || post.publishedAt) ? new Date(post.updatedAt || post.publishedAt!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
       readTime: post.readTime || '5 min read',
       featuredImage,
       altText,

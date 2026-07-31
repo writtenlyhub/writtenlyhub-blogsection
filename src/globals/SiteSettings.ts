@@ -1,10 +1,16 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateCollection } from '../lib/utils/revalidate'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   access: {
     read: () => true,
     update: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [() => {
+      revalidateCollection(['site-settings']);
+    }],
   },
   fields: [
     {

@@ -49,7 +49,17 @@ export const Blogs: CollectionConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: ({ req }) => {
+      // Authenticated users can read everything (including drafts)
+      if (req.user) return true;
+
+      // Unauthenticated users can only read published posts
+      return {
+        _status: {
+          equals: 'published',
+        },
+      };
+    },
     create: ({ req }) => Boolean(req.user),
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
@@ -367,6 +377,7 @@ export const Blogs: CollectionConfig = {
     {
       name: 'publishedAt',
       type: 'date',
+      index: true,
       admin: {
         position: 'sidebar',
         date: {
