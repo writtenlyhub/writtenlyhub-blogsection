@@ -16,6 +16,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # Provide a dummy DATABASE_URI during build. 
 # We verified Next.js safely logs a DB error but still finishes compilation.
 ENV DATABASE_URI="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV PAYLOAD_SECRET="dummy-secret-for-build-only"
 
 RUN npm run build
 

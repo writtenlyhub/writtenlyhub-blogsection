@@ -30,19 +30,6 @@ interface PageProps {
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const { getCachedPosts } = await import('@/lib/api');
-    const posts = await getCachedPosts(100, 1);
-    return posts.docs.map((post) => ({
-      slug: post.slug,
-    }));
-  } catch (error) {
-    console.error('Failed to fetch posts for generateStaticParams. Database might be unavailable during build:', error);
-    // Fallback to on-demand generation
-    return [];
-  }
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<import("next").Metadata> {
   const { slug } = await params;

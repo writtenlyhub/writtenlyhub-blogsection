@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { HomepageJsonLd } from '@/components/seo/HomepageJsonLd';
 import { ArrowRight } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
 export const metadata: Metadata = {

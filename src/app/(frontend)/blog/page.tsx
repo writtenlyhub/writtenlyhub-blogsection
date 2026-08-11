@@ -12,6 +12,8 @@ import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 import { ArchiveJsonLd } from '@/components/seo/ArchiveJsonLd';
 import { SearchX } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
 interface BlogArchivePageProps {
