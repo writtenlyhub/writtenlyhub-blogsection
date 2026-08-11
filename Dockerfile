@@ -1,11 +1,14 @@
 FROM node:22-bookworm-slim AS base
 
-FROM base AS builder
+FROM base AS deps
 WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json* ./
 RUN npm ci
+
+FROM deps AS builder
+WORKDIR /app
 
 # Copy application source
 COPY . .
@@ -19,6 +22,16 @@ ENV DATABASE_URI="postgresql://dummy:dummy@localhost:5432/dummy"
 ENV PAYLOAD_SECRET="dummy-secret-for-build-only"
 
 RUN npm run build
+
+FROM deps AS migrator
+WORKDIR /app
+
+# Copy application source
+COPY . .
+
+# The migrator stage contains the full node_modules and source code.
+# It does NOT run the Next.js build, making it lightweight for running CLI tasks.
+CMD ["npm", "run", "payload:migrate"]
 
 FROM base AS runner
 WORKDIR /app
@@ -44,5 +57,5 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# Note: migrations are NOT run here. They are executed explicitly via `npm run payload migrate`.
+# Note: migrations are NOT run here. They are executed explicitly via the migrator service.
 CMD ["node", "server.js"]

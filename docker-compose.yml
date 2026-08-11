@@ -22,8 +22,26 @@ services:
     networks:
       - writtenlyhub_network
 
+  migrator:
+    build:
+      context: .
+      target: migrator
+    container_name: writtenlyhub_migrator
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      - PREVIEW_SECRET=${PREVIEW_SECRET}
+    networks:
+      - writtenlyhub_network
+
   web:
-    build: .
+    build:
+      context: .
+      target: runner
     container_name: writtenlyhub_web
     restart: unless-stopped
     depends_on:
