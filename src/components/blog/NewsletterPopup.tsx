@@ -111,9 +111,9 @@ export function NewsletterPopup({ data }: { data?: any }) {
           ${isVisible ? 'translate-y-0 opacity-100 pointer-events-auto' : 'translate-y-8 opacity-0 pointer-events-none'}`}
       >
         {/* Header section (Clickable to toggle) */}
-        <button 
+        <div 
           onClick={() => setIsMinimized(!isMinimized)}
-          className="flex items-center justify-between w-full px-5 py-4 hover:bg-surface-container-low transition-colors"
+          className="flex items-center justify-between w-full px-5 py-4 hover:bg-surface-container-low transition-colors cursor-pointer"
         >
           <span className="font-label-md text-[11px] font-bold uppercase tracking-widest text-primary truncate">
             {title}
@@ -131,7 +131,7 @@ export function NewsletterPopup({ data }: { data?: any }) {
               <X size={18} />
             </button>
           </div>
-        </button>
+        </div>
 
         {/* Expandable content area */}
         <div 

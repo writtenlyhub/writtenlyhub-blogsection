@@ -33,11 +33,7 @@ export async function Header() {
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Write For Us</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
-          <div className="hidden md:block">
-            <a href={`mailto:${contactEmail}`}>
-              <Button variant="primary" className="font-label-md text-label-md px-4 py-2 md:px-5 md:py-2">Get my strategy</Button>
-            </a>
-          </div>
+          {/* CTA removed as requested */}
           <GlobalSearch />
           <MobileMenu contactEmail={contactEmail} />
         </div>

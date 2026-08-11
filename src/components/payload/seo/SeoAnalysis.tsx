@@ -40,14 +40,12 @@ export const SeoAnalysis: React.FC = () => {
     // Generate text fallbacks
     const generatedTitle = title ? (title.length > 60 ? title.substring(0, 57) + '...' : title) : ''
     const generatedDesc = excerpt ? (excerpt.length > 160 ? excerpt.substring(0, 157) + '...' : excerpt) : ''
-    const generatedKeyword = title ? title.split(' ').slice(0, 2).join(' ').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() : ''
     
     const updates = []
     
     // Primary SEO
     if (generatedTitle) updates.push({ path: 'seo.metaTitle', value: generatedTitle })
     if (generatedDesc) updates.push({ path: 'seo.metaDescription', value: generatedDesc })
-    if (generatedKeyword && !focusKeyword) updates.push({ path: 'seo.focusKeyword', value: generatedKeyword })
     
     // Social / Open Graph
     if (generatedTitle) {
@@ -229,40 +227,7 @@ export const SeoAnalysis: React.FC = () => {
   return (
     <div style={{ marginTop: '32px', marginBottom: '16px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       
-      {/* Autofill & Recommendations */}
-      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'flex-end' }}>
-        <button
-          type="button"
-          onClick={handleAutofill}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: autofillStatus ? '#10b981' : 'linear-gradient(to right, #6366f1, #8b5cf6)',
-            color: '#fff',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '8px',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(99, 102, 241, 0.2)',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          {autofillStatus ? (
-            <>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              {autofillStatus}
-            </>
-          ) : (
-            <>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              Auto-Generate Recommendations
-            </>
-          )}
-        </button>
-      </div>
+
 
       {/* Header / Score Overview */}
       <div style={{ padding: '24px', border: '1px solid var(--theme-elevation-150, #e5e7eb)', borderRadius: '16px', marginBottom: '32px', background: 'linear-gradient(to bottom right, var(--theme-elevation-0, #ffffff), var(--theme-elevation-50, #f9fafb))', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)' }}>

@@ -228,9 +228,9 @@ export default async function BlogDetail({ params }: PageProps) {
 
       <ReadingProgress />
 
-      <div className="w-full bg-writtenly-navy pt-8 pb-12 mb-8">
+      <div className="w-full pt-8 pb-12 mb-8">
         <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
-          <Breadcrumbs inverted items={[
+          <Breadcrumbs items={[
             { label: 'Home', href: '/' },
             { label: 'Blog', href: '/blog' },
             ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/blog?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
@@ -267,7 +267,7 @@ export default async function BlogDetail({ params }: PageProps) {
                 )}
 
                 {/* Main Article Content */}
-                <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
+                <div className="lg:col-span-8 lg:col-start-4 w-full min-w-0 lg:pl-16 xl:pl-20">
                   {/* Mobile / Tablet TOC (only render in the first text chunk) */}
                   {index === 0 && (
                     <div className="lg:hidden mb-10 max-w-[75ch] mx-auto">
@@ -295,7 +295,7 @@ export default async function BlogDetail({ params }: PageProps) {
         {/* Bottom Content Grid (breaks sticky boundary) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative pb-section-gap w-full lg:hidden">
           <div className="hidden lg:block lg:col-span-3"></div>
-          <div className="lg:col-span-7 lg:col-start-4 w-full min-w-0">
+          <div className="lg:col-span-8 lg:col-start-4 w-full min-w-0 lg:pl-16 xl:pl-20">
             <div className="mt-12 lg:border-t-0 border-t border-outline-variant pt-10">
               <div className="block lg:hidden mb-12">
                 <AboutAuthor data={blogData.aboutAuthor} />

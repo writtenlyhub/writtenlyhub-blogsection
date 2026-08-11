@@ -45,6 +45,7 @@ export interface AnalysisConfig {
       longQuotations: number
       brokenHierarchy: number
       transitionWords: number
+      multipleH1: number
     }
   }
 }

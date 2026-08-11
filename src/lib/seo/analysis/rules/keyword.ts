@@ -1,5 +1,6 @@
 import { DocumentState, AnalysisConfig, AnalysisResult } from '../types'
 import { extractPlainText } from '../../extractors/extractPlainText'
+import { extractBlocks } from '../../extractors/extractBlocks'
 
 export function analyzeKeywordTitle(doc: DocumentState, config: AnalysisConfig): AnalysisResult {
   const keyword = (doc.focusKeyword || '').toLowerCase().trim()
@@ -49,9 +50,20 @@ export function analyzeKeywordContent(doc: DocumentState, config: AnalysisConfig
     }
   }
 
-  const text = extractPlainText(doc.lexicalState).toLowerCase()
-  
-  if (!text) {
+  const blocks = extractBlocks(doc.lexicalState)
+  let firstMeaningfulText = ''
+  let fullText = ''
+
+  for (const block of blocks) {
+    if (block.type === 'paragraph' && block.text.trim().length > 10) {
+      if (!firstMeaningfulText) {
+        firstMeaningfulText = block.text.toLowerCase()
+      }
+    }
+    fullText += block.text.toLowerCase() + ' '
+  }
+
+  if (!fullText.trim()) {
     return {
       id: 'keyword-content-empty',
       title: 'Keyword in Content',
@@ -61,10 +73,7 @@ export function analyzeKeywordContent(doc: DocumentState, config: AnalysisConfig
     }
   }
 
-  // Very simplistic check: does it appear in the first 300 characters (approx first paragraph)?
-  const firstParagraph = text.substring(0, 300)
-  
-  if (firstParagraph.includes(keyword)) {
+  if (firstMeaningfulText.includes(keyword)) {
     return {
       id: 'keyword-content-pass',
       title: 'Keyword in Content',
@@ -74,7 +83,7 @@ export function analyzeKeywordContent(doc: DocumentState, config: AnalysisConfig
     }
   }
   
-  if (text.includes(keyword)) {
+  if (fullText.includes(keyword)) {
     return {
       id: 'keyword-content-warn',
       title: 'Keyword in Content',

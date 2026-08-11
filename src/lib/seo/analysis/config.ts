@@ -36,7 +36,8 @@ export const ANALYSIS_CONFIG: AnalysisConfig = {
       excessiveBulletLists: 10,
       longQuotations: 5,
       brokenHierarchy: 10,
-      transitionWords: 5
+      transitionWords: 5,
+      multipleH1: 10
     }
   }
 }

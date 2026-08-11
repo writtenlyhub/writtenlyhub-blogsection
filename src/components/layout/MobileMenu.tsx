@@ -91,16 +91,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
           </nav>
 
-          {/* Footer CTA */}
-          <div className="mt-auto p-6 border-t border-white/10">
-            <a 
-              href={`mailto:${contactEmail}`}
-              onClick={closeMenu}
-              className="flex w-full items-center justify-center px-6 py-4 font-label-md text-label-md font-bold bg-writtenly-orange text-white rounded-md hover:opacity-90 transition-opacity"
-            >
-              Get my strategy
-            </a>
-          </div>
+          {/* Footer CTA removed as requested */}
         </div>
       </dialog>
     </>

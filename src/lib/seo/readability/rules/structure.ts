@@ -20,7 +20,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       if (block.wordCount > pLengthLimit) {
         longParagraphs++
       }
-      if (block.sentences === 1 && block.wordCount > 5) { // Ensure it's an actual sentence
+      if (block.sentences === 1) { // Ensure it's an actual sentence
         singleSentenceParagraphs++
       }
       
@@ -55,7 +55,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       id: 'readability-paragraphs',
       title: 'Paragraph Length',
       status: 'warning',
-      weight: config.weights.readability.paragraphLength,
+      weight: config.weights.readability.paragraphLength * 0.5,
       message: `${longParagraphs} paragraph(s) exceed ${pLengthLimit} words. Consider breaking them up.`
     })
   }
@@ -74,7 +74,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       id: 'readability-sentences',
       title: 'Sentence Length',
       status: 'warning',
-      weight: config.weights.readability.sentenceLength,
+      weight: config.weights.readability.sentenceLength * 0.5,
       message: `Several sentences appear to be very long (averaging >${sLengthLimit} words). Try keeping sentences concise.`
     })
   }
@@ -94,7 +94,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       id: 'readability-single-sentence',
       title: 'Paragraph Variation',
       status: 'warning',
-      weight: config.weights.readability.singleSentenceParagraphs,
+      weight: config.weights.readability.singleSentenceParagraphs * 0.5,
       message: `Found ${singleSentenceParagraphs} single-sentence paragraphs. Too many can make text feel fragmented.`
     })
   }
@@ -113,7 +113,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       id: 'readability-lists',
       title: 'List Length',
       status: 'warning',
-      weight: config.weights.readability.excessiveBulletLists,
+      weight: config.weights.readability.excessiveBulletLists * 0.5,
       message: `Found a list with more than ${maxListItems} items. Consider breaking long lists into sections.`
     })
   }
@@ -132,7 +132,7 @@ export function analyzeStructure(doc: DocumentState, config: AnalysisConfig): An
       id: 'readability-quotes',
       title: 'Quotation Length',
       status: 'warning',
-      weight: config.weights.readability.longQuotations,
+      weight: config.weights.readability.longQuotations * 0.5,
       message: `Found ${longQuotes} very long blockquote(s). Consider summarizing instead of quoting large chunks.`
     })
   }

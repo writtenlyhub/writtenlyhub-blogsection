@@ -3,6 +3,7 @@ import { calculateSeoScore } from './score'
 import { analyzeStructure } from '../readability/rules/structure'
 import { analyzeHeadings } from '../readability/rules/headings'
 import { analyzeLanguage } from '../readability/rules/language'
+import { extractPlainText } from '../extractors/extractPlainText'
 
 export function calculateUnifiedScore(doc: DocumentState, config: AnalysisConfig): UnifiedScoreSummary {
   // 1. Calculate SEO Score using existing engine (which returns raw points based on weight)
@@ -28,7 +29,26 @@ export function calculateUnifiedScore(doc: DocumentState, config: AnalysisConfig
   }
 
   const maxReadabilityWeight = Object.values(config.weights.readability).reduce((a, b) => a + b, 0)
-  const readabilityScore = maxReadabilityWeight > 0 ? Math.round((earnedReadabilityWeight / maxReadabilityWeight) * 100) : 100
+  
+  // Check if content is entirely empty
+  const plainText = extractPlainText(doc.lexicalState)
+  const isContentEmpty = plainText.trim().length === 0
+
+  let readabilityScore = 0
+  if (!isContentEmpty) {
+    readabilityScore = maxReadabilityWeight > 0 ? Math.round((earnedReadabilityWeight / maxReadabilityWeight) * 100) : 100
+  } else {
+    // If content is empty, readability rules cannot be evaluated correctly and should contribute 0.
+    // We can also override the results to fail.
+    for (const res of readabilityResults) {
+      res.status = 'fail'
+      res.weight = 0
+      res.message = 'Content is empty.'
+    }
+    readPassed = 0
+    readWarnings = 0
+    readIssues = readabilityResults.length
+  }
 
   // 3. Aggregate Overall Score
   const overallScore = Math.round(
@@ -59,6 +79,7 @@ export function calculateUnifiedScore(doc: DocumentState, config: AnalysisConfig
       'readability-empty-headings': config.weights.readability.emptyHeadings,
       'readability-hierarchy': config.weights.readability.brokenHierarchy,
       'readability-transitions': config.weights.readability.transitionWords,
+      'readability-multiple-h1': config.weights.readability.multipleH1,
     }
     return map[id] || 0
   }
@@ -68,14 +89,14 @@ export function calculateUnifiedScore(doc: DocumentState, config: AnalysisConfig
     const categoryMax = category === 'seo' ? seoMaxWeight : readMaxWeight
     const categoryCategoryWeight = category === 'seo' ? config.categoryWeights.seo : config.categoryWeights.readability
     
-    // Overall point value of this rule
-    const ruleTotalPoints = (maxPossible / categoryMax) * categoryCategoryWeight * 100
+    const maxRuleTotalPoints = (maxPossible / categoryMax) * categoryCategoryWeight * 100
+    const earnedRuleTotalPoints = (res.weight / categoryMax) * categoryCategoryWeight * 100
 
     if (res.status === 'pass') {
-      return Math.round(ruleTotalPoints)
+      return Math.round(earnedRuleTotalPoints)
     } else {
-      // If it fails or warns, it's missing those points
-      return -Math.round(ruleTotalPoints)
+      // Points missed
+      return -Math.round(maxRuleTotalPoints - earnedRuleTotalPoints)
     }
   }
 

@@ -10,6 +10,7 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
   let consecutiveHeadings = 0
   let emptyHeadings = 0
   let brokenHierarchy = 0
+  let h1Count = 0
 
   let previousHeadingLevel = 0 // 0 means no previous heading
 
@@ -35,6 +36,8 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
 
       // 4. Broken Hierarchy
       const currentLevel = parseInt(block.tag?.replace('h', '') || '2', 10)
+      if (currentLevel === 1) h1Count++
+
       if (previousHeadingLevel > 0 && currentLevel > previousHeadingLevel + 1) {
         // e.g., H1 -> H3 (1 -> 3 is difference of 2)
         brokenHierarchy++
@@ -68,7 +71,7 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
       id: 'readability-heading-dist',
       title: 'Heading Distribution',
       status: 'warning',
-      weight: config.weights.readability.headingDistribution,
+      weight: config.weights.readability.headingDistribution * 0.5,
       message: `A section contains ${maxWordsWithoutHeading} words without a subheading. Keep it under ${distanceLimit}.`
     })
   }
@@ -87,7 +90,7 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
       id: 'readability-consecutive-headings',
       title: 'Consecutive Headings',
       status: 'warning',
-      weight: config.weights.readability.consecutiveHeadings,
+      weight: config.weights.readability.consecutiveHeadings * 0.5,
       message: `Found ${consecutiveHeadings} instance(s) of consecutive headings. Add introductory text between them.`
     })
   }
@@ -106,7 +109,7 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
       id: 'readability-empty-headings',
       title: 'Empty Headings',
       status: 'fail', // Empty headings are definitively bad
-      weight: config.weights.readability.emptyHeadings,
+      weight: 0,
       message: `Found ${emptyHeadings} empty heading(s). Remove them or add text.`
     })
   }
@@ -125,8 +128,27 @@ export function analyzeHeadings(doc: DocumentState, config: AnalysisConfig): Ana
       id: 'readability-hierarchy',
       title: 'Heading Hierarchy',
       status: 'warning',
-      weight: config.weights.readability.brokenHierarchy,
+      weight: config.weights.readability.brokenHierarchy * 0.5,
       message: `Found ${brokenHierarchy} instance(s) of skipped heading levels (e.g., H2 directly to H4).`
+    })
+  }
+
+  // 5. Multiple H1 Check
+  if (h1Count === 0 || h1Count === 1) {
+    results.push({
+      id: 'readability-multiple-h1',
+      title: 'H1 Headings',
+      status: 'pass',
+      weight: config.weights.readability.multipleH1,
+      message: h1Count === 0 ? 'No H1 tags found in content (good, usually the page title is the H1).' : 'Only 1 H1 tag found in content.'
+    })
+  } else {
+    results.push({
+      id: 'readability-multiple-h1',
+      title: 'H1 Headings',
+      status: 'fail',
+      weight: 0,
+      message: `Found ${h1Count} H1 tags in the content. There should be at most one H1 per page.`
     })
   }
 

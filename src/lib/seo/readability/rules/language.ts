@@ -9,8 +9,14 @@ export function analyzeLanguage(doc: DocumentState, config: AnalysisConfig): Ana
   let totalSentences = 0
   let sentencesWithTransitions = 0
 
-  // Pre-compile a set or simple list of words for quick checking
-  // Because some are multi-word ("as a result"), we check if the sentence contains the exact phrase
+  // Pre-compile a regular expression with word boundaries for all transition words.
+  // We sort by length descending so longer phrases are matched first, though with \b it matters less.
+  const escapedWords = transitionWords
+    .sort((a, b) => b.length - a.length)
+    .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  
+  const transitionRegex = new RegExp(`\\b(${escapedWords.join('|')})\\b`, 'i')
+
   for (const block of blocks) {
     if (block.type === 'paragraph' || block.type === 'list') {
       // Split into sentences roughly
@@ -18,15 +24,8 @@ export function analyzeLanguage(doc: DocumentState, config: AnalysisConfig): Ana
       totalSentences += sentences.length
 
       for (const sentence of sentences) {
-        const lowerSentence = sentence.toLowerCase().trim()
-        
-        // Fast check: does it start with or contain a transition word?
-        for (const transition of transitionWords) {
-          // Check if it starts with the transition or contains it with boundaries
-          if (lowerSentence.startsWith(transition + ' ') || lowerSentence.includes(' ' + transition + ' ') || lowerSentence.includes(' ' + transition + ',')) {
-            sentencesWithTransitions++
-            break // Only count once per sentence
-          }
+        if (transitionRegex.test(sentence)) {
+          sentencesWithTransitions++
         }
       }
     }
