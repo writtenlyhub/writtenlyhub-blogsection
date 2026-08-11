@@ -2,14 +2,49 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: writtenlyhub_postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: payload
-      POSTGRES_PASSWORD: payloadpassword
-      POSTGRES_DB: writtenlyhub
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # Requirement #3: PostgreSQL should only be accessible from the web container/internal Docker network.
+    # We use expose (internal) instead of ports (external mapping).
+    expose:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - writtenlyhub_network
+
+  web:
+    build: .
+    container_name: writtenlyhub_web
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      - PREVIEW_SECRET=${PREVIEW_SECRET}
+    volumes:
+      # Persistent host-bound media volume
+      - /opt/writtenlyhub/media:/app/public/media
+    networks:
+      - writtenlyhub_network
+
+networks:
+  writtenlyhub_network:
+    driver: bridge
 
 volumes:
   pgdata:
