@@ -108,7 +108,7 @@ export default async function BlogArchivePage({ searchParams }: BlogArchivePageP
 
           <FadeIn direction="up" delay={0.1} className="w-full">
             <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
-            <div className="w-full mx-auto max-w-container-max">
+            <div className="w-full mx-auto max-w-2xl mt-8">
               <SearchBar />
             </div>
           </FadeIn>

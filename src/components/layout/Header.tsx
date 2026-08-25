@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Button } from '../ui/Button';
 import { MobileMenu } from './MobileMenu';
 import { getCachedSiteSettings } from '@/lib/api';
-import { GlobalSearch } from './GlobalSearch';
 
 export async function Header() {
   const siteSettings = await getCachedSiteSettings();
@@ -34,7 +33,6 @@ export async function Header() {
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
           {/* CTA removed as requested */}
-          <GlobalSearch />
           <MobileMenu contactEmail={contactEmail} />
         </div>
       </div>

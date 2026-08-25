@@ -119,7 +119,7 @@ export default async function BlogListingPage() {
             <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
 
             {/* Integrated Search Bar spanning full container width */}
-            <div className="w-full mx-auto max-w-container-max">
+            <div className="w-full mx-auto max-w-2xl mt-6">
               <SearchBar />
             </div>
           </FadeIn>

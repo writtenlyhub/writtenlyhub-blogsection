@@ -18,9 +18,9 @@ interface CategoryFilterProps {
 // Shared pill style helpers
 const PILL_BASE =
   'inline-flex items-center justify-center rounded-full font-label-md text-label-md transition-all shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-writtenly-orange focus-visible:ring-offset-1';
-const PILL_ACTIVE = 'bg-writtenly-navy text-white font-bold shadow-sm';
+const PILL_ACTIVE = 'bg-writtenly-navy text-white font-bold';
 const PILL_INACTIVE =
-  'bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 hover:border-writtenly-navy/50 hover:text-writtenly-navy shadow-sm';
+  'bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 hover:border-writtenly-navy/50 hover:text-writtenly-navy';
 
 export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryFilterProps) {
   const router = useRouter();
