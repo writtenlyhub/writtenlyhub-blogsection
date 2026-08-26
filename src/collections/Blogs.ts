@@ -155,35 +155,22 @@ export const Blogs: CollectionConfig = {
         // 5. Populate searchDocument for unified full-text search
         try {
           const title = data.title || '';
-          const excerpt = data.excerpt || '';
           
-          let authorName = '';
-          if (data.author && req?.payload) {
-             const authorDoc = typeof data.author === 'object' && data.author !== null
-                ? data.author
-                : await req.payload.findByID({ collection: 'users', id: data.author });
-             authorName = authorDoc?.name || '';
-          }
+          let headingsText = '';
+          const extractHeadings = (node: any): string => {
+            if (!node) return '';
+            if (node.type === 'heading') return extractText(node) + ' ';
+            if (node.children && Array.isArray(node.children)) {
+              return node.children.map(extractHeadings).join('');
+            }
+            return '';
+          };
           
-          let categoryName = '';
-          if (data.category && req?.payload) {
-             const catDoc = typeof data.category === 'object' && data.category !== null
-                ? data.category
-                : await req.payload.findByID({ collection: 'categories', id: data.category });
-             categoryName = catDoc?.title || '';
-          }
-
-          let tagsString = '';
-          if (data.tags && Array.isArray(data.tags)) {
-            tagsString = data.tags.map((t: any) => t.tag || '').join(' ');
-          }
-
-          let plainText = '';
           if (data.content && data.content.root) {
-            plainText = extractText(data.content.root);
+            headingsText = extractHeadings(data.content.root);
           }
 
-          const rawSearchString = `${title} ${excerpt} ${authorName} ${categoryName} ${tagsString} ${plainText}`;
+          const rawSearchString = `${title} ${headingsText}`;
           
           // Normalize: lowercase, remove extra spaces, trim, remove diacritics
           data.searchDocument = rawSearchString
