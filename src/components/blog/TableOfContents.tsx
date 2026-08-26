@@ -139,7 +139,7 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
           {showToc && (
             <div className="bg-transparent flex flex-col gap-1">
               <h2 id="toc-heading" className="font-bold text-[16px] text-on-surface mb-2 shrink-0 px-3">
-                Contents
+                Table of Contents
               </h2>
               <div className="pr-2">
                 {renderTocList()}
