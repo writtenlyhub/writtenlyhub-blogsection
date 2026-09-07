@@ -33,18 +33,22 @@ export function isMedia(media: number | Media | undefined | null): media is Medi
  */
 export function getMediaUrl(url: string | undefined | null): string {
   if (!url) return '';
-  
+
   let finalUrl = url;
-  
-  if (process.env.NODE_ENV === 'development') {
-    try {
-      if (finalUrl.startsWith('http')) {
-        return new URL(finalUrl).pathname;
-      }
-    } catch {
-      // ignore
-    }
+
+  // Payload media files are served from /media/, not /api/media/file/.
+  if (finalUrl.includes('/api/media/file/')) {
+    finalUrl = finalUrl.replace('/api/media/file/', '/media/');
   }
+
+  try {
+    if (finalUrl.startsWith('http')) {
+      finalUrl = new URL(finalUrl).pathname;
+    }
+  } catch {
+    // ignore malformed URLs
+  }
+
   return finalUrl;
 }
 
