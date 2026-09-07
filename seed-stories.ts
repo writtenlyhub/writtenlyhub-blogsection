@@ -57,7 +57,6 @@ async function seedSuccessStories() {
           _status: 'published',
           category: category.id,
           shortDescription: `This is a short description for success story ${i}. It demonstrates how we helped the client achieve measurable growth in organic traffic, engagement, and conversions through a tailored content strategy and digital authority building.`,
-          layout: [], // minimal block layout to pass validation if needed
         },
       });
       console.log(`Created ${title}`);
