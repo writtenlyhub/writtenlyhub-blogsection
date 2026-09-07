@@ -6,6 +6,9 @@ const isVercel = process.env.VERCEL === '1';
 const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: isVercel ? ['sharp'] : [],
+  outputFileTracingIncludes: isVercel ? {
+    '/**/*': ['./node_modules/**/*.node', './node_modules/@img/**/*']
+  } : undefined,
   images: {
     remotePatterns: [
       {
