@@ -103,9 +103,9 @@ export function DataGraphBlock({ data }: DataGraphBlockProps) {
   }
 
   return (
-    <div className="my-10 w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest/50 shadow-sm max-w-[85ch] mx-auto lg:mx-0 p-6">
+    <div className="my-10 w-full max-w-[85ch] mx-auto lg:mx-0 p-2 md:p-6">
       {title && <h4 className="font-headline-sm font-semibold text-primary mb-6 text-center">{title}</h4>}
-      <div className="w-full h-[400px]">
+      <div className="w-full h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
         </ResponsiveContainer>

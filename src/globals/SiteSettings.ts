@@ -195,6 +195,32 @@ export const SiteSettings: GlobalConfig = {
             }
           ]
         },
+        {
+          label: 'Trusted Brands',
+          fields: [
+            {
+              name: 'trustedBrands',
+              type: 'group',
+              fields: [
+                {
+                  name: 'logos',
+                  type: 'array',
+                  fields: [
+                    {
+                      name: 'logo',
+                      type: 'upload',
+                      relationTo: 'media',
+                    },
+                    {
+                      name: 'alt',
+                      type: 'text',
+                    }
+                  ],
+                }
+              ]
+            }
+          ]
+        },
       ],
     },
   ],

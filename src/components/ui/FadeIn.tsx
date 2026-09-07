@@ -22,7 +22,7 @@ export function FadeIn({
   delay = 0, 
   className = '', 
   direction = 'up', 
-  duration = 0.3
+  duration = 1.2
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
@@ -35,10 +35,10 @@ export function FadeIn({
 
   const getDirectionOffset = () => {
     switch (direction) {
-      case 'up': return { y: 20 };
-      case 'down': return { y: -20 };
-      case 'left': return { x: 20 };
-      case 'right': return { x: -20 };
+      case 'up': return { y: 40 };
+      case 'down': return { y: -40 };
+      case 'left': return { x: 40 };
+      case 'right': return { x: -40 };
       default: return { x: 0, y: 0 };
     }
   };
@@ -67,7 +67,7 @@ export function FadeIn({
         transition={{ 
           duration, 
           delay, 
-          ease: 'easeOut' 
+          ease: [0.76, 0, 0.24, 1]
         }}
       >
         {children}

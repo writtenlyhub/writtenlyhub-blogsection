@@ -76,3 +76,5 @@ const nextConfig: NextConfig = {
 import bundleAnalyzer from '@next/bundle-analyzer';
 const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 export default withBundleAnalyzer(withPayload(nextConfig));
+// trigger restart
+// trigger restart 2

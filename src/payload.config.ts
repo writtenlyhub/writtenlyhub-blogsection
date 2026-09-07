@@ -12,6 +12,8 @@ import { Tags } from './collections/Tags'
 import { Subscribers } from './collections/Subscribers'
 import { SiteSettings } from './globals/SiteSettings'
 import { HomepageSettings } from './globals/HomepageSettings'
+import { SuccessStories } from './collections/SuccessStories'
+import { SuccessStoryCategories } from './collections/SuccessStoryCategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,6 +36,8 @@ export default buildConfig({
     Tags,
     Blogs,
     Subscribers,
+    SuccessStories,
+    SuccessStoryCategories,
   ],
   globals: [
     SiteSettings,

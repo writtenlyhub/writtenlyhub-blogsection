@@ -8,6 +8,8 @@ import * as migration_20260728_205210_readability_update from './20260728_205210
 import * as migration_20260728_210844_drop_legacy_seo from './20260728_210844_drop_legacy_seo';
 import * as migration_20260728_234937_search_document_index from './20260728_234937_search_document_index';
 import * as migration_20260731_052321 from './20260731_052321';
+import * as migration_20260904_054127_success_stories from './20260904_054127_success_stories';
+import * as migration_20260904_122133_success_stories_fields from './20260904_122133_success_stories_fields';
 
 export const migrations = [
   {
@@ -58,6 +60,16 @@ export const migrations = [
   {
     up: migration_20260731_052321.up,
     down: migration_20260731_052321.down,
-    name: '20260731_052321'
+    name: '20260731_052321',
+  },
+  {
+    up: migration_20260904_054127_success_stories.up,
+    down: migration_20260904_054127_success_stories.down,
+    name: '20260904_054127_success_stories',
+  },
+  {
+    up: migration_20260904_122133_success_stories_fields.up,
+    down: migration_20260904_122133_success_stories_fields.down,
+    name: '20260904_122133_success_stories_fields'
   },
 ];

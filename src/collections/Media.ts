@@ -41,8 +41,8 @@ export const Media: CollectionConfig = {
     delete: ({ req }) => Boolean(req.user),
   },
   hooks: {
-    afterChange: [() => revalidateCollection(['blogs'])],
-    afterDelete: [() => revalidateCollection(['blogs'])],
+    afterChange: [() => revalidateCollection(['blogs', 'success-stories'])],
+    afterDelete: [() => revalidateCollection(['blogs', 'success-stories'])],
   },
   fields: [
     {

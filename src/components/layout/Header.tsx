@@ -26,7 +26,7 @@ export async function Header() {
         <div className="hidden md:flex items-center gap-10">
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">About</Link>
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Services</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Case Studies</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="/success-stories">Case Studies</Link>
           <Link className="text-writtenly-orange font-bold font-label-md text-label-md transition-opacity duration-150" href="/">Blog</Link>
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Career</Link>
           <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Write For Us</Link>

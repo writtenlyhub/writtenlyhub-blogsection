@@ -7,9 +7,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 interface PaginationProps {
   totalPages: number;
   currentPage: number;
+  basePath?: string;
 }
 
-export function Pagination({ totalPages, currentPage }: PaginationProps) {
+export function Pagination({ totalPages, currentPage, basePath = '/blog' }: PaginationProps) {
   const searchParams = useSearchParams();
 
   if (totalPages <= 1) return null;
@@ -17,7 +18,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
   const createPageUrl = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', pageNumber.toString());
-    return `/blog?${params.toString()}`;
+    return `${basePath}?${params.toString()}`;
   };
 
   const getVisiblePages = () => {

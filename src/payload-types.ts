@@ -73,6 +73,8 @@ export interface Config {
     tags: Tag;
     blogs: Blog;
     subscribers: Subscriber;
+    'success-stories': SuccessStory;
+    'success-story-categories': SuccessStoryCategory;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +88,8 @@ export interface Config {
     tags: TagsSelect<false> | TagsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
+    'success-stories': SuccessStoriesSelect<false> | SuccessStoriesSelect<true>;
+    'success-story-categories': SuccessStoryCategoriesSelect<false> | SuccessStoryCategoriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -566,6 +570,334 @@ export interface Subscriber {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-stories".
+ */
+export interface SuccessStory {
+  id: number;
+  title: string;
+  clientName: string;
+  clientLogo: number | Media;
+  category: number | SuccessStoryCategory;
+  shortDescription: string;
+  featuredImage: number | Media;
+  summaryHeading?: string | null;
+  summaryBullets?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  metrics?:
+    | {
+        value: string;
+        label: string;
+        optionalVisual?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  strategyEyebrow?: string | null;
+  strategyHeading?: string | null;
+  strategyDescription?: string | null;
+  strategyVisual?: (number | null) | Media;
+  problemHeading?: string | null;
+  problemDescription?: string | null;
+  problemPoints?:
+    | {
+        heading: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  beforeImage?: (number | null) | Media;
+  afterImage?: (number | null) | Media;
+  impactHeading?: string | null;
+  impactDescription?: string | null;
+  impactVisual?: (number | null) | Media;
+  solutionBlocks?:
+    | {
+        heading: string;
+        bodyCopy: string;
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  clientDescription?: string | null;
+  clientVisual?: (number | null) | Media;
+  testimonial?: {
+    quote?: string | null;
+    name?: string | null;
+    role?: string | null;
+    image?: (number | null) | Media;
+  };
+  seo?: {
+    /**
+     * Recommended length: 50-60 characters. Falls back to post title.
+     */
+    metaTitle?: string | null;
+    /**
+     * Recommended length: 150-160 characters. Falls back to excerpt.
+     */
+    metaDescription?: string | null;
+    /**
+     * Leave blank to auto-generate from site URL and slug.
+     */
+    canonicalUrl?: string | null;
+    /**
+     * Enter the main keyword you want this page to rank for.
+     */
+    focusKeyword?: string | null;
+    dismissedWarnings?:
+      | {
+          ruleId?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Falls back to Meta Title
+     */
+    ogTitle?: string | null;
+    /**
+     * Falls back to Meta Description
+     */
+    ogDescription?: string | null;
+    /**
+     * Falls back to Featured Image, then Global Default, then Generated Image
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Falls back to Open Graph Title
+     */
+    twitterTitle?: string | null;
+    /**
+     * Falls back to Open Graph Description
+     */
+    twitterDescription?: string | null;
+    /**
+     * Falls back to Open Graph Image
+     */
+    twitterImage?: (number | null) | Media;
+    /**
+     * Override global robot meta tags for this specific page.
+     */
+    robots?: {
+      /**
+       * Allow search engines to index pages
+       */
+      index?: boolean | null;
+      /**
+       * Prevent indexing
+       */
+      noindex?: boolean | null;
+      /**
+       * Allow following links
+       */
+      follow?: boolean | null;
+      /**
+       * Prevent following links
+       */
+      nofollow?: boolean | null;
+      /**
+       * Do not show a cached link in search results
+       */
+      noarchive?: boolean | null;
+      /**
+       * Do not show a text snippet or video preview
+       */
+      nosnippet?: boolean | null;
+      /**
+       * Do not index images on this page
+       */
+      noimageindex?: boolean | null;
+      /**
+       * Maximum text-snippet length (in characters)
+       */
+      maxSnippet?: number | null;
+      /**
+       * Maximum size of an image preview
+       */
+      maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      /**
+       * Maximum video snippet length (in seconds)
+       */
+      maxVideoPreview?: number | null;
+    };
+    jsonLd?: {
+      faq?:
+        | {
+            question: string;
+            answer: string;
+            id?: string | null;
+          }[]
+        | null;
+      howTo?: {
+        name?: string | null;
+        description?: string | null;
+        step?:
+          | {
+              name: string;
+              text: string;
+              url?: string | null;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+      };
+      /**
+       * Valid JSON array or object to merge/append with generated schemas.
+       */
+      advancedOverride?: string | null;
+    };
+  };
+  /**
+   * Auto-generated from title if left blank.
+   */
+  slug?: string | null;
+  publishedDate?: string | null;
+  lastUpdated?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-story-categories".
+ */
+export interface SuccessStoryCategory {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from name if left blank.
+   */
+  slug?: string | null;
+  description?: string | null;
+  /**
+   * Hex color code (e.g., #FF0000)
+   */
+  color?: string | null;
+  seo?: {
+    /**
+     * Recommended length: 50-60 characters. Falls back to post title.
+     */
+    metaTitle?: string | null;
+    /**
+     * Recommended length: 150-160 characters. Falls back to excerpt.
+     */
+    metaDescription?: string | null;
+    /**
+     * Leave blank to auto-generate from site URL and slug.
+     */
+    canonicalUrl?: string | null;
+    /**
+     * Enter the main keyword you want this page to rank for.
+     */
+    focusKeyword?: string | null;
+    dismissedWarnings?:
+      | {
+          ruleId?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Falls back to Meta Title
+     */
+    ogTitle?: string | null;
+    /**
+     * Falls back to Meta Description
+     */
+    ogDescription?: string | null;
+    /**
+     * Falls back to Featured Image, then Global Default, then Generated Image
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Falls back to Open Graph Title
+     */
+    twitterTitle?: string | null;
+    /**
+     * Falls back to Open Graph Description
+     */
+    twitterDescription?: string | null;
+    /**
+     * Falls back to Open Graph Image
+     */
+    twitterImage?: (number | null) | Media;
+    /**
+     * Override global robot meta tags for this specific page.
+     */
+    robots?: {
+      /**
+       * Allow search engines to index pages
+       */
+      index?: boolean | null;
+      /**
+       * Prevent indexing
+       */
+      noindex?: boolean | null;
+      /**
+       * Allow following links
+       */
+      follow?: boolean | null;
+      /**
+       * Prevent following links
+       */
+      nofollow?: boolean | null;
+      /**
+       * Do not show a cached link in search results
+       */
+      noarchive?: boolean | null;
+      /**
+       * Do not show a text snippet or video preview
+       */
+      nosnippet?: boolean | null;
+      /**
+       * Do not index images on this page
+       */
+      noimageindex?: boolean | null;
+      /**
+       * Maximum text-snippet length (in characters)
+       */
+      maxSnippet?: number | null;
+      /**
+       * Maximum size of an image preview
+       */
+      maxImagePreview?: ('none' | 'standard' | 'large') | null;
+      /**
+       * Maximum video snippet length (in seconds)
+       */
+      maxVideoPreview?: number | null;
+    };
+    jsonLd?: {
+      faq?:
+        | {
+            question: string;
+            answer: string;
+            id?: string | null;
+          }[]
+        | null;
+      howTo?: {
+        name?: string | null;
+        description?: string | null;
+        step?:
+          | {
+              name: string;
+              text: string;
+              url?: string | null;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+      };
+      /**
+       * Valid JSON array or object to merge/append with generated schemas.
+       */
+      advancedOverride?: string | null;
+    };
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -611,6 +943,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'subscribers';
         value: number | Subscriber;
+      } | null)
+    | ({
+        relationTo: 'success-stories';
+        value: number | SuccessStory;
+      } | null)
+    | ({
+        relationTo: 'success-story-categories';
+        value: number | SuccessStoryCategory;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -935,6 +1275,209 @@ export interface SubscribersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-stories_select".
+ */
+export interface SuccessStoriesSelect<T extends boolean = true> {
+  title?: T;
+  clientName?: T;
+  clientLogo?: T;
+  category?: T;
+  shortDescription?: T;
+  featuredImage?: T;
+  summaryHeading?: T;
+  summaryBullets?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  metrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        optionalVisual?: T;
+        id?: T;
+      };
+  strategyEyebrow?: T;
+  strategyHeading?: T;
+  strategyDescription?: T;
+  strategyVisual?: T;
+  problemHeading?: T;
+  problemDescription?: T;
+  problemPoints?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        id?: T;
+      };
+  beforeImage?: T;
+  afterImage?: T;
+  impactHeading?: T;
+  impactDescription?: T;
+  impactVisual?: T;
+  solutionBlocks?:
+    | T
+    | {
+        heading?: T;
+        bodyCopy?: T;
+        image?: T;
+        id?: T;
+      };
+  clientDescription?: T;
+  clientVisual?: T;
+  testimonial?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        role?: T;
+        image?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        canonicalUrl?: T;
+        focusKeyword?: T;
+        dismissedWarnings?:
+          | T
+          | {
+              ruleId?: T;
+              id?: T;
+            };
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        twitterTitle?: T;
+        twitterDescription?: T;
+        twitterImage?: T;
+        robots?:
+          | T
+          | {
+              index?: T;
+              noindex?: T;
+              follow?: T;
+              nofollow?: T;
+              noarchive?: T;
+              nosnippet?: T;
+              noimageindex?: T;
+              maxSnippet?: T;
+              maxImagePreview?: T;
+              maxVideoPreview?: T;
+            };
+        jsonLd?:
+          | T
+          | {
+              faq?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              howTo?:
+                | T
+                | {
+                    name?: T;
+                    description?: T;
+                    step?:
+                      | T
+                      | {
+                          name?: T;
+                          text?: T;
+                          url?: T;
+                          image?: T;
+                          id?: T;
+                        };
+                  };
+              advancedOverride?: T;
+            };
+      };
+  slug?: T;
+  publishedDate?: T;
+  lastUpdated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-story-categories_select".
+ */
+export interface SuccessStoryCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  color?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        canonicalUrl?: T;
+        focusKeyword?: T;
+        dismissedWarnings?:
+          | T
+          | {
+              ruleId?: T;
+              id?: T;
+            };
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        twitterTitle?: T;
+        twitterDescription?: T;
+        twitterImage?: T;
+        robots?:
+          | T
+          | {
+              index?: T;
+              noindex?: T;
+              follow?: T;
+              nofollow?: T;
+              noarchive?: T;
+              nosnippet?: T;
+              noimageindex?: T;
+              maxSnippet?: T;
+              maxImagePreview?: T;
+              maxVideoPreview?: T;
+            };
+        jsonLd?:
+          | T
+          | {
+              faq?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              howTo?:
+                | T
+                | {
+                    name?: T;
+                    description?: T;
+                    step?:
+                      | T
+                      | {
+                          name?: T;
+                          text?: T;
+                          url?: T;
+                          image?: T;
+                          id?: T;
+                        };
+                  };
+              advancedOverride?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -1075,6 +1618,15 @@ export interface SiteSetting {
     buttonText: string;
     buttonLink: string;
   };
+  trustedBrands?: {
+    logos?:
+      | {
+          logo?: (number | null) | Media;
+          alt?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1151,6 +1703,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         description?: T;
         buttonText?: T;
         buttonLink?: T;
+      };
+  trustedBrands?:
+    | T
+    | {
+        logos?:
+          | T
+          | {
+              logo?: T;
+              alt?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

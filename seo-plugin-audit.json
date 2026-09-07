@@ -1,0 +1,931 @@
+[
+  {
+    "category": "SEO",
+    "rule": "meta-missing",
+    "name": "Meta description missing",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "No Meta Description provided.",
+    "overallScore": 41,
+    "input": {
+      "metaDescription": ""
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "meta-too-short",
+    "name": "Meta description very short",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Meta Description is too short (6 characters). Aim for 120-160 characters.",
+    "overallScore": 48,
+    "input": {
+      "metaDescription": "Short."
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "meta-optimal",
+    "name": "Meta description exactly min",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Meta Description length is optimal.",
+    "overallScore": 56,
+    "input": {
+      "metaDescription": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "meta-optimal",
+    "name": "Meta description exactly max",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Meta Description length is optimal.",
+    "overallScore": 56,
+    "input": {
+      "metaDescription": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "meta-too-long",
+    "name": "Meta description extremely long",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Meta Description is too long (200 characters). It may be truncated in search results.",
+    "overallScore": 48,
+    "input": {
+      "metaDescription": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "title-missing",
+    "name": "Title missing",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "No SEO Title or post title provided.",
+    "overallScore": 33,
+    "input": {
+      "title": "",
+      "metaTitle": ""
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "title-too-short",
+    "name": "Title very short",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "SEO Title is too short (5 characters). Aim for 50-60 characters.",
+    "overallScore": 41,
+    "input": {
+      "metaTitle": "Short"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "title-optimal",
+    "name": "Title optimal length",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "SEO Title length is optimal.",
+    "overallScore": 48,
+    "input": {
+      "metaTitle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "title-too-long",
+    "name": "Title extremely long",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "SEO Title is too long (100 characters). It may be truncated in search results.",
+    "overallScore": 41,
+    "input": {
+      "metaTitle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-title-missing-keyword",
+    "name": "Keyword missing entirely",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "No focus keyword set.",
+    "overallScore": 41,
+    "input": {
+      "focusKeyword": ""
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-title-pass",
+    "name": "Keyword present in title",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Focus keyword appears in the SEO title.",
+    "overallScore": 56,
+    "input": {
+      "focusKeyword": "test",
+      "metaTitle": "This is a test title"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-title-fail",
+    "name": "Keyword missing from title",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Focus keyword does not appear in the SEO title.",
+    "overallScore": 41,
+    "input": {
+      "focusKeyword": "apple",
+      "metaTitle": "This is a test title"
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-content-pass",
+    "name": "Keyword in first paragraph",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Focus keyword appears in the beginning of the content.",
+    "overallScore": 48,
+    "input": {
+      "focusKeyword": "test",
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "image"
+            },
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Heading 1"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "This test is in the first paragraph."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-content-warn",
+    "name": "Keyword late in content",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Focus keyword appears in the content, but not near the beginning.",
+    "overallScore": 42,
+    "input": {
+      "focusKeyword": "test",
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Here is the test keyword."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "keyword-content-fail",
+    "name": "Keyword missing in content",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Focus keyword does not appear anywhere in the content.",
+    "overallScore": 36,
+    "input": {
+      "focusKeyword": "apple",
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "No keyword here."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "word-count-empty",
+    "name": "Empty content",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Content is empty.",
+    "overallScore": 11,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": []
+        }
+      }
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "word-count-low",
+    "name": "Low word count",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Word count is low (2 words). Recommended minimum is 300 words.",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Hello world"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "SEO",
+    "rule": "word-count-optimal",
+    "name": "Optimal word count",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Word count is optimal (350 words).",
+    "overallScore": 39,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word "
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-paragraphs",
+    "name": "Long paragraph",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "1 paragraph(s) exceed 150 words. Consider breaking them up.",
+    "overallScore": 38,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word "
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-paragraphs",
+    "name": "Normal paragraphs",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "All paragraphs are under 150 words.",
+    "overallScore": 37,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word "
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-sentences",
+    "name": "Long sentences",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Several sentences appear to be very long (averaging >20 words). Try keeping sentences concise.",
+    "overallScore": 38,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "This is a very long sentence that just keeps going and going and never seems to end because there is no punctuation anywhere in sight until the very end. This is a very long sentence that just keeps going and going and never seems to end because there is no punctuation anywhere in sight until the very end. This is a very long sentence that just keeps going and going and never seems to end because there is no punctuation anywhere in sight until the very end. This is a very long sentence that just keeps going and going and never seems to end because there is no punctuation anywhere in sight until the very end. This is a very long sentence that just keeps going and going and never seems to end because there is no punctuation anywhere in sight until the very end. "
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-single-sentence",
+    "name": "Short single sentence paragraphs",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Found 4 single-sentence paragraphs. Too many can make text feel fragmented.",
+    "overallScore": 35,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "One sentence."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Another one."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "And third."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "And fourth."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-single-sentence",
+    "name": "Heading is not a paragraph",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Good variation in paragraph lengths.",
+    "overallScore": 35,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "One sentence."
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Another one."
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "And third."
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "And fourth."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-empty-headings",
+    "name": "Empty heading",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Content is empty.",
+    "overallScore": 11,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "  "
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-consecutive-headings",
+    "name": "Consecutive headings",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Found 1 instance(s) of consecutive headings. Add introductory text between them.",
+    "overallScore": 35,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Heading 1"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h3",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Heading 2"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-hierarchy",
+    "name": "Broken hierarchy",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Found 1 instance(s) of skipped heading levels (e.g., H2 directly to H4).",
+    "overallScore": 35,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H2"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "text"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h4",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H4"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-multiple-h1",
+    "name": "0 H1",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "No H1 tags found in content (good, usually the page title is the H1).",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h2",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H2"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-multiple-h1",
+    "name": "1 H1",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Only 1 H1 tag found in content.",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-multiple-h1",
+    "name": "2 H1",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Found 2 H1 tags in the content. There should be at most one H1 per page.",
+    "overallScore": 33,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-multiple-h1",
+    "name": "3 H1",
+    "expectedStatus": "fail",
+    "actualStatus": "fail",
+    "passed": true,
+    "message": "Found 3 H1 tags in the content. There should be at most one H1 per page.",
+    "overallScore": 33,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "tag": "h1",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "H1"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-transitions",
+    "name": "Therefore transition",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Good use of transition words (100% of sentences).",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Therefore, we pass."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-transitions",
+    "name": "Furthermore transition",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Good use of transition words (100% of sentences).",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Furthermore, this is excellent."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-transitions",
+    "name": "As a result transition",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Good use of transition words (100% of sentences).",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "As a result, this is good."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-transitions",
+    "name": "However transition",
+    "expectedStatus": "pass",
+    "actualStatus": "pass",
+    "passed": true,
+    "message": "Good use of transition words (100% of sentences).",
+    "overallScore": 36,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "However, this is good."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Readability",
+    "rule": "readability-transitions",
+    "name": "No transitions with generic words",
+    "expectedStatus": "warning",
+    "actualStatus": "warning",
+    "passed": true,
+    "message": "Only 0% of sentences contain transition words. Aim for at least 15% to improve flow.",
+    "overallScore": 37,
+    "input": {
+      "lexicalState": {
+        "root": {
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "This has no transition. It is just a sentence. Another sentence here. The result is here. Thereforeology should not match."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "category": "Score Test",
+    "name": "Excellent Content",
+    "score": 100
+  },
+  {
+    "category": "Score Test",
+    "name": "Awful Content",
+    "score": 0
+  }
+]

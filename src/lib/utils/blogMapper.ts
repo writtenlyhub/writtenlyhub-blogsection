@@ -24,14 +24,14 @@ export interface UI_Blog {
 /**
  * Type guard for Media
  */
-function isMedia(media: number | Media | undefined | null): media is Media {
+export function isMedia(media: number | Media | undefined | null): media is Media {
   return typeof media === 'object' && media !== null && 'url' in media;
 }
 
 /**
  * Safely extracts a relative URL for media to avoid depending on temporary hostnames in development.
  */
-function getMediaUrl(url: string | undefined | null): string {
+export function getMediaUrl(url: string | undefined | null): string {
   if (!url) return '';
   
   let finalUrl = url;

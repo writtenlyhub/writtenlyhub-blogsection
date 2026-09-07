@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache'
-import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings } from './queries'
+import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings, getSuccessStories, getSuccessStoryBySlug, getSuccessStoryCategories } from './queries'
 import { draftMode } from 'next/headers'
 
 // Safely invoke draftMode() so it doesn't throw during generateStaticParams
@@ -85,6 +85,39 @@ export const getCachedHomepageSettings = async () => {
     async () => getHomepageSettings(),
     ['homepage-settings'],
     { tags: ['homepage-settings'] }
+  );
+  return cached();
+};
+
+export const getCachedSuccessStories = async (limit?: number, page?: number, categorySlug?: string) => {
+  const { isEnabled: draft } = await safeDraftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getSuccessStories(limit, page, categorySlug);
+  const cached = unstable_cache(
+    async () => getSuccessStories(limit, page, categorySlug),
+    ['success-stories-list-v2', String(limit), String(page), String(categorySlug)],
+    { tags: ['success-stories'] }
+  );
+  return cached();
+};
+
+export const getCachedSuccessStoryBySlug = async (slug: string) => {
+  const { isEnabled: draft } = await safeDraftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getSuccessStoryBySlug(slug);
+  const cached = unstable_cache(
+    async () => getSuccessStoryBySlug(slug),
+    ['success-story-by-slug', slug],
+    { tags: ['success-stories', `success-story-${slug}`] }
+  );
+  return cached();
+};
+
+export const getCachedSuccessStoryCategories = async () => {
+  const { isEnabled: draft } = await safeDraftMode();
+  if (draft || process.env.NODE_ENV !== 'production') return getSuccessStoryCategories();
+  const cached = unstable_cache(
+    async () => getSuccessStoryCategories(),
+    ['success-story-categories-list'],
+    { tags: ['success-story-categories'] }
   );
   return cached();
 };

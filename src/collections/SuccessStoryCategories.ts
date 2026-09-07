@@ -1,0 +1,55 @@
+import type { CollectionConfig } from 'payload'
+import { slugField } from '../fields/slug'
+import { seoFields } from '../fields/seo'
+import { revalidateCollection } from '../lib/utils/revalidate'
+
+export const SuccessStoryCategories: CollectionConfig = {
+  slug: 'success-story-categories',
+  admin: {
+    useAsTitle: 'name',
+  },
+  access: {
+    read: () => true,
+    create: async ({ req }) => {
+      const isBootstrap = (await req.payload.count({ collection: 'users' })).totalDocs === 0
+      return req.user ? true : isBootstrap
+    },
+    update: async ({ req }) => {
+      const isBootstrap = (await req.payload.count({ collection: 'users' })).totalDocs === 0
+      return req.user ? true : isBootstrap
+    },
+    delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [
+      () => {
+        revalidateCollection(['success-story-categories', 'success-stories'])
+      },
+    ],
+    afterDelete: [
+      () => {
+        revalidateCollection(['success-story-categories', 'success-stories'])
+      },
+    ],
+  },
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+    },
+    slugField('name'),
+    {
+      name: 'description',
+      type: 'textarea',
+    },
+    {
+      name: 'color',
+      type: 'text',
+      admin: {
+        description: 'Hex color code (e.g., #FF0000)',
+      },
+    },
+    seoFields,
+  ],
+}

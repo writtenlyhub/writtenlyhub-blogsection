@@ -177,3 +177,72 @@ export const getAdjacentPosts = async (publishedAt: string) => {
     next: next.docs[0] || null,
   }
 }
+
+export const getSuccessStories = async (limit: number = 9, page: number = 1, categorySlug?: string) => {
+  const payload = await getPayloadClient()
+  const { isEnabled: draft } = await draftMode()
+  
+  let categoryId = null;
+  if (categorySlug && categorySlug !== 'all') {
+    const cats = await payload.find({
+      collection: 'success-story-categories',
+      where: { slug: { equals: categorySlug } },
+      limit: 1
+    });
+    if (cats.docs.length > 0) {
+      categoryId = cats.docs[0].id;
+    }
+  }
+
+  const whereOptions: any = {};
+  if (!draft) {
+    whereOptions._status = { equals: 'published' };
+  }
+
+  if (categoryId) {
+    whereOptions.category = { equals: categoryId };
+  }
+
+  return await payload.find({
+    collection: 'success-stories',
+    depth: 1,
+    limit,
+    page,
+    where: whereOptions,
+    sort: '-publishedDate',
+    draft,
+    overrideAccess: draft,
+  })
+}
+
+export const getSuccessStoryBySlug = async (slug: string) => {
+  const payload = await getPayloadClient()
+  const { isEnabled: draft } = await draftMode()
+
+  const whereOptions: any = {
+    slug: { equals: slug },
+  };
+  if (!draft) {
+    whereOptions._status = { equals: 'published' };
+  }
+
+  const result = await payload.find({
+    collection: 'success-stories',
+    depth: 2,
+    where: whereOptions,
+    limit: 1,
+    draft,
+    overrideAccess: draft,
+  })
+  return result.docs[0] || null
+}
+
+export const getSuccessStoryCategories = async () => {
+  const payload = await getPayloadClient()
+  return await payload.find({
+    collection: 'success-story-categories',
+    depth: 1,
+    limit: 100,
+  })
+}
+

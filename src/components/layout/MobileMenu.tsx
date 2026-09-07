@@ -85,7 +85,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
           <nav className="flex flex-col p-6 gap-6 overflow-y-auto" data-lenis-prevent="true">
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Case Studies</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/success-stories">Case Studies</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-writtenly-orange" href="/">Blog</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Career</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
