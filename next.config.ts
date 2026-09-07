@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 import { withPayload } from '@payloadcms/next/withPayload';
 
+const isVercel = process.env.VERCEL === '1';
+
 const nextConfig: NextConfig = {
   output: 'standalone',
+  serverExternalPackages: isVercel ? ['sharp'] : [],
   images: {
     remotePatterns: [
       {
