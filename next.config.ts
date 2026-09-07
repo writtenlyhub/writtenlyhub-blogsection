@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: isVercel ? ['sharp', 'pg'] : [],
   outputFileTracingIncludes: isVercel ? {
-    '/api/**/*': ['./node_modules/**/*.node', './node_modules/@img/**/*']
+    '/api/[...slug]': ['./node_modules/**/*.node', './node_modules/@img/**/*']
   } : undefined,
   images: {
     remotePatterns: [
