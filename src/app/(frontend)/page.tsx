@@ -115,18 +115,20 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
         </div>
       </section>
 
-      {/* Filter Pills */}
-      <section className="py-8">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-start gap-6">
-          <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
-        </div>
-        <div className="w-full max-w-[300px] mt-6 lg:hidden">
-          <SearchBar />
+      {/* Filter Pills and Search Row */}
+      <section className="py-8 pb-2">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex-1 overflow-x-auto hide-scrollbar">
+            <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
+          </div>
+          <div className="w-full md:w-[300px] shrink-0">
+            <SearchBar />
+          </div>
         </div>
       </section>
 
       {/* 3-Column Blog Portfolio Grid */}
-      <section className="pb-16 py-12 min-h-[40vh]">
+      <section className="pb-16 py-8 min-h-[40vh]">
         {/* Results Info */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-outline-variant/30 hidden lg:flex">
           <h2 className="font-headline-md text-writtenly-navy font-bold">
@@ -135,9 +137,6 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
              'All Articles'}
           </h2>
           <div className="flex items-center gap-6">
-            <div className="w-64">
-              <SearchBar />
-            </div>
             <span className="text-on-surface-variant font-label-md">
               Showing {rawPosts.pagingCounter} - {Math.min(rawPosts.pagingCounter + rawPosts.limit - 1, rawPosts.totalDocs)} of {rawPosts.totalDocs}
             </span>
