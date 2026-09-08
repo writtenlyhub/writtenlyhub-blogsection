@@ -1,57 +1,37 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { UI_Blog as Blog } from '@/types/blog';
-import { ChevronRight } from 'lucide-react';
 
 export function BlogCard({ blog }: { blog: Blog }) {
   return (
     <Link 
       href={`/blog/${blog.slug}`} 
-      className="flex flex-col h-full bg-surface-container-lowest rounded-xl border border-outline-variant/60 overflow-hidden hover:border-writtenly-navy/30 hover:shadow-lg transition-all duration-300 group"
+      className="group flex flex-col cursor-pointer h-full"
     >
-      <div className="aspect-[3/2] shrink-0 bg-surface-container-high relative overflow-hidden">
+      <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {blog.featuredImage ? (
           <Image 
-            className="object-cover transition-transform duration-500 group-hover:scale-105" 
             src={blog.featuredImage} 
             alt={blog.altText || blog.title || "Blog Image"}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-400 font-medium">
-            No Image
+          <div className="w-full h-full bg-surface-variant flex items-center justify-center">
+            <span className="text-on-surface-variant/50">No Image</span>
           </div>
         )}
       </div>
       
-      <div className="p-4 md:p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="border border-writtenly-navy/30 text-writtenly-navy rounded-full px-2.5 py-0.5 font-label-sm text-label-sm font-bold uppercase bg-transparent">
-            {blog.category.title}
-          </span>
+      <div className="flex flex-col flex-1 px-1 mt-1">
+        <div className="font-body-sm text-[14px] text-on-surface-variant/70 mb-2">
+          {blog.publishedDate}
         </div>
         
-        <h3 className="font-headline-md text-headline-md text-writtenly-navy font-bold mb-2 group-hover:text-writtenly-orange transition-colors">
+        <h3 className="font-headline-md text-[20px] md:text-[22px] leading-[1.35] font-bold text-writtenly-navy tracking-tight">
           {blog.title}
         </h3>
-        
-        <div className="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant mb-4">
-          <span className="font-bold text-writtenly-navy/80">{blog.author.name}</span>
-          <span className="text-outline/80 px-1">•</span>
-          <span>{blog.publishedDate}</span>
-        </div>
-        
-        <p className="font-body-md text-body-md text-on-surface-variant/80 mb-4">
-          {blog.excerpt}
-        </p>
-        
-        <div className="mt-auto flex justify-start items-center pt-2">
-          <div className="flex items-center gap-1 border border-outline-variant/40 rounded px-3 py-1.5 font-label-md text-label-md font-bold text-on-surface-variant group-hover:border-writtenly-navy group-hover:text-writtenly-navy transition-colors">
-            <span>Read more</span>
-            <ChevronRight className="text-[14px]" />
-          </div>
-        </div>
       </div>
     </Link>
   );
