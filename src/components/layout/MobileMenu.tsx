@@ -85,8 +85,16 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
           <nav className="flex flex-col p-6 gap-6 overflow-y-auto" data-lenis-prevent="true">
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/success-stories">Case Studies</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-writtenly-orange" href="/">Blog</Link>
+            
+            <div className="flex flex-col gap-4">
+              <span className="font-headline-md text-headline-md font-bold text-white/50">Resources</span>
+              <div className="flex flex-col gap-4 pl-4 border-l border-white/10">
+                <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/">Blog</Link>
+                <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/news">News</Link>
+                <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/success-stories">Our Work</Link>
+              </div>
+            </div>
+
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Career</Link>
             <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
           </nav>
