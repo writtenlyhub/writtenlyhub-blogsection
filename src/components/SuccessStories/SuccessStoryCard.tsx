@@ -14,7 +14,7 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
 
   return (
     <Link href={`/success-stories/${story.slug}`} className="group flex flex-col cursor-pointer h-full">
-      <div className="aspect-[1/1.05] w-full rounded-3xl overflow-hidden bg-surface-variant relative mb-4">
+      <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {featuredImage?.url ? (
           <img
             src={featuredImage.url}
@@ -27,7 +27,7 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
           </div>
         )}
       </div>
-      <div className="flex flex-col flex-1 px-1">
+      <div className="flex flex-col flex-1 px-1 mt-1">
         {clientLogo?.url ? (
           <div className="h-12 md:h-14 mb-2 flex items-center justify-start overflow-visible mix-blend-multiply">
             <img 
@@ -37,16 +37,16 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
             />
           </div>
         ) : (
-          <h3 className="font-headline-md text-[26px] font-bold text-writtenly-navy tracking-tight mb-4">
+          <h3 className="font-headline-md text-[17px] md:text-[19px] leading-[1.35] font-bold text-writtenly-navy tracking-tight mb-4">
             {story.clientName || story.title}
           </h3>
         )}
-        <p className="font-body-md text-[15px] text-on-surface-variant/90 leading-relaxed mb-6 line-clamp-3">
+        <p className="font-body-md text-[13px] text-on-surface-variant/90 leading-relaxed mb-6 line-clamp-3">
           {story.shortDescription}
         </p>
         <div className="mt-auto">
           {category && (
-            <span className="inline-flex items-center bg-white border border-black/5 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.08)] text-on-surface-variant/80 px-5 py-2 rounded-full text-[13px] font-medium font-label-md">
+            <span className="inline-flex items-center bg-white border border-black/5 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.08)] text-on-surface-variant/80 px-4 py-1.5 rounded-full text-[11px] font-medium font-label-md">
               {category.name}
             </span>
           )}

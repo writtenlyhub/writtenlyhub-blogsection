@@ -173,7 +173,7 @@ export default async function SuccessStoriesArchivePage({ searchParams }: Succes
       <section className="pb-16 py-12 min-h-[40vh]">
         {filteredStories.length > 0 ? (
           <FadeIn direction="up">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20 lg:px-12 xl:px-16">
               {filteredStories.map((story, index) => (
                 <React.Fragment key={story.id}>
                   <FadeIn delay={index * 0.1} direction="up" className="h-full">
@@ -182,32 +182,32 @@ export default async function SuccessStoriesArchivePage({ searchParams }: Succes
                   {/* Insert CTA Banner between stories (after the 6th story, or at the end if fewer than 6) */}
                   {(index === 5 || (filteredStories.length <= 6 && index === filteredStories.length - 1)) && (
                     <div className="col-span-1 md:col-span-2 lg:col-span-3 pt-4 pb-8">
-                      <div className="bg-surface-container-lowest rounded-[32px] border border-border-subtle ambient-shadow p-10 md:p-14 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                      <div className="bg-writtenly-navy rounded-[32px] border border-border-subtle ambient-shadow p-8 md:p-10 flex flex-col items-center justify-center text-center relative overflow-hidden">
                         
                         {/* Subtle background glow for the banner */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-writtenly-orange/5 to-transparent pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-writtenly-orange/10 to-transparent pointer-events-none"></div>
 
                         <div className="max-w-2xl relative z-10 flex flex-col items-center">
-                          <h3 className="text-3xl md:text-4xl font-bold text-primary mb-4 leading-tight tracking-tight">
+                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight tracking-tight">
                             Ready to achieve similar results for your brand?
                           </h3>
-                          <p className="font-body-md text-on-surface-variant text-lg mb-10 max-w-xl mx-auto">
+                          <p className="font-body-md text-white/80 text-base mb-8 max-w-xl mx-auto">
                             Let&apos;s build an authoritative content ecosystem that drives qualified traffic, buyer trust, and measurable revenue.
                           </p>
                           
                           {/* Ultra Premium Button with Avatars */}
                           <Link 
                             href="/contact" 
-                            className="relative flex items-center justify-between pl-8 pr-2 py-2 bg-gradient-to-br from-[#f8651c] to-[#e65005] shadow-[0_8px_20px_-6px_rgba(230,80,5,0.4)] hover:shadow-[0_15px_30px_-10px_rgba(230,80,5,0.7)] border border-white/20 rounded-full group transition-all duration-300 transform hover:-translate-y-1 w-max"
+                            className="relative flex items-center justify-between pl-6 pr-1.5 py-1.5 bg-gradient-to-br from-[#f8651c] to-[#e65005] shadow-[0_8px_20px_-6px_rgba(230,80,5,0.4)] hover:shadow-[0_15px_30px_-10px_rgba(230,80,5,0.7)] border border-white/20 rounded-full group transition-all duration-300 transform hover:-translate-y-1 w-max"
                           >
-                            <span className="font-label-md text-sm uppercase tracking-[0.15em] font-bold text-white ml-2 mr-6 whitespace-nowrap">LET'S TALK</span>
+                            <span className="font-label-md text-[12px] uppercase tracking-[0.15em] font-bold text-white ml-2 mr-5 whitespace-nowrap">LET'S TALK</span>
                             
-                            <div className="flex -space-x-3 bg-white/15 rounded-full p-1.5 backdrop-blur-sm shadow-inner transition-transform group-hover:scale-105">
-                              <img src="/images/authors/alex.webp" alt="Client" className="w-9 h-9 rounded-full border border-white/60 object-cover shadow-sm relative z-30" />
-                              <img src="/images/authors/elena.webp" alt="Client" className="w-9 h-9 rounded-full border border-white/60 object-cover shadow-sm relative z-20" />
-                              <img src="/images/authors/david.webp" alt="Client" className="w-9 h-9 rounded-full border border-white/60 object-cover shadow-sm relative z-10" />
-                              <div className="w-9 h-9 rounded-full border border-white/60 bg-white/20 flex items-center justify-center backdrop-blur-md shadow-sm relative z-0 group-hover:bg-white group-hover:text-[#e65005] transition-colors">
-                                <ArrowRight className="w-4 h-4 text-white group-hover:text-[#e65005] transition-colors" />
+                            <div className="flex -space-x-2.5 bg-white/15 rounded-full p-1 backdrop-blur-sm shadow-inner transition-transform group-hover:scale-105">
+                              <img src="/images/authors/alex.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm relative z-30" />
+                              <img src="/images/authors/elena.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm relative z-20" />
+                              <img src="/images/authors/david.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm relative z-10" />
+                              <div className="w-7 h-7 rounded-full border border-white/60 bg-white/20 flex items-center justify-center backdrop-blur-md shadow-sm relative z-0 group-hover:bg-white group-hover:text-[#e65005] transition-colors">
+                                <ArrowRight className="w-3.5 h-3.5 text-white group-hover:text-[#e65005] transition-colors" />
                               </div>
                             </div>
                           </Link>

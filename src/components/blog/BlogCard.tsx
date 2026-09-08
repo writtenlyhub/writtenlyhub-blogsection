@@ -25,11 +25,11 @@ export function BlogCard({ blog }: { blog: Blog }) {
       </div>
       
       <div className="flex flex-col flex-1 px-1 mt-1">
-        <div className="font-body-sm text-[14px] text-on-surface-variant/70 mb-2">
+        <div className="font-body-sm text-[12px] text-on-surface-variant/70 mb-2">
           {blog.publishedDate}
         </div>
         
-        <h3 className="font-headline-md text-[20px] md:text-[22px] leading-[1.35] font-bold text-writtenly-navy tracking-tight">
+        <h3 className="font-headline-md text-[17px] md:text-[19px] leading-[1.35] font-bold text-writtenly-navy tracking-tight">
           {blog.title}
         </h3>
       </div>
