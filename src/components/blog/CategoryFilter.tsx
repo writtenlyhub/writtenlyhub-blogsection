@@ -113,7 +113,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         All categories visible, horizontally wrapped. Unchanged layout.
         ─────────────────────────────────────────────────────────────── */}
       <div
-        className="hidden md:flex flex-wrap items-center justify-center gap-3 w-full mb-8"
+        className="hidden md:flex flex-wrap items-center justify-start gap-3 w-full"
         role="group"
         aria-label="Filter articles by category"
       >
@@ -145,7 +145,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         row, no horizontal scroll.
         ─────────────────────────────────────────────────────────────── */}
       <div
-        className="flex md:hidden flex-wrap justify-center gap-2 w-full mb-6"
+        className="flex md:hidden flex-wrap justify-start gap-2 w-full"
         role="group"
         aria-label="Filter articles by category"
       >
