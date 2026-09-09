@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { UI_Blog as Blog } from '@/types/blog';
 
 export function BlogCard({ blog }: { blog: Blog }) {
@@ -10,7 +10,7 @@ export function BlogCard({ blog }: { blog: Blog }) {
     >
       <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {blog.featuredImage ? (
-          <Image 
+          <ImageWithFallback 
             src={blog.featuredImage} 
             alt={blog.altText || blog.title || "Blog Image"}
             fill

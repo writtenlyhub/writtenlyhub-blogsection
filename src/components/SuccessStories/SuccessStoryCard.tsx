@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { SuccessStory, Media, SuccessStoryCategory } from '@/payload-types';
 
 import { getMediaUrl } from '@/lib/utils/blogMapper';
@@ -18,9 +18,11 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
     <Link href={`/success-stories/${story.slug}`} className="group flex flex-col cursor-pointer h-full">
       <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {featuredImage?.url ? (
-          <img
+          <ImageWithFallback
             src={getMediaUrl(featuredImage.url)}
             alt={featuredImage.alt || story.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
           />
         ) : (

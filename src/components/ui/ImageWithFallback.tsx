@@ -20,13 +20,30 @@ interface ImageWithFallbackProps extends Omit<ImageProps, 'src' | 'alt'> {
 export function ImageWithFallback({
   src,
   alt = '',
-  fallbackSrc = '/images/placeholders/fallback.svg',
+  fallbackSrc,
   className,
   ...props
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
-  let finalSrc = fallbackSrc;
+  // Use a premium AI image as the default fallback
+  const aiFallbackImages = [
+    '/media/ai_generated_feature_0.png',
+    '/media/ai_generated_feature_1.png',
+    '/media/ai_generated_feature_2.png'
+  ];
+  
+  // Deterministically select an image based on the alt text or a random one
+  const stringToNumber = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    return Math.abs(hash);
+  };
+  
+  const defaultFallback = aiFallbackImages[stringToNumber(alt) % aiFallbackImages.length];
+  const activeFallback = fallbackSrc || defaultFallback;
+
+  let finalSrc = activeFallback;
   let finalAlt = alt;
 
   if (src) {
@@ -50,7 +67,7 @@ export function ImageWithFallback({
 
   return (
     <Image
-      src={error || !finalSrc ? fallbackSrc : finalSrc}
+      src={error || !finalSrc ? activeFallback : finalSrc}
       alt={error ? 'Image not available' : finalAlt}
       className={className}
       onError={() => {
