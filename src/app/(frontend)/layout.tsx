@@ -73,13 +73,13 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} ${inter.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${inter.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
         <link rel="alternate" type="application/rss+xml" title="WrittenlyHub Blog RSS Feed" href="/feed.xml" />
       </head>
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <GlobalJsonLd />
         {isDraftMode && <PreviewBanner />}
         <SmoothScrollProvider>

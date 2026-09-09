@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.writtenlyhub.com',
         pathname: '/api/media/file/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vercel.app',
       }
     ],
   },

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SuccessStory, Media, SuccessStoryCategory } from '@/payload-types';
 
+import { getMediaUrl } from '@/lib/utils/blogMapper';
+
 interface SuccessStoryCardProps {
   story: SuccessStory;
 }
@@ -17,7 +19,7 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
       <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {featuredImage?.url ? (
           <img
-            src={featuredImage.url}
+            src={getMediaUrl(featuredImage.url)}
             alt={featuredImage.alt || story.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
           />
@@ -31,7 +33,7 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
         {clientLogo?.url ? (
           <div className="h-12 md:h-14 mb-2 flex items-center justify-start overflow-visible mix-blend-multiply">
             <img 
-              src={clientLogo.url} 
+              src={getMediaUrl(clientLogo.url)} 
               alt={clientLogo.alt || story.clientName || story.title} 
               className="h-24 md:h-28 w-auto max-w-[220px] object-contain object-left" 
             />

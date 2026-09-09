@@ -36,6 +36,16 @@ export function ImageWithFallback({
       finalSrc = src.url;
       finalAlt = alt || src.alt || '';
     }
+    
+    // Safely parse URL to avoid Vercel missing domains
+    if (finalSrc.includes('/api/media/file/')) {
+      finalSrc = finalSrc.replace('/api/media/file/', '/media/');
+    }
+    try {
+      if (finalSrc.startsWith('http')) {
+        finalSrc = new URL(finalSrc).pathname;
+      }
+    } catch {}
   }
 
   return (
