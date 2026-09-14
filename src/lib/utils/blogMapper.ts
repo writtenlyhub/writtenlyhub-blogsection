@@ -12,6 +12,7 @@ export interface UI_Blog {
   title: string;
   excerpt: string;
   slug: string;
+  contentType: 'blog' | 'news';
   category: UI_Category;
   author: UI_Author & { id: string };
   publishedDate: string;
@@ -206,7 +207,10 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
         date: (rel.updatedAt || rel.publishedAt) ? new Date(rel.updatedAt || rel.publishedAt!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
         readTime: rel.readTime || '5 min read',
         imageUrl: relImg,
-        link: `/blog/${rel.slug}`,
+        link:
+          post.contentType === 'news'
+            ? `/news/${rel.slug}`
+            : `/blog/${rel.slug}`,
       }];
     }
     return [];
@@ -238,6 +242,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
 
   return {
     hero: {
+      contentType: post.contentType === 'news' ? 'news' : 'blog',
       category: categoryName,
       title: post.title,
       summary: post.excerpt || '',
@@ -302,6 +307,7 @@ export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
       title: post.title,
       excerpt: post.excerpt || '',
       slug: post.slug || '',
+      contentType: post.contentType === 'news' ? 'news' : 'blog',
       category,
       author,
       publishedDate: (post.updatedAt || post.publishedAt) ? new Date(post.updatedAt || post.publishedAt!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',

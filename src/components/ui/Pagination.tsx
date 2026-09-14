@@ -18,7 +18,8 @@ export function Pagination({ totalPages, currentPage, basePath = '/blog' }: Pagi
   const createPageUrl = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', pageNumber.toString());
-    return `${basePath}?${params.toString()}`;
+    const query = params.toString();
+    return query ? `${basePath}?${query}` : basePath;
   };
 
   const getVisiblePages = () => {

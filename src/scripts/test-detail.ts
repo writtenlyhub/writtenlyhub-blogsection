@@ -12,6 +12,7 @@ async function run() {
 
   const post = await payload.create({
     collection: 'blogs',
+    draft: true,
     data: {
       title: title,
       _status: 'published',

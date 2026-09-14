@@ -157,6 +157,7 @@ export async function seedPosts(
   for (const post of postsData) {
     const existing = await payload.find({
       collection: 'blogs',
+      draft: true,
       where: {
         slug: {
           equals: post.slug,
@@ -171,6 +172,7 @@ export async function seedPosts(
     try {
       const created = await payload.create({
         collection: 'blogs',
+        draft: true,
         data: {
           title: post.title,
           slug: post.slug,

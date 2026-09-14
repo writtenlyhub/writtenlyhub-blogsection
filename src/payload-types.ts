@@ -524,6 +524,7 @@ export interface Blog {
   slug?: string | null;
   author: number | User;
   category: number | Category;
+  contentType: 'blog' | 'news';
   tags?:
     | {
         tag?: string | null;
@@ -1239,6 +1240,7 @@ export interface BlogsSelect<T extends boolean = true> {
   slug?: T;
   author?: T;
   category?: T;
+  contentType?: T;
   tags?:
     | T
     | {

@@ -7,6 +7,7 @@ import { Calendar, Clock } from 'lucide-react';
 
 export function BlogHero(props: BlogHeroData) {
   const {
+    contentType,
     category,
     title,
     summary,
@@ -25,7 +26,7 @@ export function BlogHero(props: BlogHeroData) {
     <section className="flex flex-col items-center text-center gap-6 mb-8 w-full">
       <div className="flex justify-center items-center gap-3">
         {category ? (
-          <Link href={`/blog?category=${category.toLowerCase().replace(/\s+/g, '-')}`} className="inline-block px-3 py-1 bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
+          <Link href={`${contentType === 'news' ? '/news' : '/blog'}?category=${category.toLowerCase().replace(/\s+/g, '-')}`} className="inline-block px-3 py-1 bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors font-label-sm text-label-sm font-bold uppercase rounded-md w-max border border-outline-variant">
             {category}
           </Link>
         ) : (

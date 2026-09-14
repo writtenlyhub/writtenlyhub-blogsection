@@ -4,9 +4,14 @@ import { UI_Blog as Blog } from '@/types/blog';
 import { ChevronRight } from 'lucide-react';
 
 export function HeroCard({ blog }: { blog: Blog }) {
+  const href =
+    blog.contentType === 'news'
+      ? `/news/${blog.slug}`
+      : `/blog/${blog.slug}`;
+
   return (
     <section className="w-full px-gutter max-w-container-max mx-auto mb-4 mt-2">
-      <Link href={`/blog/${blog.slug}`} className="group relative flex flex-col lg:flex-row bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant hover:border-primary-container/20 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1">
+      <Link href={href} className="group relative flex flex-col lg:flex-row bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant hover:border-primary-container/20 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1">
         {/* Image - 60% width on Desktop, short cinematic ratio on mobile */}
         <div className="aspect-[2/1] lg:aspect-auto lg:h-auto lg:w-[50%] shrink-0 bg-surface-container-high relative overflow-hidden hidden min-[375px]:block lg:block">
           {/* Subtle inner ring for real photography integration */}

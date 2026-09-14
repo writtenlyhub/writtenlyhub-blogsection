@@ -2,7 +2,11 @@ import { getPayloadClient } from './payload'
 import type { Blog } from '../../payload-types' // Generated types
 import { draftMode } from 'next/headers'
 
-export const getPosts = async (limit: number = 10, page: number = 1) => {
+export const getPosts = async (
+  limit: number = 10,
+  page: number = 1,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
   const payload = await getPayloadClient()
   const { isEnabled: draft } = await draftMode()
 
@@ -10,6 +14,8 @@ export const getPosts = async (limit: number = 10, page: number = 1) => {
   if (!draft) {
     whereOptions._status = { equals: 'published' };
   }
+
+  whereOptions.contentType = { equals: contentType };
 
   return await payload.find({
     collection: 'blogs',
@@ -29,13 +35,20 @@ export const getPosts = async (limit: number = 10, page: number = 1) => {
       readTime: true,
       featuredImage: true,
       featuredHero: true,
+      contentType: true,
     },
     draft,
     overrideAccess: draft,
   })
 }
 
-export const getArchivePosts = async (limit: number = 9, page: number = 1, categorySlug?: string, searchQuery?: string) => {
+export const getArchivePosts = async (
+  limit: number = 9,
+  page: number = 1,
+  categorySlug?: string,
+  searchQuery?: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
   const payload = await getPayloadClient()
   const { isEnabled: draft } = await draftMode()
   
@@ -54,6 +67,10 @@ export const getArchivePosts = async (limit: number = 9, page: number = 1, categ
   const whereOptions: any = {};
   if (!draft) {
     whereOptions._status = { equals: 'published' };
+  }
+
+  if (contentType !== 'all') {
+    whereOptions.contentType = { equals: contentType };
   }
 
   if (categoryId) {
@@ -82,13 +99,17 @@ export const getArchivePosts = async (limit: number = 9, page: number = 1, categ
       readTime: true,
       featuredImage: true,
       featuredHero: true,
+      contentType: true,
     },
     draft,
     overrideAccess: draft,
   })
 }
 
-export const getPostBySlug = async (slug: string): Promise<Blog | null> => {
+export const getPostBySlug = async (
+  slug: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+): Promise<Blog | null> => {
   const payload = await getPayloadClient()
   const { isEnabled: draft } = await draftMode()
 
@@ -99,6 +120,8 @@ export const getPostBySlug = async (slug: string): Promise<Blog | null> => {
     whereOptions._status = { equals: 'published' };
   }
 
+  whereOptions.contentType = { equals: contentType };
+
   const result = await payload.find({
     collection: 'blogs',
     depth: 2,
@@ -108,6 +131,51 @@ export const getPostBySlug = async (slug: string): Promise<Blog | null> => {
     overrideAccess: draft,
   })
   return result.docs[0] || null
+}
+
+export const getTopBlogCategories = async (limit: number = 4) => {
+  const payload = await getPayloadClient()
+  const { isEnabled: draft } = await draftMode()
+
+  const whereOptions: any = {
+    contentType: { equals: 'blog' },
+    _status: { equals: 'published' },
+  }
+
+  const posts = await payload.find({
+    collection: 'blogs',
+    depth: 0,
+    limit: 1000,
+    where: whereOptions,
+    select: {
+      category: true,
+    },
+    draft,
+    overrideAccess: draft,
+  })
+
+  const counts = new Map<number, number>()
+
+  for (const post of posts.docs) {
+    const category = post.category
+    const categoryId =
+      typeof category === 'number'
+        ? category
+        : category && typeof category === 'object'
+          ? category.id
+          : null
+
+    if (categoryId) {
+      counts.set(categoryId, (counts.get(categoryId) || 0) + 1)
+    }
+  }
+
+  const categories = await getCategories()
+
+  return categories.docs
+    .filter((category) => counts.has(category.id))
+    .sort((a, b) => (counts.get(b.id) || 0) - (counts.get(a.id) || 0))
+    .slice(0, limit)
 }
 
 export const getCategories = async () => {
@@ -135,12 +203,21 @@ export const getHomepageSettings = async () => {
   })
 }
 
-export const getAdjacentPosts = async (publishedAt: string) => {
+export const getAdjacentPosts = async (
+  publishedAt: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
   const payload = await getPayloadClient()
   const { isEnabled: draft } = await draftMode()
   
-  const prevWhere: any = [ { publishedAt: { less_than: publishedAt } } ];
-  const nextWhere: any = [ { publishedAt: { greater_than: publishedAt } } ];
+  const prevWhere: any = [
+    { publishedAt: { less_than: publishedAt } },
+    { contentType: { equals: contentType } },
+  ];
+  const nextWhere: any = [
+    { publishedAt: { greater_than: publishedAt } },
+    { contentType: { equals: contentType } },
+  ];
   
   if (!draft) {
     prevWhere.push({ _status: { equals: 'published' } });
