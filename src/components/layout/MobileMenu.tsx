@@ -83,8 +83,8 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
 
           {/* Links */}
           <nav className="flex flex-col p-6 gap-6 overflow-y-auto" data-lenis-prevent="true">
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/about/">About</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/services/">Services</Link>
             
             <div className="flex flex-col gap-4">
               <span className="font-headline-md text-headline-md font-bold text-white/50">Resources</span>
@@ -95,8 +95,8 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
               </div>
             </div>
 
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Career</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/career/">Career</Link>
+            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/blog/write-for-us/">Write For Us</Link>
           </nav>
 
           {/* Footer CTA removed as requested */}

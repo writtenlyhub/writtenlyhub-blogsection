@@ -25,8 +25,8 @@ export async function Header() {
             </Link>
         </div>
         <div className="hidden md:flex items-center gap-10">
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">About</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Services</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="/about/">About</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="/services/">Services</Link>
           
           <div className="relative group">
             <button className="text-white group-hover:text-writtenly-orange transition-colors font-label-md text-label-md flex items-center gap-1 h-16">
@@ -99,8 +99,8 @@ export async function Header() {
             </div>
           </div>
 
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Career</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Write For Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="/career/">Career</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="/blog/write-for-us/">Write For Us</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
           {/* CTA removed as requested */}
