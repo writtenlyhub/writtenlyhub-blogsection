@@ -118,7 +118,7 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
       {/* Filter Pills */}
       <section className="pb-8 pt-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-center gap-6">
-          <CategoryFilter categories={CATEGORIES} basePath="/news" alignCenter />
+          <CategoryFilter categories={CATEGORIES.slice(0, 4)} basePath="/news" alignCenter />
         </div>
       </section>
 
