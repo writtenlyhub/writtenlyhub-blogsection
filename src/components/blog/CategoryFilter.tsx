@@ -13,6 +13,15 @@ interface CategoryFilterProps {
    * Default: 6 (fills ~2 balanced rows for typical category label lengths).
    */
   mobileVisibleCount?: number;
+  /**
+   * The base URL path to navigate to on category selection (e.g., "/blog" or "/news")
+   * Default: "/blog"
+   */
+  basePath?: string;
+  /**
+   * If true, centers the filter pills horizontally instead of left-aligning them.
+   */
+  alignCenter?: boolean;
 }
 
 // Shared pill style helpers
@@ -22,7 +31,7 @@ const PILL_ACTIVE = 'bg-writtenly-navy text-white font-bold';
 const PILL_INACTIVE =
   'bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 hover:border-writtenly-navy/50 hover:text-writtenly-navy';
 
-export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryFilterProps) {
+export function CategoryFilter({ categories, mobileVisibleCount = 6, basePath = '/blog', alignCenter = false }: CategoryFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const active = searchParams.get('category') || 'all';
@@ -86,9 +95,9 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         params.set('category', slug);
       }
       params.delete('page'); // Reset pagination on category change
-      router.push(`/blog?${params.toString()}`, { scroll: false });
+      router.push(`${basePath}?${params.toString()}`, { scroll: false });
     },
-    [closeSheet, searchParams, router],
+    [closeSheet, searchParams, router, basePath],
   );
 
   return (
@@ -102,7 +111,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         <ul>
           {categories.map((cat) => (
             <li key={`seo-${cat.id}`}>
-              <a href={`/blog?category=${cat.slug}`}>{cat.title}</a>
+              <a href={`${basePath}?category=${cat.slug}`}>{cat.title}</a>
             </li>
           ))}
         </ul>
@@ -113,7 +122,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         All categories visible, horizontally wrapped. Unchanged layout.
         ─────────────────────────────────────────────────────────────── */}
       <div
-        className="hidden md:flex flex-wrap items-center justify-start gap-3 w-full"
+        className={`hidden md:flex flex-wrap items-center gap-3 w-full ${alignCenter ? 'justify-center' : 'justify-start'}`}
         role="group"
         aria-label="Filter articles by category"
       >
@@ -145,7 +154,7 @@ export function CategoryFilter({ categories, mobileVisibleCount = 6 }: CategoryF
         row, no horizontal scroll.
         ─────────────────────────────────────────────────────────────── */}
       <div
-        className="flex md:hidden flex-wrap justify-start gap-2 w-full"
+        className={`flex md:hidden flex-wrap gap-2 w-full ${alignCenter ? 'justify-center' : 'justify-start'}`}
         role="group"
         aria-label="Filter articles by category"
       >

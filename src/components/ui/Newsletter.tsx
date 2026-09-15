@@ -61,7 +61,7 @@ export function Newsletter({ source = 'Inline Form' }: { source?: string }) {
   }, []);
 
   return (
-    <section ref={sectionRef} id="newsletter" data-newsletter-cta="true" className="w-full px-gutter py-section-gap mb-16">
+    <section ref={sectionRef} id="newsletter" data-newsletter-cta="true" className="w-full px-gutter py-2 md:py-4 mb-2 mt-4">
       <div className="max-w-container-max mx-auto bg-writtenly-navy rounded-[2rem] md:rounded-3xl overflow-hidden relative shadow-lg">
         <div className="p-6 md:p-10 lg:p-12 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
           <div className="max-w-2xl text-center lg:text-left">

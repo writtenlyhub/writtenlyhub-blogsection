@@ -76,7 +76,7 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
       <HomepageJsonLd />
       
       {/* Two-Column Hero Section with Premium Polish */}
-      <section className="pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24 relative overflow-hidden">
+      <section className="pt-8 pb-4 md:pt-10 md:pb-8 lg:pt-12 lg:pb-8 relative overflow-hidden">
         {/* Subtle Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           {/* Top-left ambient glow */}
@@ -103,11 +103,11 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
           {/* Right Column */}
           <div className="flex-1 lg:w-[65%] flex flex-col justify-start max-w-[750px] pt-2">
             <h2 className="font-headline-md text-xl md:text-2xl lg:text-[24px] font-bold text-writtenly-navy leading-[1.45] mb-8 pr-0 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-              The latest news, updates, and announcements from WrittenlyHub.
+              The latest news, updates, and ideas shaping WrittenlyHub and the digital landscape.
             </h2>
             
             <p className="font-body-md text-base md:text-lg lg:text-[17px] text-on-surface-variant/90 leading-relaxed mb-12 max-w-[600px] animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-              Stay up-to-date with our company milestones, new feature releases, team updates, and industry insights.
+              Stay informed about our latest company milestones, product updates, announcements, and industry developments. Explore the stories, ideas, and changes shaping the future of content, SEO, and digital marketing.
             </p>
             
 
@@ -115,8 +115,15 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
         </div>
       </section>
 
+      {/* Filter Pills */}
+      <section className="pb-8 pt-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-center gap-6">
+          <CategoryFilter categories={CATEGORIES} basePath="/news" alignCenter />
+        </div>
+      </section>
+
       {/* 3-Column Blog Portfolio Grid */}
-      <section className="pb-16 pt-8 min-h-[40vh]">
+      <section className="pb-8 pt-4">
 
         {BLOGS.length > 0 ? (
           <FadeIn direction="up">
