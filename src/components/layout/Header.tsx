@@ -44,7 +44,7 @@ export async function Header() {
                   <span className="font-label-md text-[11px] font-bold text-white/50 uppercase tracking-widest mb-6">Resources</span>
                   <div className="grid grid-cols-2 gap-x-8 gap-y-10">
                     
-                    <Link href="/" className="group/item flex items-start gap-4">
+                    <Link href="/blog" className="group/item flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/80 group-hover/item:bg-white group-hover/item:text-writtenly-navy transition-colors shrink-0">
                         <BookOpen size={22} />
                       </div>

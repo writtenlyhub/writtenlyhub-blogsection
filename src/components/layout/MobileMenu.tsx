@@ -89,7 +89,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
             <div className="flex flex-col gap-4">
               <span className="font-headline-md text-headline-md font-bold text-white/50">Resources</span>
               <div className="flex flex-col gap-4 pl-4 border-l border-white/10">
-                <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/">Blog</Link>
+                <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/blog">Blog</Link>
                 <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/news">News</Link>
                 <Link onClick={closeMenu} className="font-headline-md text-[20px] font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/our-work">Our Work</Link>
               </div>
