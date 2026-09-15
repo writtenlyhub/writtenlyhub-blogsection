@@ -64,7 +64,7 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
   const searchQuery = q || '';
 
   const [rawPosts, rawCategories] = await Promise.all([
-    getCachedArchivePosts(9, currentPage, categorySlug, searchQuery),
+    getCachedArchivePosts(9, currentPage, categorySlug, searchQuery, 'news'),
     getCachedCategories(),
   ]);
   
