@@ -5,7 +5,7 @@ import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CategoryFilter } from '@/components/blog/CategoryFilter';
-import { getCachedArchivePosts, getCachedCategories } from '@/lib/api';
+import { getCachedArchivePosts, getCachedTopBlogCategories } from '@/lib/api';
 import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
 import Link from 'next/link';
 import { HomepageJsonLd } from '@/components/seo/HomepageJsonLd';
@@ -65,11 +65,11 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
 
   const [rawPosts, rawCategories] = await Promise.all([
     getCachedArchivePosts(9, currentPage, categorySlug, searchQuery, 'news'),
-    getCachedCategories(),
+    getCachedTopBlogCategories(4, 'news'),
   ]);
   
   const BLOGS = mapBlogList(rawPosts.docs);
-  const CATEGORIES = mapCategoryList(rawCategories.docs);
+  const CATEGORIES = mapCategoryList(rawCategories);
 
   return (
     <main className="w-full px-gutter max-w-container-max mx-auto pb-section-gap">
