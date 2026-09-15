@@ -64,7 +64,7 @@ export async function Header() {
                       </div>
                     </Link>
 
-                    <Link href="/success-stories" className="group/item flex items-start gap-4">
+                    <Link href="/our-work" className="group/item flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/80 group-hover/item:bg-white group-hover/item:text-writtenly-navy transition-colors shrink-0">
                         <Briefcase size={22} />
                       </div>

@@ -15,7 +15,7 @@ export function SuccessStoryCard({ story }: SuccessStoryCardProps) {
   const category = story.category as SuccessStoryCategory | null;
 
   return (
-    <Link href={`/success-stories/${story.slug}`} className="group flex flex-col cursor-pointer h-full">
+    <Link href={`/our-work/${story.slug}`} className="group flex flex-col cursor-pointer h-full">
       <div className="aspect-[4/3] w-full rounded-[24px] overflow-hidden bg-surface-variant relative mb-4">
         {featuredImage?.url ? (
           <ImageWithFallback

@@ -45,6 +45,20 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/success-stories/:path*',
+        destination: '/our-work/:path*',
+        permanent: true,
+      },
+      {
+        source: '/case-studies/:path*',
+        destination: '/our-work/:path*',
+        permanent: true,
+      }
+    ];
+  },
   async headers() {
     return [
       {

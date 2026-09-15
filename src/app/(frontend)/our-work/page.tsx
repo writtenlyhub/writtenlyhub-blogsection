@@ -28,9 +28,9 @@ export async function generateMetadata({ searchParams }: SuccessStoriesArchivePa
   const isCategoryPage = Boolean(category && category !== 'all');
   const currentPage = parseInt(page || '1', 10);
   
-  let archiveUrl = `${SITE_URL}/success-stories`;
+  let archiveUrl = `${SITE_URL}/our-work`;
   if (isCategoryPage) {
-    archiveUrl = `${SITE_URL}/success-stories?category=${category}`;
+    archiveUrl = `${SITE_URL}/our-work?category=${category}`;
   }
   
   const canonicalUrl = currentPage > 1 ? `${archiveUrl}${isCategoryPage ? '&' : '?'}page=${currentPage}` : archiveUrl;
@@ -56,7 +56,7 @@ export async function generateMetadata({ searchParams }: SuccessStoriesArchivePa
           url: `${SITE_URL}/images/og/default-og.jpg`,
           width: 1200,
           height: 630,
-          alt: 'WrittenlyHub Success Stories',
+          alt: 'WrittenlyHub Our Work',
         },
       ],
     },
@@ -220,7 +220,7 @@ export default async function SuccessStoriesArchivePage({ searchParams }: Succes
             </div>
             {/* We could add pagination if needed, relying on rawStories.totalPages */}
             {!searchQuery && rawStories.totalPages > 1 && (
-              <Pagination totalPages={rawStories.totalPages} currentPage={rawStories.page || 1} basePath="/success-stories" />
+              <Pagination totalPages={rawStories.totalPages} currentPage={rawStories.page || 1} basePath="/our-work" />
             )}
           </FadeIn>
         ) : (
@@ -232,7 +232,7 @@ export default async function SuccessStoriesArchivePage({ searchParams }: Succes
             <p className="text-on-surface-variant max-w-md mx-auto mb-8">
               We couldn&apos;t find any stories matching your criteria. Try adjusting your search or filters.
             </p>
-            <Link href="/success-stories" className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <Link href="/our-work" className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors">
               Clear Search & Filters
             </Link>
           </FadeIn>
