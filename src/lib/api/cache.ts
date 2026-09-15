@@ -111,18 +111,21 @@ export const getCachedAdjacentPosts = async (
   return cached();
 };
 
-export const getCachedTopBlogCategories = async (limit: number = 4) => {
+export const getCachedTopBlogCategories = async (
+  limit: number = 4,
+  contentType: 'blog' | 'news' = 'blog',
+) => {
   const { getTopBlogCategories } = await import('./queries');
   const { isEnabled: draft } = await safeDraftMode();
 
   if (draft || process.env.NODE_ENV !== 'production') {
-    return getTopBlogCategories(limit);
+    return getTopBlogCategories(limit, contentType);
   }
 
   const cached = unstable_cache(
-    async () => getTopBlogCategories(limit),
-    ['top-blog-categories', String(limit)],
-    { tags: ['blogs', 'categories'] }
+    async () => getTopBlogCategories(limit, contentType),
+    ['top-blog-categories', contentType, String(limit)],
+    { tags: ['blogs', `${contentType}-posts`, 'categories'] }
   );
 
   return cached();

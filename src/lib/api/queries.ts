@@ -133,12 +133,15 @@ export const getPostBySlug = async (
   return result.docs[0] || null
 }
 
-export const getTopBlogCategories = async (limit: number = 4) => {
+export const getTopBlogCategories = async (
+  limit: number = 4,
+  contentType: 'blog' | 'news' = 'blog',
+) => {
   const payload = await getPayloadClient()
   const { isEnabled: draft } = await draftMode()
 
   const whereOptions: any = {
-    contentType: { equals: 'blog' },
+    contentType: { equals: contentType },
     _status: { equals: 'published' },
   }
 
