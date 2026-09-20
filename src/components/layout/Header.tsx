@@ -10,26 +10,26 @@ export async function Header() {
   const contactEmail = siteSettings.contactEmail || 'hello@writtenlyhub.com';
 
   return (
-    <nav className="bg-writtenly-navy w-full top-0 fixed z-50 transition-all h-16 flex items-center">
-      <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto">
-        <div className="font-display-lg text-headline-md font-bold text-white flex items-center gap-2">
+    <nav id="main-header" data-scrolled="false" className="bg-writtenly-navy w-full top-0 fixed z-50 transition-all duration-300 h-[80px] lg:h-[90px] flex items-center left-1/2 -translate-x-1/2 data-[scrolled=true]:top-4 data-[scrolled=true]:rounded-[24px] data-[scrolled=true]:w-[calc(100%-2rem)] data-[scrolled=true]:max-w-[1400px] data-[scrolled=true]:shadow-lg">
+      <div className="flex justify-between items-center w-full px-6 lg:px-12 xl:px-16 max-w-container-max mx-auto gap-4">
+        <div className="font-display-lg text-headline-md font-bold text-white flex items-center shrink-0">
           <Link href="/">
             <Image
               alt="WrittenlyHub Logo"
               src="/images/logos/logo.svg"
-              width={180}
-              height={60}
-              className="h-8 w-auto object-contain"
+              width={220}
+              height={73}
+              className="h-9 lg:h-11 w-auto object-contain transition-all duration-300 group-data-[scrolled=true]:h-8 group-data-[scrolled=true]:lg:h-9"
               priority
             />
           </Link>
         </div>
-        <div className="hidden md:flex items-center gap-10">
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">About</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Services</Link>
+        <div className="hidden lg:flex items-center gap-6 lg:gap-8">
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">About Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Services</Link>
 
           <div className="relative group">
-            <button className="text-white group-hover:text-writtenly-orange transition-colors font-label-md text-label-md flex items-center gap-1 h-16">
+            <button className="text-white group-hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px] flex items-center gap-1 h-16">
               Resources
               <svg className="w-4 h-4 transition-transform duration-200 group-hover:-scale-y-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -99,8 +99,9 @@ export async function Header() {
             </div>
           </div>
 
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Career</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-label-md text-label-md" href="#">Write For Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Career</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Write For Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/contact">Contact</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
           {/* CTA removed as requested */}
