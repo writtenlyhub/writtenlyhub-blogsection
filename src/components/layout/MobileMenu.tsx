@@ -20,7 +20,10 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
   }, []);
 
   const closeMenu = useCallback(() => {
-    dialogRef.current?.close();
+    setIsOpen(false);
+    setTimeout(() => {
+      dialogRef.current?.close();
+    }, 500); // Wait for transition to finish
   }, []);
 
   useBodyScrollLock(isOpen);
@@ -79,7 +82,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
 
       <dialog
         ref={dialogRef}
-        className="fixed m-0 p-0 w-full h-full max-w-none max-h-none border-0 outline-none bg-writtenly-navy transition-opacity duration-300 opacity-0 open:opacity-100 z-[100]"
+        className={`fixed m-0 p-0 w-full h-full max-w-none max-h-none border-0 outline-none bg-writtenly-navy transition-transform duration-500 ease-in-out z-[100] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
         onClick={handleDialogClick}
       >
         <div 
