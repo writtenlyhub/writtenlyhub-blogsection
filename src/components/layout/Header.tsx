@@ -25,8 +25,8 @@ export async function Header() {
           </Link>
         </div>
         <div className="hidden lg:flex items-center gap-6 lg:gap-8">
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">About Us</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Services</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/about/">About Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/services/">Services</Link>
 
           <div className="relative group">
             <button className="text-white group-hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px] flex items-center gap-1 h-16">
@@ -44,7 +44,7 @@ export async function Header() {
                   <span className="font-label-md text-[11px] font-bold text-white/50 uppercase tracking-widest mb-6">Resources</span>
                   <div className="grid grid-cols-2 gap-x-8 gap-y-10">
 
-                    <Link href="/" className="group/item flex items-start gap-4">
+                    <Link href="/blog" className="group/item flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/80 group-hover/item:bg-white group-hover/item:text-writtenly-navy transition-colors shrink-0">
                         <BookOpen size={22} />
                       </div>
@@ -99,8 +99,8 @@ export async function Header() {
             </div>
           </div>
 
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Career</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="#">Write For Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/career/">Career</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/blog/write-for-us/">Write For Us</Link>
           <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/contact">Contact</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">
