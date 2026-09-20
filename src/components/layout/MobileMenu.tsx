@@ -55,7 +55,7 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
         onClick={openMenu}
         aria-expanded={isOpen}
         aria-label="Open mobile menu"
-        className="md:hidden text-white bg-white/10 p-2.5 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
+        className="text-writtenly-navy bg-white p-2.5 rounded-full hover:bg-white/90 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
       >
         <Menu size={20} />
       </button>
