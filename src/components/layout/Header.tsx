@@ -10,8 +10,9 @@ export async function Header() {
   const contactEmail = siteSettings.contactEmail || 'hello@writtenlyhub.com';
 
   return (
-    <nav id="main-header" data-scrolled="false" className="bg-writtenly-navy w-full top-0 fixed z-50 transition-all duration-300 h-[80px] lg:h-[90px] flex items-center left-1/2 -translate-x-1/2 data-[scrolled=true]:top-4 data-[scrolled=true]:rounded-[24px] data-[scrolled=true]:w-[calc(100%-2rem)] data-[scrolled=true]:max-w-[1400px] data-[scrolled=true]:shadow-lg">
-      <div className="flex justify-between items-center w-full px-6 lg:px-12 xl:px-16 max-w-container-max mx-auto gap-4">
+    <nav id="main-header" data-scrolled="false" className="group bg-writtenly-navy w-full top-0 fixed z-50 transition-all duration-300 h-[80px] lg:h-[90px] flex items-center left-1/2 -translate-x-1/2 data-[scrolled=true]:top-4 data-[scrolled=true]:rounded-[24px] data-[scrolled=true]:w-[calc(100%-2rem)] data-[scrolled=true]:max-w-[1400px] data-[scrolled=true]:shadow-lg">
+      <div id="reading-progress-container" className="absolute bottom-0 left-0 w-full h-1 overflow-hidden opacity-0 group-data-[scrolled=true]:opacity-100 transition-opacity duration-300 rounded-b-[24px]"></div>
+      <div className="flex justify-between items-center w-full px-6 lg:px-12 xl:px-16 max-w-container-max mx-auto gap-4 relative z-10">
         <div className="font-display-lg text-headline-md font-bold text-white flex items-center shrink-0">
           <Link href="/">
             <Image
