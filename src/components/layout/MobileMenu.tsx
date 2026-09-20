@@ -110,31 +110,32 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
           <div className="flex-1 flex items-center justify-center p-6 lg:p-12 mt-20 lg:mt-0">
             <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               
-              {/* Left Column (Illustration placeholder) */}
-              <div className="hidden lg:flex items-center justify-center w-full h-full min-h-[400px]">
-                {/* 
-                  The illustration from the screenshot is placed here. 
-                  Since we don't have the specific image file in public/images, 
-                  we'll leave the space ready for it.
-                */}
+              {/* Left Column (Illustration) */}
+              <div className="hidden lg:flex items-center justify-center w-full h-full relative min-h-[400px]">
+                <Image
+                  src="/images/contact-map.png"
+                  alt="WrittenlyHub Location Map"
+                  fill
+                  className="object-contain"
+                />
               </div>
 
               {/* Right Column (Text Content) */}
-              <div className="flex flex-col gap-8 max-w-xl">
+              <div className="flex flex-col gap-6 max-w-lg">
                 <div>
-                  <h2 className="font-display-lg text-4xl lg:text-[56px] font-bold text-white leading-tight mb-4">
+                  <h2 className="font-display-lg text-3xl lg:text-[40px] font-bold text-white leading-tight mb-3">
                     We are in the heart of India's Silicon Valley,
                   </h2>
-                  <h3 className="font-display-md text-3xl lg:text-[44px] font-bold text-writtenly-orange italic">
+                  <h3 className="font-display-md text-2xl lg:text-[32px] font-bold text-writtenly-orange italic">
                     Namma Bengaluru
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 mt-4">
-                  <span className="font-headline-md text-xl lg:text-2xl text-white font-medium">
+                <div className="flex flex-col gap-2 mt-2">
+                  <span className="font-headline-md text-lg lg:text-xl text-white font-medium">
                     Address
                   </span>
-                  <p className="font-body-lg text-lg lg:text-xl text-white/90 leading-relaxed max-w-md">
+                  <p className="font-body-lg text-base lg:text-lg text-white/90 leading-relaxed max-w-md">
                     172/1, 1st floor, 5th Main, 9th Cross Rd, Opposite to Kairalee Nikethan Education Trust, Indira Nagar 1st Stage, Bengaluru, Karnataka-560038
                   </p>
                 </div>
