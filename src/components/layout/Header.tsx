@@ -100,7 +100,7 @@ export async function Header() {
           </div>
 
           <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/career/">Career</Link>
-          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/blog/write-for-us/">Write For Us</Link>
+          <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/write-for-us">Write For Us</Link>
           <Link className="text-white hover:text-writtenly-orange transition-colors font-medium text-[14px] lg:text-[15px]" href="/contact">Contact</Link>
         </div>
         <div className="flex items-center gap-2 md:gap-stack-md">

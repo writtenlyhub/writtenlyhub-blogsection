@@ -45,6 +45,14 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/write-for-us',
+        destination: '/blog/write-for-us',
+      }
+    ];
+  },
   async redirects() {
     return [
       {
