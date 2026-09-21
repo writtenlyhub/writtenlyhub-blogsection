@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { DataGraphBlock } from '@/components/blog/DataGraphBlock';
 import { AnalyticsChartBlock } from '@/components/blog/AnalyticsChartBlock';
 import AnimatedMetric from '@/components/ui/AnimatedMetric';
+import BeforeAfterCompare from '@/components/ui/BeforeAfterCompare';
 import { getCachedSuccessStoryBySlug, getCachedSiteSettings } from '@/lib/api/cache';
 import { getPayloadClient } from '@/lib/api/payload';
 import { isMedia, getMediaUrl } from '@/lib/utils/blogMapper';
@@ -255,19 +256,13 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
                   )}
                 </div>
                 
-                <div className="relative flex items-center justify-center py-12">
-                  <div className="relative w-full max-w-md flex items-center">
-                    <div className="relative z-10 w-2/3 transform -translate-x-4">
-                      <div className="relative bg-white rounded-2xl shadow-lg border border-border-subtle overflow-hidden aspect-[848/1264]">
-                        <Image src="/images/success-stories/traffic_before.png" alt="Traffic Before" fill className="object-cover" />
-                      </div>
-                    </div>
-                    
-                    <div className="relative z-20 w-2/3 -ml-[20%] transform translate-y-8">
-                      <div className="relative bg-white rounded-2xl shadow-2xl border border-secondary-container overflow-hidden aspect-[848/1264]">
-                        <Image src="/images/success-stories/traffic_after.png" alt="Traffic After" fill className="object-cover" />
-                      </div>
-                    </div>
+                <div className="relative flex items-center justify-center py-12 w-full">
+                  <div className="relative w-full max-w-md flex items-center justify-center">
+                    <BeforeAfterCompare 
+                      beforeImage={beforeImageUrl || "/images/success-stories/traffic_before.png"}
+                      afterImage={afterImageUrl || "/images/success-stories/traffic_after.png"}
+                      aspectRatio="aspect-[848/1264]"
+                    />
                   </div>
                 </div>
               </div>
