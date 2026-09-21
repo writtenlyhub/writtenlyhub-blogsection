@@ -225,7 +225,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
 
       {/* The Problem */}
       {(rawStory.problemHeading || rawStory.problemDescription || (rawStory.problemPoints && rawStory.problemPoints.length > 0)) && (
-        <section className="bg-surface-container-lowest py-16 md:py-24 border-y border-border-subtle overflow-hidden">
+        <section className="bg-surface-container-lowest py-16 md:py-24 overflow-hidden">
           <div className="max-w-[1152px] mx-auto px-6 md:px-12 lg:px-16">
             <div className="flex flex-col gap-16">
               <div className="flex flex-col items-center text-center">
@@ -273,7 +273,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
 
       {/* The Impact */}
       {rawStory.impactHeading && (
-        <section className="bg-surface border-b border-border-subtle py-12">
+        <section className="bg-surface py-12">
           <div className="max-w-[1152px] mx-auto px-6 md:px-12 lg:px-16 py-12">
             <div className="flex flex-col items-center gap-8">
               <span className="font-label-md text-label-md text-secondary-container uppercase tracking-widest font-bold mb-4 text-center block">The Impact</span>
@@ -359,7 +359,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
         // Override with high-quality relatable team photo
         const finalClientVisualUrl = '/images/success-stories/client_team.jpg';
         return (
-        <section className="py-24 bg-[#fafafa] border-y border-border-subtle overflow-hidden relative">
+        <section className="py-24 bg-[#fafafa] overflow-hidden relative">
           {/* Dotted Background */}
           <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(circle, #001b3d 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           
@@ -436,7 +436,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
 
       {/* Trusted Brands */}
       {(trustedBrands.length > 0 || true) && (
-        <section className="py-24 bg-white border-y border-border-subtle overflow-hidden relative">
+        <section className="py-24 bg-white overflow-hidden relative">
           <div className="max-w-[1152px] mx-auto px-6 md:px-12 lg:px-16">
             <div className="flex flex-col items-center text-center mb-16">
               <span className="font-label-md text-label-md text-[#fd5a0a] uppercase tracking-widest font-bold mb-4 block">TRUSTED BY LEADING BRANDS</span>
@@ -491,7 +491,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 md:py-24 relative overflow-hidden bg-gradient-to-br from-[#f8fafc] to-[#f1f5f9]">
+      <section className="py-12 md:py-16 relative overflow-hidden bg-gradient-to-br from-[#f8fafc] to-[#f1f5f9]">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <div className="absolute top-10 left-10 w-40 h-40 bg-white/40 rounded-full blur-3xl"></div>
@@ -506,17 +506,17 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
         </div>
 
         <div className="max-w-[1152px] mx-auto px-6 md:px-12 lg:px-16 relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display-lg font-extrabold text-[#001b3d] leading-tight max-w-3xl mx-auto tracking-tight mb-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display-lg font-extrabold text-[#001b3d] leading-tight max-w-3xl mx-auto tracking-tight mb-6">
             Ready to achieve similar results?
           </h2>
-          <p className="text-xl md:text-2xl text-on-surface-variant font-body-lg mb-10">
+          <p className="text-lg md:text-xl text-on-surface-variant font-body-lg mb-8">
             Let's build content that ranks, engages, and converts.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/contact" className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-[#fd5a0a] rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-[#fd5a0a]/20">
+            <Link href="/contact" className="group relative inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white bg-[#fd5a0a] rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-[#fd5a0a]/20">
               <span className="relative z-10 flex items-center gap-2">
                 Let's Talk
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </span>
               <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#fd5a0a] to-[#ff7b3a] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
