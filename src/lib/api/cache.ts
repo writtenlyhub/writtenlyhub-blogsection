@@ -11,50 +11,125 @@ async function safeDraftMode() {
   }
 }
 
-export const getCachedPosts = async (limit?: number, page?: number) => {
+export const getCachedPosts = async (
+  limit?: number,
+  page?: number,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
   const { isEnabled: draft } = await safeDraftMode();
-  if (draft || process.env.NODE_ENV !== 'production') return getPosts(limit, page);
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getPosts(limit, page, contentType);
+  }
+
   const cached = unstable_cache(
-    async () => getPosts(limit, page),
-    ['posts-list', String(limit), String(page)],
-    { tags: ['blogs'] }
+    async () => getPosts(limit, page, contentType),
+    ['posts-list', contentType, String(limit), String(page)],
+    { tags: ['blogs', `${contentType}-posts`] }
   );
+
   return cached();
 };
 
-export const getCachedArchivePosts = async (limit?: number, page?: number, categorySlug?: string, searchQuery?: string) => {
+export const getCachedArchivePosts = async (
+  limit?: number,
+  page?: number,
+  categorySlug?: string,
+  searchQuery?: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
   const { isEnabled: draft } = await safeDraftMode();
-  if (draft || process.env.NODE_ENV !== 'production') return getArchivePosts(limit, page, categorySlug, searchQuery);
-  const cached = unstable_cache(
-    async () => getArchivePosts(limit, page, categorySlug, searchQuery),
-    ['archive-posts', String(limit), String(page), String(categorySlug), String(searchQuery)],
-    { tags: ['blogs'] }
-  )
-  return cached()
-}
 
-export const getCachedPostBySlug = async (slug: string) => {
-  const { isEnabled: draft } = await safeDraftMode();
-  if (draft || process.env.NODE_ENV !== 'production') return getPostBySlug(slug);
-  const cached = unstable_cache(
-    async () => getPostBySlug(slug),
-    ['post-by-slug', slug],
-    { tags: ['blogs', `blog-${slug}`] }
-  )
-  return cached()
-}
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getArchivePosts(
+      limit,
+      page,
+      categorySlug,
+      searchQuery,
+      contentType,
+    );
+  }
 
-export const getCachedAdjacentPosts = async (publishedAt: string) => {
-  const { getAdjacentPosts } = await import('./queries')
-  const { isEnabled: draft } = await safeDraftMode();
-  if (draft || process.env.NODE_ENV !== 'production') return getAdjacentPosts(publishedAt);
   const cached = unstable_cache(
-    async () => getAdjacentPosts(publishedAt),
-    ['adjacent-posts', publishedAt],
-    { tags: ['blogs'] }
-  )
-  return cached()
-}
+    async () => getArchivePosts(
+      limit,
+      page,
+      categorySlug,
+      searchQuery,
+      contentType,
+    ),
+    [
+      'archive-posts',
+      contentType,
+      String(limit),
+      String(page),
+      String(categorySlug),
+      String(searchQuery),
+    ],
+    { tags: ['blogs', `${contentType}-posts`] }
+  );
+
+  return cached();
+};
+
+export const getCachedPostBySlug = async (
+  slug: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getPostBySlug(slug, contentType);
+  }
+
+  const cached = unstable_cache(
+    async () => getPostBySlug(slug, contentType),
+    ['post-by-slug', contentType, slug],
+    { tags: ['blogs', `${contentType}-${slug}`] }
+  );
+
+  return cached();
+};
+
+export const getCachedAdjacentPosts = async (
+  publishedAt: string,
+  contentType: 'blog' | 'news' | 'all' = 'blog',
+) => {
+  const { getAdjacentPosts } = await import('./queries');
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getAdjacentPosts(publishedAt, contentType);
+  }
+
+  const cached = unstable_cache(
+    async () => getAdjacentPosts(publishedAt, contentType),
+    ['adjacent-posts', contentType, publishedAt],
+    { tags: ['blogs', `${contentType}-posts`] }
+  );
+
+  return cached();
+};
+
+export const getCachedTopBlogCategories = async (
+  limit: number = 4,
+  contentType: 'blog' | 'news' = 'blog',
+) => {
+  const { getTopBlogCategories } = await import('./queries');
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getTopBlogCategories(limit, contentType);
+  }
+
+  const cached = unstable_cache(
+    async () => getTopBlogCategories(limit, contentType),
+    ['top-blog-categories', contentType, String(limit)],
+    { tags: ['blogs', `${contentType}-posts`, 'categories'] }
+  );
+
+  return cached();
+};
 
 export const getCachedCategories = async () => {
   const { isEnabled: draft } = await safeDraftMode();

@@ -90,12 +90,12 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
             <a
               href={`#${item.id}`}
               onClick={() => setMobileExpanded(false)}
-              className={`block py-2 px-3 text-[14px] leading-snug transition-all duration-75 ${
+              className={`block py-2 px-3 text-[14px] leading-snug transition-all duration-75 border-l-2 ${
                 isItemActive
-                  ? 'bg-primary/5 text-primary font-medium'
+                  ? 'border-primary bg-primary/5 text-primary font-medium'
                   : isGroupActive
-                  ? 'text-primary font-medium'
-                  : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
+                  ? 'border-transparent text-primary font-medium'
+                  : 'border-transparent text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest'
               }`}
             >
               {item.title}
@@ -114,10 +114,10 @@ export function TableOfContents({ items, isDesktop, isMobile }: TableOfContentsP
                       key={child.id}
                       href={`#${child.id}`}
                       onClick={() => setMobileExpanded(false)}
-                      className={`block py-1.5 pl-6 pr-3 text-[13px] leading-snug transition-all duration-75 ${
+                      className={`block py-1.5 pl-6 pr-3 text-[13px] leading-snug transition-all duration-75 border-l-2 ${
                         isChildActive
-                          ? 'bg-primary/5 text-primary font-medium'
-                          : 'text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
+                          ? 'border-primary bg-primary/5 text-primary font-medium'
+                          : 'border-transparent text-on-surface-variant/80 hover:text-primary hover:bg-surface-container-lowest'
                       }`}
                     >
                       {child.title}

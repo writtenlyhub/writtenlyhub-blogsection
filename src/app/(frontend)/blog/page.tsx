@@ -1,54 +1,22 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
+import Link from 'next/link';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { Newsletter } from '@/components/ui/Newsletter';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CategoryFilter } from '@/components/blog/CategoryFilter';
-import { getCachedArchivePosts, getCachedCategories } from '@/lib/api';
-import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
-import Link from 'next/link';
-import { HomepageJsonLd } from '@/components/seo/HomepageJsonLd';
-import { SearchX } from 'lucide-react';
 import { Pagination } from '@/components/ui/Pagination';
+import { getCachedArchivePosts, getCachedTopBlogCategories } from '@/lib/api';
+import { mapBlogList, mapCategoryList } from '@/lib/utils/blogMapper';
+import { ArchiveJsonLd } from '@/components/seo/ArchiveJsonLd';
+import { SearchX } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
-export const metadata: Metadata = {
-  title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
-  description:
-    'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
-  alternates: {
-    canonical: SITE_URL,
-  },
-  openGraph: {
-    title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
-    description:
-      'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
-    url: SITE_URL,
-    siteName: 'WrittenlyHub',
-    type: 'website',
-    images: [
-      {
-        url: `${SITE_URL}/images/og/default-og.jpg`,
-        width: 1200,
-        height: 630,
-        alt: 'WrittenlyHub Blog',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'WrittenlyHub Blog — Expert Guides, SEO & Content Marketing',
-    description:
-      'Explore insightful articles, expert guides, SEO strategies, AI updates and content marketing resources from WrittenlyHub.',
-    images: [`${SITE_URL}/images/og/default-og.jpg`],
-  },
-};
-
-interface BlogListingPageProps {
+interface BlogArchivePageProps {
   searchParams: Promise<{
     page?: string;
     category?: string;
@@ -56,7 +24,59 @@ interface BlogListingPageProps {
   }>;
 }
 
-export default async function BlogListingPage({ searchParams }: BlogListingPageProps) {
+export async function generateMetadata({ searchParams }: BlogArchivePageProps): Promise<Metadata> {
+  const { q, page, category } = await searchParams;
+  const isSearchPage = Boolean(q);
+  const isCategoryPage = Boolean(category && category !== 'all');
+  const currentPage = parseInt(page || '1', 10);
+  
+  let archiveUrl = `${SITE_URL}/blog`;
+  if (isCategoryPage) {
+    archiveUrl = `${SITE_URL}/blog?category=${category}`;
+  }
+  // If we are on page > 1, the canonical should technically self-reference.
+  // But standard practice to consolidate link equity is to point to the base category/archive if content isn't substantially different, OR self-reference.
+  // We will self-reference to ensure Google can crawl paginated links correctly.
+  const canonicalUrl = currentPage > 1 ? `${archiveUrl}${isCategoryPage ? '&' : '?'}page=${currentPage}` : archiveUrl;
+
+  return {
+    title: isSearchPage
+      ? `Search results for "${q}" | WrittenlyHub Blog`
+      : 'Blog Archive | WrittenlyHub',
+    description:
+      'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+    alternates: {
+      canonical: isSearchPage ? undefined : canonicalUrl, // Do not output canonical on search pages
+    },
+    openGraph: {
+      title: 'Blog Archive | WrittenlyHub',
+      description:
+        'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+      url: canonicalUrl,
+      siteName: 'WrittenlyHub',
+      type: 'website',
+      images: [
+        {
+          url: `${SITE_URL}/images/og/default-og.jpg`,
+          width: 1200,
+          height: 630,
+          alt: 'WrittenlyHub Blog Archive',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Blog Archive | WrittenlyHub',
+      description:
+        'Browse all articles, guides, and resources published on the WrittenlyHub blog.',
+      images: [`${SITE_URL}/images/og/default-og.jpg`],
+    },
+    // noindex search result pages to prevent crawl bloat, follow to crawl links
+    ...(isSearchPage ? { robots: { index: false, follow: true } } : {}),
+  };
+}
+
+export default async function BlogArchivePage({ searchParams }: BlogArchivePageProps) {
   const { page, category, q } = await searchParams;
   
   const currentPage = parseInt(page || '1', 10);
@@ -65,15 +85,15 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
 
   const [rawPosts, rawCategories] = await Promise.all([
     getCachedArchivePosts(9, currentPage, categorySlug, searchQuery),
-    getCachedCategories(),
+    getCachedTopBlogCategories(4),
   ]);
   
   const BLOGS = mapBlogList(rawPosts.docs);
-  const CATEGORIES = mapCategoryList(rawCategories.docs);
+  const CATEGORIES = mapCategoryList(rawCategories);
 
   return (
     <main className="w-full px-gutter max-w-container-max mx-auto pb-section-gap">
-      <HomepageJsonLd />
+      <ArchiveJsonLd />
       
       {/* Two-Column Hero Section with Premium Polish */}
       <section className="pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24 relative overflow-hidden">
@@ -109,26 +129,22 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
             <p className="font-body-md text-base md:text-lg lg:text-[17px] text-on-surface-variant/90 leading-relaxed mb-12 max-w-[600px] animate-fade-in-up" style={{ animationDelay: '300ms' }}>
               Browse all our published articles, filter by topic, or search for specific guides. We share our expertise on strategic content execution and digital authority to help you drive sustainable revenue.
             </p>
-            
-
         </div>
         </div>
       </section>
 
-      {/* Filter Pills and Search Row */}
-      <section className="py-8 pb-2">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex-1 overflow-x-auto hide-scrollbar">
-            <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
-          </div>
-          <div className="w-full md:w-[300px] shrink-0">
-            <SearchBar />
-          </div>
+      {/* Filter Pills */}
+      <section className="py-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-start gap-6">
+          <CategoryFilter categories={CATEGORIES} mobileVisibleCount={6} />
+        </div>
+        <div className="w-full max-w-[300px] mt-6 lg:hidden">
+          <SearchBar />
         </div>
       </section>
 
       {/* 3-Column Blog Portfolio Grid */}
-      <section className="pb-16 py-8 min-h-[40vh]">
+      <section className="pb-16 py-12 min-h-[40vh]">
         {/* Results Info */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-outline-variant/30 hidden lg:flex">
           <h2 className="font-headline-md text-writtenly-navy font-bold">
@@ -137,6 +153,9 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
              'All Articles'}
           </h2>
           <div className="flex items-center gap-6">
+            <div className="w-64">
+              <SearchBar />
+            </div>
             <span className="text-on-surface-variant font-label-md">
               Showing {rawPosts.pagingCounter} - {Math.min(rawPosts.pagingCounter + rawPosts.limit - 1, rawPosts.totalDocs)} of {rawPosts.totalDocs}
             </span>
@@ -145,7 +164,7 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
 
         {BLOGS.length > 0 ? (
           <FadeIn direction="up">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20 lg:px-12 xl:px-16">
               {BLOGS.map((blog, index) => (
                 <React.Fragment key={blog.id}>
                   <FadeIn delay={index * 0.1} direction="up" className="h-full">
@@ -156,7 +175,7 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
             </div>
             
             {!searchQuery && rawPosts.totalPages > 1 && (
-              <Pagination totalPages={rawPosts.totalPages} currentPage={rawPosts.page || 1} basePath="/" />
+              <Pagination totalPages={rawPosts.totalPages} currentPage={rawPosts.page || 1} basePath="/blog" />
             )}
           </FadeIn>
         ) : (
@@ -168,7 +187,7 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
             <p className="text-on-surface-variant max-w-md mx-auto mb-8">
               We couldn't find any articles matching "{searchQuery}". Try checking your spelling, using fewer words, or clearing your filters.
             </p>
-            <Link href="/" className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <Link href="/blog" className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors">
               Clear Search & Filters
             </Link>
           </FadeIn>

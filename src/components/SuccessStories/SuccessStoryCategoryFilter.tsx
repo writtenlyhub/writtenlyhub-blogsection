@@ -72,7 +72,7 @@ export function SuccessStoryCategoryFilter({ categories, mobileVisibleCount = 6 
         params.set('category', slug);
       }
       params.delete('page');
-      router.push(`/success-stories?${params.toString()}`, { scroll: false });
+      router.push(`/our-work?${params.toString()}`, { scroll: false });
     },
     [closeSheet, searchParams, router],
   );
@@ -83,7 +83,7 @@ export function SuccessStoryCategoryFilter({ categories, mobileVisibleCount = 6 
         <ul>
           {categories.map((cat) => (
             <li key={`seo-${cat.id}`}>
-              <a href={`/success-stories?category=${cat.slug}`}>{cat.name}</a>
+              <a href={`/our-work?category=${cat.slug}`}>{cat.name}</a>
             </li>
           ))}
         </ul>

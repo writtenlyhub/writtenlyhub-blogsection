@@ -37,6 +37,7 @@ export interface UI_Blog {
   title: string;
   excerpt: string;
   slug: string;
+  contentType: 'blog' | 'news';
   category: UI_Category;
   author: UI_Author;
   publishedDate: string;
@@ -47,6 +48,7 @@ export interface UI_Blog {
 }
 
 export interface BlogHeroData {
+  contentType: 'blog' | 'news';
   category: string;
   title: string;
   summary: string;

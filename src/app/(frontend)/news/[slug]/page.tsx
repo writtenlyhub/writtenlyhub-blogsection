@@ -23,6 +23,8 @@ import type { Blog } from '@/payload-types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
 
+export const dynamic = 'force-dynamic';
+
 
 interface PageProps {
   params: Promise<{
@@ -33,7 +35,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<import("next").Metadata> {
   const { slug } = await params;
-  const post = await getCachedPostBySlug(slug);
+  const post = await getCachedPostBySlug(slug, 'news');
 
   if (!post) {
     // Check for redirects
@@ -44,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
       where: {
         and: [
           { 'previousSlugs.slug': { equals: slug } },
-          { contentType: { equals: 'blog' } },
+          { contentType: { equals: 'news' } },
         ],
       },
       depth: 0,
@@ -53,7 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
     if (redirectResult.docs.length > 0) {
       const correctSlug = redirectResult.docs[0].slug;
       if (correctSlug && correctSlug !== slug) {
-        permanentRedirect(`/blog/${correctSlug}`);
+        permanentRedirect(`/news/${correctSlug}`);
       }
     }
     notFound();
@@ -66,6 +68,7 @@ export async function generateMetadata({ params }: PageProps): Promise<import("n
     post,
     siteSettings,
     slug,
+    pathPrefix: '/news/',
   });
 }
 
@@ -86,7 +89,7 @@ export default async function BlogDetail({ params }: PageProps) {
         where: {
           and: [
             { slug: { equals: slug } },
-            { contentType: { equals: 'blog' } },
+            { contentType: { equals: 'news' } },
           ],
         },
         overrideAccess: true,
@@ -100,7 +103,7 @@ export default async function BlogDetail({ params }: PageProps) {
       console.error('[BlogDetail] Draft Mode Payload fetch failed:', err);
     }
   } else {
-    rawPayloadPost = await getCachedPostBySlug(slug);
+    rawPayloadPost = await getCachedPostBySlug(slug, 'news');
   }
 
   console.log(`[BlogDetail] Post fetch result:`, rawPayloadPost ? 'Found' : 'Null');
@@ -125,7 +128,7 @@ export default async function BlogDetail({ params }: PageProps) {
         where: {
           and: [
             { 'previousSlugs.slug': { equals: slug } },
-            { contentType: { equals: 'blog' } },
+            { contentType: { equals: 'news' } },
           ],
         },
         depth: 0,
@@ -134,7 +137,7 @@ export default async function BlogDetail({ params }: PageProps) {
       if (redirectResult.docs.length > 0) {
         const correctSlug = redirectResult.docs[0].slug;
         if (correctSlug && correctSlug !== slug) {
-          permanentRedirect(`/blog/${correctSlug}`);
+          permanentRedirect(`/news/${correctSlug}`);
         }
       }
     }
@@ -143,7 +146,7 @@ export default async function BlogDetail({ params }: PageProps) {
   }
 
   const { getCachedAdjacentPosts } = await import('@/lib/api');
-  const adjacent = rawPayloadPost.publishedAt ? await getCachedAdjacentPosts(rawPayloadPost.publishedAt) : { prev: null, next: null };
+  const adjacent = rawPayloadPost.publishedAt ? await getCachedAdjacentPosts(rawPayloadPost.publishedAt, 'news') : { prev: null, next: null };
 
   const siteSettings = await getCachedSiteSettings();
   const newsletterPopupData = siteSettings?.newsletterPopup || undefined;
@@ -154,7 +157,7 @@ export default async function BlogDetail({ params }: PageProps) {
     const categorySlug = rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : undefined;
 
     if (categorySlug) {
-      const categoryPosts = await getCachedArchivePosts(4, 1, categorySlug);
+      const categoryPosts = await getCachedArchivePosts(4, 1, categorySlug, undefined, 'news');
       const filteredCatPosts = categoryPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
       if (filteredCatPosts.length > 0) {
         const mappedList = mapBlogList(filteredCatPosts);
@@ -165,13 +168,13 @@ export default async function BlogDetail({ params }: PageProps) {
           date: item.publishedDate,
           readTime: item.readTime,
           imageUrl: item.featuredImage,
-          link: `/blog/${item.slug}`
+          link: `/news/${item.slug}`
         }));
       }
     }
 
     if (finalRelatedArticles.length === 0) {
-      const latestPosts = await getCachedPosts(4, 1);
+      const latestPosts = await getCachedPosts(4, 1, 'news');
       const filteredLatest = latestPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
       if (filteredLatest.length > 0) {
         const mappedList = mapBlogList(filteredLatest);
@@ -182,7 +185,7 @@ export default async function BlogDetail({ params }: PageProps) {
           date: item.publishedDate,
           readTime: item.readTime,
           imageUrl: item.featuredImage,
-          link: `/blog/${item.slug}`
+          link: `/news/${item.slug}`
         }));
       }
     }
@@ -192,11 +195,12 @@ export default async function BlogDetail({ params }: PageProps) {
     post: rawPayloadPost,
     siteSettings,
     slug: rawPayloadPost.slug || slug,
+    pathPrefix: '/news/',
     extractedFaqs: blogData.faqs ? blogData.faqs.items : [],
   });
   const content = blogData.content || [];
 
-  // Group content into chunks. 
+  // Group content into chunks.
   // 'text' chunks go inside the grid with the sidebar.
   // 'fullwidth' chunks (CTA) break out of the grid and span the full container.
   const chunks: { type: 'text' | 'fullwidth', nodes: any[] }[] = [];
@@ -230,9 +234,9 @@ export default async function BlogDetail({ params }: PageProps) {
         <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
           <Breadcrumbs items={[
             { label: 'Home', href: '/' },
-            { label: 'Blog', href: '/blog' },
-            ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/blog?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
-            { label: blogData.hero.title, href: `/blog/${rawPayloadPost.slug}` },
+            { label: 'News', href: '/news' },
+            ...(blogData.hero.category ? [{ label: blogData.hero.category, href: `/news?category=${rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : ''}` }] : []),
+            { label: blogData.hero.title, href: `/news/${rawPayloadPost.slug}` },
           ]} />
 
           <BlogHero {...blogData.hero} />

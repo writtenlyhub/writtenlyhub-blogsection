@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${story.title} | Success Story | WrittenlyHub`,
     description: story.shortDescription || `Read how we helped ${story.clientName} achieve success.`,
     alternates: {
-      canonical: `${SITE_URL}/success-stories/${slug}`,
+      canonical: `${SITE_URL}/our-work/${slug}`,
     }
   };
 }
@@ -107,7 +107,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
           <nav className="flex items-center gap-2 text-on-surface-variant text-sm mb-24">
             <Link className="hover:text-secondary transition-colors" href="/">Home</Link>
             <span className="text-outline-variant">/</span>
-            <Link className="hover:text-secondary transition-colors" href="/success-stories">Success Stories</Link>
+            <Link className="hover:text-secondary transition-colors" href="/our-work">Our Work</Link>
             <span className="text-outline-variant">/</span>
             <span className="text-primary font-medium">{rawStory.clientName}</span>
           </nav>

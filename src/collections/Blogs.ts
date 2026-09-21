@@ -349,6 +349,25 @@ export const Blogs: CollectionConfig = {
       },
     },
     {
+      name: 'contentType',
+      type: 'select',
+      required: true,
+      defaultValue: 'blog',
+      options: [
+        {
+          label: 'Blog',
+          value: 'blog',
+        },
+        {
+          label: 'News',
+          value: 'news',
+        },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'tags',
       type: 'array',
       admin: {

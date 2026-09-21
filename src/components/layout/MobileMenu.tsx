@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
@@ -19,7 +20,10 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
   }, []);
 
   const closeMenu = useCallback(() => {
-    dialogRef.current?.close();
+    setIsOpen(false);
+    setTimeout(() => {
+      dialogRef.current?.close();
+    }, 500); // Wait for transition to finish
   }, []);
 
   useBodyScrollLock(isOpen);
@@ -42,6 +46,22 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
     };
   }, []);
 
+  // Handle scroll for the floating navbar effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.getElementById('main-header');
+      if (header) {
+        header.setAttribute('data-scrolled', window.scrollY > 20 ? 'true' : 'false');
+      }
+    };
+    
+    // Initial check
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Close on backdrop click
   const handleDialogClick = useCallback((e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === dialogRef.current) {
@@ -55,43 +75,77 @@ export function MobileMenu({ contactEmail }: MobileMenuProps) {
         onClick={openMenu}
         aria-expanded={isOpen}
         aria-label="Open mobile menu"
-        className="md:hidden text-white bg-white/10 p-2.5 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
+        className="text-writtenly-navy bg-white p-2.5 rounded-full hover:bg-white/90 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
       >
         <Menu size={20} />
       </button>
 
       <dialog
         ref={dialogRef}
-        className="fixed m-0 p-0 w-full h-full max-w-none max-h-none border-0 outline-none bg-transparent backdrop:bg-writtenly-navy/80 backdrop:backdrop-blur-sm"
+        className={`fixed m-0 p-0 w-full h-full max-w-none max-h-none border-0 outline-none bg-writtenly-navy transition-transform duration-500 ease-in-out z-[100] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
         onClick={handleDialogClick}
       >
         <div 
-          className="absolute top-0 right-0 h-full w-[80vw] max-w-sm bg-writtenly-navy shadow-2xl flex flex-col"
+          className="w-full h-full flex flex-col relative"
           role="document"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-white/10">
-            <span className="font-headline-md text-headline-md text-white font-bold tracking-tight">Menu</span>
+          {/* Header Area */}
+          <div className="flex items-center justify-between p-6 lg:p-12 absolute top-0 left-0 w-full z-10">
+            <div className="w-16 lg:w-24">
+              <Image
+                alt="WrittenlyHub Bird Logo"
+                src="/images/logos/bird-accent.svg"
+                width={80}
+                height={80}
+                className="w-full h-auto object-contain"
+              />
+            </div>
             <button
               onClick={closeMenu}
-              aria-label="Close menu"
-              className="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center w-9 h-9"
+              aria-label="Close overlay"
+              className="text-writtenly-navy bg-white p-3 lg:p-4 rounded-full hover:bg-white/90 transition-transform hover:scale-105 flex items-center justify-center shadow-xl"
             >
-              <X size={20} />
+              <X size={32} strokeWidth={2} />
             </button>
           </div>
 
-          {/* Links */}
-          <nav className="flex flex-col p-6 gap-6 overflow-y-auto" data-lenis-prevent="true">
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">About</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Services</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="/success-stories">Case Studies</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-writtenly-orange" href="/">Blog</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Career</Link>
-            <Link onClick={closeMenu} className="font-headline-md text-headline-md font-bold text-white/80 hover:text-writtenly-orange transition-colors" href="#">Write For Us</Link>
-          </nav>
+          {/* Content Area */}
+          <div className="flex-1 flex items-center justify-center p-6 lg:p-12 mt-20 lg:mt-0">
+            <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              
+              {/* Left Column (Illustration) */}
+              <div className="hidden lg:flex items-center justify-center w-full h-full relative min-h-[400px]">
+                <Image
+                  src="/images/contact-map.png"
+                  alt="WrittenlyHub Location Map"
+                  fill
+                  className="object-contain"
+                />
+              </div>
 
-          {/* Footer CTA removed as requested */}
+              {/* Right Column (Text Content) */}
+              <div className="flex flex-col gap-6 max-w-lg">
+                <div>
+                  <h2 className="font-display-lg text-3xl lg:text-[40px] font-bold text-white leading-tight mb-3">
+                    We are in the heart of India's Silicon Valley,
+                  </h2>
+                  <h3 className="font-display-md text-2xl lg:text-[32px] font-bold text-writtenly-orange italic">
+                    Namma Bengaluru
+                  </h3>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-2">
+                  <span className="font-headline-md text-lg lg:text-xl text-white font-medium">
+                    Address
+                  </span>
+                  <p className="font-body-lg text-base lg:text-lg text-white/90 leading-relaxed max-w-md">
+                    172/1, 1st floor, 5th Main, 9th Cross Rd, Opposite to Kairalee Nikethan Education Trust, Indira Nagar 1st Stage, Bengaluru, Karnataka-560038
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </dialog>
     </>

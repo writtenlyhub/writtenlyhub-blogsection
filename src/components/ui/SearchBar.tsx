@@ -30,7 +30,7 @@ export function SearchBar(props: InputHTMLAttributes<HTMLInputElement>) {
         name="q"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full min-w-0 pl-12 pr-6 py-3 md:py-4 bg-white border border-outline-variant/40 rounded-full font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-writtenly-orange focus:ring-4 focus:ring-writtenly-orange/15 transition-all shadow-sm hover:shadow-md hover:border-writtenly-navy/30 placeholder:text-on-surface-variant/50 placeholder:truncate"
+        className="w-full h-[44px] min-w-0 pl-12 pr-6 bg-white border border-outline-variant/40 rounded-full font-body-md text-[15px] text-on-surface focus:outline-none focus:border-writtenly-orange focus:ring-4 focus:ring-writtenly-orange/15 transition-all shadow-sm hover:shadow-md hover:border-writtenly-navy/30 placeholder:text-on-surface-variant/50 placeholder:truncate"
         type="search"
         placeholder="Search articles, topics, or guides..."
         {...props}

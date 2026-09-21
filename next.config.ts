@@ -5,7 +5,10 @@ const isVercel = process.env.VERCEL === '1';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  serverExternalPackages: isVercel ? ['sharp'] : [],
+  serverExternalPackages: isVercel ? ['sharp', 'pg'] : [],
+  outputFileTracingIncludes: isVercel ? {
+    '/api/[...slug]': ['./node_modules/**/*.node', './node_modules/@img/**/*']
+  } : undefined,
   images: {
     remotePatterns: [
       {
@@ -35,8 +38,34 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.writtenlyhub.com',
         pathname: '/api/media/file/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vercel.app',
       }
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/write-for-us',
+        destination: '/blog/write-for-us',
+      }
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/success-stories/:path*',
+        destination: '/our-work/:path*',
+        permanent: true,
+      },
+      {
+        source: '/case-studies/:path*',
+        destination: '/our-work/:path*',
+        permanent: true,
+      }
+    ];
   },
   async headers() {
     return [

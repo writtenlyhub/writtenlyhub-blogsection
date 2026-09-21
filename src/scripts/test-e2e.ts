@@ -16,6 +16,7 @@ async function testE2E() {
 
   const newPost = await payload.create({
     collection: 'blogs',
+    draft: true,
     data: {
       title: uniqueTitle,
       _status: 'published',
