@@ -28,9 +28,9 @@ export function ImageWithFallback({
 
   // Use a premium AI image as the default fallback
   const aiFallbackImages = [
-    '/media/ai_generated_feature_0.png',
-    '/media/ai_generated_feature_1.png',
-    '/media/ai_generated_feature_2.png'
+    '/media/ai_generated_feature_0.jpg',
+    '/media/ai_generated_feature_1.jpg',
+    '/media/ai_generated_feature_2.jpg'
   ];
   
   // Deterministically select an image based on the alt text or a random one
