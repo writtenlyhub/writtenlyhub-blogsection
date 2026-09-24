@@ -517,6 +517,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
           <p className="text-xl md:text-2xl text-on-surface-variant font-body-lg mb-10">
             Let's build content that ranks, engages, and converts.
           </p>
+<<<<<<< Updated upstream
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/contact" className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-[#fd5a0a] rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-[#fd5a0a]/20">
               <span className="relative z-10 flex items-center gap-2">
@@ -524,6 +525,20 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </span>
               <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#fd5a0a] to-[#ff7b3a] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+=======
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Link 
+              href="/contact" 
+              className="relative flex items-center justify-between pl-6 pr-1.5 py-1.5 bg-gradient-to-br from-[#f8651c] to-[#e65005] shadow-[0_8px_20px_-6px_rgba(230,80,5,0.4)] hover:shadow-[0_12px_24px_-8px_rgba(230,80,5,0.6)] border border-white/20 rounded-full group transition-all duration-300 w-full max-w-[210px] transform hover:-translate-y-0.5"
+            >
+              <span className="font-label-md text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-white ml-2">LET'S TALK</span>
+              
+              <div className="flex -space-x-2.5 ml-3 bg-white/15 rounded-full p-1 backdrop-blur-sm shadow-inner">
+                <img src="/images/authors/alex.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+                <img src="/images/authors/elena.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+                <img src="/images/authors/marcus.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+              </div>
+>>>>>>> Stashed changes
             </Link>
           </div>
         </div>
