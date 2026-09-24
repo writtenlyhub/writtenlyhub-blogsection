@@ -517,15 +517,6 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
           <p className="text-xl md:text-2xl text-on-surface-variant font-body-lg mb-10">
             Let's build content that ranks, engages, and converts.
           </p>
-<<<<<<< Updated upstream
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/contact" className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-[#fd5a0a] rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-[#fd5a0a]/20">
-              <span className="relative z-10 flex items-center gap-2">
-                Let's Talk
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#fd5a0a] to-[#ff7b3a] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-=======
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link 
               href="/contact" 
@@ -538,8 +529,18 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
                 <img src="/images/authors/elena.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
                 <img src="/images/authors/marcus.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
               </div>
->>>>>>> Stashed changes
             </Link>
+
+            <div className="hidden sm:flex items-center gap-3 ml-2">
+              <svg className="w-12 h-10 text-[#3b2e5a]/60 -mt-2 transform -rotate-12" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M85 45 C 60 65, 30 55, 10 40" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                <path d="M84 44 C 62 66, 28 54, 11 41" stroke="currentColor" strokeWidth="0.5" fill="none" strokeLinecap="round" className="opacity-60" />
+                <path d="M10 40 C 20 40, 25 30, 28 25 M10 40 C 15 48, 18 55, 20 60" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="font-['Caveat',_cursive] text-[#3b2e5a] text-[20px] md:text-[24px] tracking-wide whitespace-nowrap mt-1 transform -rotate-2">
+                We get booked fast🔥
+              </span>
+            </div>
           </div>
         </div>
       </section>
