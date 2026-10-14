@@ -110,6 +110,31 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
               Stay informed about our latest company milestones, product updates, announcements, and industry developments. Explore the stories, ideas, and changes shaping the future of content, SEO, and digital marketing.
             </p>
             
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 relative animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+              <Link 
+                href="/contact" 
+                className="relative flex items-center justify-between pl-6 pr-1.5 py-1.5 bg-gradient-to-br from-[#f8651c] to-[#e65005] shadow-[0_8px_20px_-6px_rgba(230,80,5,0.4)] hover:shadow-[0_12px_24px_-8px_rgba(230,80,5,0.6)] border border-white/20 rounded-full group transition-all duration-300 w-full max-w-[210px] transform hover:-translate-y-0.5"
+              >
+                <span className="font-label-md text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-white ml-2">LET'S TALK</span>
+                
+                <div className="flex -space-x-2.5 ml-3 bg-white/15 rounded-full p-1 backdrop-blur-sm shadow-inner">
+                  <img src="/images/authors/alex.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+                  <img src="/images/authors/elena.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+                  <img src="/images/authors/marcus.webp" alt="Client" className="w-7 h-7 rounded-full border border-white/60 object-cover shadow-sm" />
+                </div>
+              </Link>
+
+              <div className="hidden sm:flex items-center gap-3 ml-2">
+                <svg className="w-12 h-10 text-[#3b2e5a]/60 -mt-2 transform -rotate-12" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M85 45 C 60 65, 30 55, 10 40" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                  <path d="M84 44 C 62 66, 28 54, 11 41" stroke="currentColor" strokeWidth="0.5" fill="none" strokeLinecap="round" className="opacity-60" />
+                  <path d="M10 40 C 20 40, 25 30, 28 25 M10 40 C 15 48, 18 55, 20 60" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="font-['Caveat',_cursive] text-[#3b2e5a] text-[20px] md:text-[24px] tracking-wide whitespace-nowrap mt-1 transform -rotate-2">
+                  We get booked fast🔥
+                </span>
+              </div>
+            </div>
 
         </div>
         </div>
