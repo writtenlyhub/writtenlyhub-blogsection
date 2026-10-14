@@ -6,8 +6,13 @@ import { getCachedSiteSettings } from '@/lib/api';
 import { BookOpen, Newspaper, Briefcase, PlayCircle, ArrowRight } from 'lucide-react';
 
 export async function Header() {
-  const siteSettings = await getCachedSiteSettings();
-  const contactEmail = siteSettings.contactEmail || 'hello@writtenlyhub.com';
+  let siteSettings: any = {};
+  try {
+    siteSettings = await getCachedSiteSettings();
+  } catch (err) {
+    // Graceful fallback for static builds or when DB is cold
+  }
+  const contactEmail = siteSettings?.contactEmail || 'hello@writtenlyhub.com';
 
   return (
     <nav id="main-header" data-scrolled="false" className="group bg-writtenly-navy w-full top-0 fixed z-50 transition-all duration-300 h-[80px] lg:h-[90px] flex items-center left-1/2 -translate-x-1/2 data-[scrolled=true]:top-4 data-[scrolled=true]:rounded-[24px] data-[scrolled=true]:w-[calc(100%-2rem)] data-[scrolled=true]:max-w-[1400px] data-[scrolled=true]:shadow-lg">

@@ -191,19 +191,29 @@ export const getCategories = async () => {
 }
 
 export const getSiteSettings = async () => {
-  const payload = await getPayloadClient()
-  return await payload.findGlobal({
-    slug: 'site-settings',
-    depth: 1,
-  })
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({
+      slug: 'site-settings',
+      depth: 1,
+    })
+  } catch (error) {
+    console.warn('⚠️ Could not fetch site-settings (using defaults):', (error as Error)?.message || error)
+    return { contactEmail: 'hello@writtenlyhub.com' } as any
+  }
 }
 
 export const getHomepageSettings = async () => {
-  const payload = await getPayloadClient()
-  return await payload.findGlobal({
-    slug: 'homepage-settings',
-    depth: 2,
-  })
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({
+      slug: 'homepage-settings',
+      depth: 2,
+    })
+  } catch (error) {
+    console.warn('⚠️ Could not fetch homepage-settings (using defaults):', (error as Error)?.message || error)
+    return {} as any
+  }
 }
 
 export const getAdjacentPosts = async (

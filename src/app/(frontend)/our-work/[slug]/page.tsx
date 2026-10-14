@@ -450,7 +450,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
               <div className="flex animate-marquee w-max">
                 {/* First Set */}
                 <div className="flex items-center gap-16 md:gap-24 justify-center shrink-0 pr-16 md:pr-24">
-                  {trustedBrands.length > 0 ? trustedBrands.map((brand, i) => {
+                  {trustedBrands.length > 0 ? trustedBrands.map((brand: any, i: number) => {
                     const logo = brand.logo && typeof brand.logo !== 'number' ? brand.logo : null;
                     return logo?.url ? (
                       <Image key={i} src={logo.url} alt={brand.alt || logo.alt || 'Brand logo'} width={160} height={60} className="h-12 object-contain" />
@@ -468,7 +468,7 @@ export default async function SuccessStoryDetail({ params }: PageProps) {
                 </div>
                 {/* Duplicated Set for Seamless Loop */}
                 <div className="flex items-center gap-16 md:gap-24 justify-center shrink-0 pr-16 md:pr-24">
-                  {trustedBrands.length > 0 ? trustedBrands.map((brand, i) => {
+                  {trustedBrands.length > 0 ? trustedBrands.map((brand: any, i: number) => {
                     const logo = brand.logo && typeof brand.logo !== 'number' ? brand.logo : null;
                     return logo?.url ? (
                       <Image key={`dup-${i}`} src={logo.url} alt={brand.alt || logo.alt || 'Brand logo'} width={160} height={60} className="h-12 object-contain" />

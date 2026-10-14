@@ -50,7 +50,7 @@ export default buildConfig({
     HomepageSettings,
   ],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'writtenlyhub-payload-secret-key-2026',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
