@@ -79,7 +79,7 @@ export default async function RootLayout({
       <head>
         <link rel="alternate" type="application/rss+xml" title="WrittenlyHub Blog RSS Feed" href="/feed.xml" />
       </head>
-      <body className="min-h-screen flex flex-col" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col font-sans" suppressHydrationWarning>
         <GlobalJsonLd />
         {isDraftMode && <PreviewBanner />}
         <SmoothScrollProvider>

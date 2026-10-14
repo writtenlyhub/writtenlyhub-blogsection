@@ -94,7 +94,7 @@ export default async function BlogListingPage({ searchParams }: BlogListingPageP
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16 max-w-[1200px] mx-auto px-6 md:px-12 relative z-10">
           {/* Left Column */}
           <div className="flex-1 relative lg:w-[35%] lg:flex-none flex justify-start lg:justify-start animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <h1 className="text-6xl sm:text-7xl md:text-[90px] lg:text-[108px] font-bold tracking-tight leading-[0.9] flex flex-col gap-1">
+            <h1 className="font-display text-6xl sm:text-7xl md:text-[90px] lg:text-[108px] font-extrabold tracking-tight leading-[0.9] flex flex-col gap-1">
               <span className="bg-clip-text text-transparent bg-gradient-to-br from-writtenly-orange to-[#cc4604] pb-2 -mb-2">Our</span>
               <span className="text-writtenly-navy">Blog</span>
             </h1>

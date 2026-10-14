@@ -10,19 +10,23 @@ interface FadeInProps {
   className?: string;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   duration?: number;
+  distance?: number;
+  ease?: [number, number, number, number] | readonly [number, number, number, number];
 }
 
 /**
  * A highly optimized, subtle entrance animation wrapper.
  * Automatically strips motion if the user prefers reduced motion.
- * Uses a conservative 20px translation to feel premium, not distracting.
+ * Uses a conservative translation to feel premium, not distracting.
  */
 export function FadeIn({ 
   children, 
   delay = 0, 
   className = '', 
   direction = 'up', 
-  duration = 1.2
+  duration = 1.2,
+  distance,
+  ease = [0.22, 1, 0.36, 1] as const
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
@@ -33,12 +37,14 @@ export function FadeIn({
     setIsMounted(true);
   }, []);
 
+  const d = distance !== undefined ? distance : 30;
+
   const getDirectionOffset = () => {
     switch (direction) {
-      case 'up': return { y: 40 };
-      case 'down': return { y: -40 };
-      case 'left': return { x: 40 };
-      case 'right': return { x: -40 };
+      case 'up': return { y: d };
+      case 'down': return { y: -d };
+      case 'left': return { x: d };
+      case 'right': return { x: -d };
       default: return { x: 0, y: 0 };
     }
   };
@@ -67,7 +73,7 @@ export function FadeIn({
         transition={{ 
           duration, 
           delay, 
-          ease: [0.76, 0, 0.24, 1]
+          ease
         }}
       >
         {children}

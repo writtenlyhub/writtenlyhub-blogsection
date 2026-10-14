@@ -94,7 +94,7 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16 max-w-[1200px] mx-auto px-6 md:px-12 relative z-10">
           {/* Left Column */}
           <div className="flex-1 lg:w-[35%] flex flex-col justify-center pt-8">
-            <h1 className="text-5xl sm:text-6xl md:text-[64px] lg:text-[72px] font-bold tracking-tight leading-[1.05] flex flex-col gap-1">
+            <h1 className="font-display text-5xl sm:text-6xl md:text-[64px] lg:text-[72px] font-extrabold tracking-tight leading-[1.05] flex flex-col gap-1">
               <span className="bg-clip-text text-transparent bg-gradient-to-br from-writtenly-orange to-[#cc4604] pb-2 -mb-2">WrittenlyHub</span>
               <span className="text-writtenly-navy">News</span>
             </h1>
@@ -167,7 +167,7 @@ export default async function NewsListingPage({ searchParams }: BlogListingPageP
                           <div className="absolute inset-0 bg-gradient-to-b from-writtenly-orange/10 to-transparent pointer-events-none"></div>
 
                           <div className="max-w-2xl relative z-10 flex flex-col items-center">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight tracking-tight">
+                            <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 leading-tight tracking-tight">
                               Ready to achieve similar results for your brand?
                             </h3>
                             <p className="font-body-md text-white/80 text-base mb-8 max-w-xl mx-auto">

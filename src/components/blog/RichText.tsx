@@ -20,7 +20,7 @@ export interface RichTextProps {
 
 export function RichText({ content, className = '' }: RichTextProps) {
   const renderNode = (node: MockContentNode, index: number, parentType?: string) => {
-    switch (node.type) {
+    switch (node.type as string) {
       case 'paragraph': {
         const children = node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'paragraph'));
         if (parentType === 'paragraph') {
@@ -32,17 +32,47 @@ export function RichText({ content, className = '' }: RichTextProps) {
           </p>
         );
       }
+      case 'heading-1':
+      case 'h1':
+        return (
+          <h1 key={index} id={node.id} className="font-headline-xl text-headline-xl font-bold text-primary mt-16 mb-6 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
+            {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-1'))}
+          </h1>
+        );
       case 'heading-2':
+      case 'h2':
         return (
           <h2 key={index} id={node.id} className="font-headline-lg text-headline-lg font-bold text-primary mt-14 mb-4 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-2'))}
           </h2>
         );
       case 'heading-3':
+      case 'h3':
         return (
           <h3 key={index} id={node.id} className="font-headline-md text-headline-md font-bold text-primary mt-12 mb-3 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-3'))}
           </h3>
+        );
+      case 'heading-4':
+      case 'h4':
+        return (
+          <h4 key={index} id={node.id} className="font-headline-sm text-headline-sm font-bold text-primary mt-8 mb-2 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
+            {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-4'))}
+          </h4>
+        );
+      case 'heading-5':
+      case 'h5':
+        return (
+          <h5 key={index} id={node.id} className="font-headline-sm text-sm font-bold text-primary mt-6 mb-2 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
+            {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-5'))}
+          </h5>
+        );
+      case 'heading-6':
+      case 'h6':
+        return (
+          <h6 key={index} id={node.id} className="font-headline-sm text-xs font-bold uppercase tracking-wider text-primary mt-6 mb-2 max-w-[75ch] mx-auto lg:mx-0 scroll-mt-header-height">
+            {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'heading-6'))}
+          </h6>
         );
       case 'ul':
         return (
