@@ -20,6 +20,8 @@ export interface UI_Blog {
   featuredImage: string;
   altText: string;
   featuredHero?: boolean;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
 }
 
 /**
@@ -301,6 +303,8 @@ export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
 
     const featuredImage = isMedia(post.featuredImage) ? getMediaUrl(post.featuredImage.url) : '';
     const altText = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
+    const imageWidth = isMedia(post.featuredImage) && typeof post.featuredImage.width === 'number' ? post.featuredImage.width : null;
+    const imageHeight = isMedia(post.featuredImage) && typeof post.featuredImage.height === 'number' ? post.featuredImage.height : null;
 
     return {
       id: post.id.toString(),
@@ -315,6 +319,8 @@ export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
       featuredImage,
       altText,
       featuredHero: post.featuredHero || false,
+      imageWidth,
+      imageHeight,
     };
   });
 }

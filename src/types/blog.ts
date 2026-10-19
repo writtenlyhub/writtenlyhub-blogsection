@@ -45,6 +45,8 @@ export interface UI_Blog {
   featuredImage: string;
   altText: string;
   featuredHero?: boolean;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
 }
 
 export interface BlogHeroData {
