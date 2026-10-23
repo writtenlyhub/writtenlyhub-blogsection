@@ -26,52 +26,67 @@ export function ImageWithFallback({
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
-  // Use a premium AI image as the default fallback
-  const aiFallbackImages = [
-    '/media/ai_generated_feature_0.jpg',
-    '/media/ai_generated_feature_1.jpg',
-    '/media/ai_generated_feature_2.jpg'
-  ];
-  
-  // Deterministically select an image based on the alt text or a random one
-  const stringToNumber = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    return Math.abs(hash);
-  };
-  
-  const defaultFallback = aiFallbackImages[stringToNumber(alt) % aiFallbackImages.length];
-  const activeFallback = fallbackSrc || defaultFallback;
-
-  let finalSrc = activeFallback;
+  let finalSrc = fallbackSrc || '';
   let finalAlt = alt;
 
   if (src) {
     if (typeof src === 'string') {
-      finalSrc = src;
+      finalSrc = src.trim();
     } else if (typeof src === 'object' && src !== null && src.url) {
-      finalSrc = src.url;
+      finalSrc = src.url.trim();
       finalAlt = alt || src.alt || '';
     }
-    
-    // Safely parse URL to avoid Vercel missing domains
-    if (finalSrc.includes('/api/media/file/')) {
-      finalSrc = finalSrc.replace('/api/media/file/', '/media/');
-    }
+
     try {
       if (finalSrc.startsWith('http')) {
-        finalSrc = new URL(finalSrc).pathname;
+        const parsed = new URL(finalSrc);
+        if (
+          parsed.hostname === 'localhost' ||
+          parsed.hostname === '127.0.0.1' ||
+          parsed.hostname === 'writtenlyhub.com' ||
+          parsed.hostname === 'www.writtenlyhub.com' ||
+          parsed.hostname.endsWith('.vercel.app')
+        ) {
+          finalSrc = parsed.pathname;
+        }
+      } else if (!finalSrc.startsWith('/')) {
+        finalSrc = `/${finalSrc}`;
       }
     } catch {}
+
+    try {
+      finalSrc = encodeURI(decodeURI(finalSrc));
+    } catch {}
+  }
+
+  if (error || !finalSrc) {
+    if (fallbackSrc) {
+      return (
+        <Image
+          src={fallbackSrc}
+          alt={finalAlt || 'Image'}
+          className={className}
+          onError={() => {
+            if (!error) setError(true);
+          }}
+          {...props}
+        />
+      );
+    }
+
+    return (
+      <div className={`w-full h-full bg-[#F8F9FB] flex items-center justify-center ${className || ''}`}>
+        <span className="text-on-surface-variant/40 font-label-md text-xs">No Image Available</span>
+      </div>
+    );
   }
 
   return (
     <Image
-      src={error || !finalSrc ? activeFallback : finalSrc}
-      alt={error ? 'Image not available' : finalAlt}
+      src={finalSrc}
+      alt={finalAlt}
       className={className}
       onError={() => {
-        // Prevent infinite loops if the fallback itself fails
         if (!error) setError(true);
       }}
       {...props}

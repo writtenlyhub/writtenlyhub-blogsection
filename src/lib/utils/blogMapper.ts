@@ -1,5 +1,5 @@
 import { BlogDetailData, MockContentNode, TocItem, Author as UI_Author } from '@/types/blog';
-import type { Blog, User, Media, Category, Tag } from '@/payload-types';
+import type { Blog, User, Media, Category } from '@/payload-types';
 
 export interface UI_Category {
   id: string;
@@ -32,24 +32,37 @@ export function isMedia(media: number | Media | undefined | null): media is Medi
 }
 
 /**
- * Safely extracts a relative URL for media to avoid depending on temporary hostnames in development.
+ * Safely extracts a normalized URL for media, preserving Payload's dynamic API endpoint
+ * (/api/media/file/...) as well as static assets, while safely resolving relative pathnames.
  */
 export function getMediaUrl(url: string | undefined | null): string {
   if (!url) return '';
 
-  let finalUrl = url;
-
-  // Payload media files are served from /media/, not /api/media/file/.
-  if (finalUrl.includes('/api/media/file/')) {
-    finalUrl = finalUrl.replace('/api/media/file/', '/media/');
-  }
+  let finalUrl = url.trim();
 
   try {
     if (finalUrl.startsWith('http')) {
-      finalUrl = new URL(finalUrl).pathname;
+      const parsed = new URL(finalUrl);
+      if (
+        parsed.hostname === 'localhost' ||
+        parsed.hostname === '127.0.0.1' ||
+        parsed.hostname === 'writtenlyhub.com' ||
+        parsed.hostname === 'www.writtenlyhub.com' ||
+        parsed.hostname.endsWith('.vercel.app')
+      ) {
+        finalUrl = parsed.pathname;
+      }
+    } else if (!finalUrl.startsWith('/')) {
+      finalUrl = `/${finalUrl}`;
     }
   } catch {
     // ignore malformed URLs
+  }
+
+  try {
+    finalUrl = encodeURI(decodeURI(finalUrl));
+  } catch {
+    // ignore
   }
 
   return finalUrl;
@@ -127,6 +140,7 @@ function transformLexicalToMockNodes(lexicalNodes: any[]): MockContentNode[] {
     if (node.type === 'block') {
       const blockType = node.fields?.blockType;
       if (['quote', 'expertInsight', 'cta', 'watchLearn', 'keyTakeaways', 'quickFacts', 'callout', 'faq', 'tableBlock', 'dataGraph'].includes(blockType)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return { type: `block-${blockType}` as any, data: node.fields };
       }
     }
@@ -134,18 +148,7 @@ function transformLexicalToMockNodes(lexicalNodes: any[]): MockContentNode[] {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function extractBlock(nodes: any[], blockSlug: string): any | null {
-  if (!nodes || !Array.isArray(nodes)) return null;
-  const block = nodes.find((n) => n.type === 'block' && n.fields?.blockType === blockSlug);
-  return block ? block.fields : null;
-}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function filterOutBlocks(nodes: any[]): any[] {
-  if (!nodes || !Array.isArray(nodes)) return [];
-  return nodes.filter((n) => n.type !== 'block');
-}
 
 export function mapBlogData(post: Blog | null | undefined): BlogDetailData | null {
   if (!post) {
@@ -219,14 +222,14 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
   });
 
   // Reorder FAQ and CTA to come after Conclusion
-  const conclusionIdx = parsedContent.findIndex((n: any) => 
+  const conclusionIdx = parsedContent.findIndex((n: MockContentNode) => 
     (n.type === 'heading-2' || n.type === 'heading-3') && 
-    n.children?.some((c: any) => c.type === 'text' && c.text?.includes('Conclusion'))
+    n.children?.some((c: MockContentNode) => c.type === 'text' && c.text?.includes('Conclusion'))
   );
 
   if (conclusionIdx > -1) {
     // Find and extract FAQ
-    const faqIdx = parsedContent.findIndex((n: any) => n.type === 'block-faq');
+    const faqIdx = parsedContent.findIndex((n: MockContentNode) => n.type === 'block-faq');
     if (faqIdx > -1) {
       const faqBlock = parsedContent.splice(faqIdx, 1)[0];
       // Append FAQ to the very end of the article (after Conclusion paragraphs)
@@ -234,7 +237,7 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
     }
     
     // Find and extract CTA
-    const ctaIdx = parsedContent.findIndex((n: any) => n.type === 'block-cta');
+    const ctaIdx = parsedContent.findIndex((n: MockContentNode) => n.type === 'block-cta');
     if (ctaIdx > -1) {
       const ctaBlock = parsedContent.splice(ctaIdx, 1)[0];
       // Append CTA to the very end of the article (after FAQ)
