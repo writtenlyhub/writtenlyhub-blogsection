@@ -5,6 +5,7 @@ import { importMap } from './admin/importMap'
 
 import { handleServerFunctions } from '@payloadcms/next/layouts'
 import '@payloadcms/next/css'
+import './admin.css'
 
 type Args = {
   children: React.ReactNode

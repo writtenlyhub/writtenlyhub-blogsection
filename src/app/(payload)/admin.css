@@ -1,0 +1,37 @@
+/* CMS Thumbnail Image Rendering Fix
+ *
+ * Ensures uploaded thumbnail previews in Payload CMS display cleanly within their
+ * containers without unwanted white borders, blank gaps, or distortion, while
+ * strictly preserving the original image files and proportions untouched.
+ */
+
+/* File field thumbnail preview in document edit view */
+.file-field__thumbnail-wrap .thumbnail {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.file-field__thumbnail-wrap .thumbnail img,
+.file-field__thumbnail-wrap .thumbnail svg {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+/* Upload cards and list view thumbnails */
+.thumbnail img,
+.thumbnail svg,
+.upload-field-card .thumbnail img,
+.file-details__thumbnail-wrap .thumbnail img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}

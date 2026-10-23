@@ -63,6 +63,10 @@ export interface BlogHeroData {
   readTime: string;
   imageUrl: string;
   imageAlt: string;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
   isDraft?: boolean;
 }
 

@@ -75,7 +75,10 @@ export function ImageWithFallback({
     }
 
     return (
-      <div className={`w-full h-full bg-[#F8F9FB] flex items-center justify-center ${className || ''}`}>
+      <div 
+        className={`w-full h-full bg-[#F8F9FB] flex items-center justify-center ${className || ''}`}
+        style={props.style}
+      >
         <span className="text-on-surface-variant/40 font-label-md text-xs">No Image Available</span>
       </div>
     );

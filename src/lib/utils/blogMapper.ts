@@ -172,6 +172,12 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
   const categoryName = isCategory(post.category) ? post.category.name : 'Uncategorized';
   const imageUrl = isMedia(post.featuredImage) ? getMediaUrl(post.featuredImage.url) : '';
   const imageAlt = isMedia(post.featuredImage) ? post.featuredImage.alt || post.title : post.title;
+  const imageWidth = isMedia(post.featuredImage) && typeof post.featuredImage.width === 'number' ? post.featuredImage.width : null;
+  const imageHeight = isMedia(post.featuredImage) && typeof post.featuredImage.height === 'number' ? post.featuredImage.height : null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const focalX = isMedia(post.featuredImage) && typeof (post.featuredImage as any).focalX === 'number' ? (post.featuredImage as any).focalX : null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const focalY = isMedia(post.featuredImage) && typeof (post.featuredImage as any).focalY === 'number' ? (post.featuredImage as any).focalY : null;
 
   const rootChildren = post.content?.root?.children || [];
   const parsedContent = transformLexicalToMockNodes(rootChildren);
@@ -257,6 +263,10 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
       readTime: post.readTime || '5 min read',
       imageUrl: imageUrl,
       imageAlt: imageAlt,
+      imageWidth: imageWidth,
+      imageHeight: imageHeight,
+      focalX: focalX,
+      focalY: focalY,
     },
     toc: toc,
     content: parsedContent,
