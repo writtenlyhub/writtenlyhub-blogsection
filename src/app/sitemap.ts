@@ -76,11 +76,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       const contentType = post.contentType === 'news' ? 'news' : 'blog';
       const postRobots = post.seo?.robots || {};
+      // Mirror the precedence used in buildMetadata.ts:
+      //   explicit post value wins → if not set, inherit from global default.
       const isNoindex =
         postRobots.noindex === true ||
-        (postRobots.noindex === undefined && defaultRobots.noindex === true) ||
+        (postRobots.noindex !== false && defaultRobots.noindex === true) ||
         postRobots.index === false ||
-        (postRobots.index === undefined && defaultRobots.index === false);
+        (postRobots.index !== true && defaultRobots.index === false);
 
       if (isNoindex) continue;
 
