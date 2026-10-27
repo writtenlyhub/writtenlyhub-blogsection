@@ -16,12 +16,6 @@ import {
 } from '../blocks'
 import { revalidateCollection } from '../lib/utils/revalidate'
 
-const formatSlug = (val: string): string =>
-  val
-    .replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '')
-    .toLowerCase()
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractText = (node: any): string => {
   if (!node) return ''
@@ -30,6 +24,28 @@ const extractText = (node: any): string => {
     return node.children.map(extractText).join(' ')
   }
   return ''
+}
+
+export function getBlogInvalidationTags(
+  doc: { slug?: string | null; contentType?: string | null },
+  previousDoc?: { slug?: string | null; contentType?: string | null } | null,
+): string[] {
+  const tags = new Set<string>(['blogs']);
+
+  const currentPrefix = doc.contentType === 'news' ? 'news' : 'blog';
+  if (doc.slug) {
+    tags.add(`${currentPrefix}-${doc.slug}`);
+  }
+
+  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
+    const previousPrefix = previousDoc.contentType === 'news' ? 'news' : 'blog';
+    tags.add(`${previousPrefix}-${previousDoc.slug}`);
+  } else if (previousDoc?.contentType && previousDoc.contentType !== doc.contentType && doc.slug) {
+    const previousPrefix = previousDoc.contentType === 'news' ? 'news' : 'blog';
+    tags.add(`${previousPrefix}-${doc.slug}`);
+  }
+
+  return Array.from(tags);
 }
 
 export const Blogs: CollectionConfig = {
@@ -93,7 +109,7 @@ export const Blogs: CollectionConfig = {
           if (data.seo?.canonicalUrl) {
             try {
               new URL(data.seo.canonicalUrl);
-            } catch (e) {
+            } catch {
               throw new Error('Validation Error: The provided Canonical URL is not a valid URL.');
             }
           }
@@ -112,8 +128,9 @@ export const Blogs: CollectionConfig = {
                   throw new Error('Each JSON-LD object must contain "@context" and "@type".');
                 }
               }
-            } catch (e: any) {
-              throw new Error(`Validation Error: Invalid JSON-LD in Advanced Override. ${e.message}`);
+            } catch (e: unknown) {
+              const msg = e instanceof Error ? e.message : String(e);
+              throw new Error(`Validation Error: Invalid JSON-LD in Advanced Override. ${msg}`);
             }
           }
         }
@@ -124,7 +141,7 @@ export const Blogs: CollectionConfig = {
           if (!data.previousSlugs) {
             data.previousSlugs = originalDoc?.previousSlugs || [];
           }
-          const prevSlugsSet = new Set(data.previousSlugs.map((s: any) => s.slug));
+          const prevSlugsSet = new Set(data.previousSlugs.map((s: { slug?: string }) => s.slug));
           if (!prevSlugsSet.has(oldSlug)) {
             data.previousSlugs.push({ slug: oldSlug });
           }
@@ -157,6 +174,7 @@ export const Blogs: CollectionConfig = {
           const title = data.title || '';
           
           let headingsText = '';
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const extractHeadings = (node: any): string => {
             if (!node) return '';
             if (node.type === 'heading') return extractText(node) + ' ';
@@ -215,8 +233,9 @@ export const Blogs: CollectionConfig = {
         }
         // Revalidate cache on publish or update
         if (doc._status === 'published' || previousDoc?._status === 'published') {
-          console.log(`[Blogs Hook] Conditions met for revalidation. Slug: ${doc.slug}`);
-          await revalidateCollection(['blogs', `blog-${doc.slug}`]);
+          console.log(`[Blogs Hook] Conditions met for revalidation. Slug: ${doc.slug}, ContentType: ${doc.contentType}`);
+          const tags = getBlogInvalidationTags(doc, previousDoc);
+          await revalidateCollection(tags);
         } else {
           console.log(`[Blogs Hook] Conditions NOT met for revalidation. Skip.`);
         }
@@ -224,13 +243,15 @@ export const Blogs: CollectionConfig = {
     ],
     afterDelete: [
       async ({ doc }) => {
-        console.log(`[Blogs Hook] afterDelete triggered. Status: ${doc._status}, Slug: ${doc.slug}`);
+        console.log(`[Blogs Hook] afterDelete triggered. Status: ${doc._status}, Slug: ${doc.slug}, ContentType: ${doc.contentType}`);
         if (doc._status === 'published') {
-          await revalidateCollection(['blogs', `blog-${doc.slug}`]);
+          const tags = getBlogInvalidationTags(doc, null);
+          await revalidateCollection(tags);
         }
       }
     ],
   },
+
   fields: [
     {
       type: 'tabs',

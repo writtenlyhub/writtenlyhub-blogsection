@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { buildCanonicalUrl } from './buildCanonical';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com';
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.writtenlyhub.com').replace(/\/$/, '');
 
 export function buildMetadata({
   post,
