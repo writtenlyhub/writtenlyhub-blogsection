@@ -78,10 +78,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const postRobots = post.seo?.robots || {};
       const isNoindex =
         postRobots.noindex === true ||
+        (postRobots.noindex === undefined && defaultRobots.noindex === true) ||
         postRobots.index === false ||
-        (postRobots.noindex === undefined &&
-          postRobots.index === undefined &&
-          (defaultRobots.noindex === true || defaultRobots.index === false));
+        (postRobots.index === undefined && defaultRobots.index === false);
 
       if (isNoindex) continue;
 
