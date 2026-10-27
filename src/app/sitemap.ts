@@ -2,8 +2,6 @@ import type { MetadataRoute } from 'next';
 import { getPayloadClient } from '@/lib/api/payload';
 import { buildCanonicalUrl } from '@/lib/seo/buildCanonical';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com').replace(/\/$/, '');
-
 // This endpoint must read the current published CMS state on every request.
 // A build-time sitemap would miss content published after the deployment.
 export const dynamic = 'force-dynamic';
@@ -28,6 +26,9 @@ type SitemapPost = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const rawUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const SITE_URL = (rawUrl && rawUrl !== 'undefined' ? rawUrl : 'https://www.writtenlyhub.com').replace(/\/$/, '');
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,

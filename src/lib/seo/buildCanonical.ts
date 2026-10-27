@@ -3,7 +3,8 @@ export function buildCanonicalUrl(
   slug?: string | null,
   pathPrefix: string = '/blog/',
 ): string {
-  const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://writtenlyhub.com').replace(/\/$/, '');
+  const rawUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const SITE_URL = (rawUrl && rawUrl !== 'undefined' ? rawUrl : 'https://www.writtenlyhub.com').replace(/\/$/, '');
 
   // A CMS override is optional, but when supplied it must be an absolute
   // HTTP(S) URL. Invalid/relative values fall back to the generated route URL.
