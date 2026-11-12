@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ImageWithFallback } from '../ui/ImageWithFallback';
+import { ArticleImage } from '../ui/ArticleImageFrame';
 import { UI_Blog as Blog } from '@/types/blog';
 import { ChevronRight } from 'lucide-react';
 
@@ -12,17 +12,15 @@ export function HeroCard({ blog }: { blog: Blog }) {
   return (
     <section className="w-full px-gutter max-w-container-max mx-auto mb-4 mt-2">
       <Link href={href} className="group relative flex flex-col lg:flex-row bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant hover:border-primary-container/20 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1">
-        {/* Image - 60% width on Desktop, short cinematic ratio on mobile */}
-        <div className="aspect-[2/1] lg:aspect-auto lg:h-auto lg:w-[50%] shrink-0 bg-surface-container-high relative overflow-hidden hidden min-[375px]:block lg:block">
-          {/* Subtle inner ring for real photography integration */}
-          <div className="absolute inset-0 ring-1 ring-inset ring-black/5 z-10 pointer-events-none rounded-[inherit]" />
-          <ImageWithFallback 
-            className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105" 
-            src={blog.featuredImage} 
+        {/* Image - 50% width on Desktop */}
+        <div className="w-full lg:w-[50%] shrink-0 overflow-hidden hidden min-[375px]:block lg:block self-center">
+          <ArticleImage
+            src={blog.featuredImage}
             alt={blog.altText || blog.title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 60vw"
+            width={blog.imageWidth}
+            height={blog.imageHeight}
             priority={true}
+            sizes="(max-width: 1024px) 100vw, 60vw"
           />
         </div>
         

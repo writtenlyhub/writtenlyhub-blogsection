@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache'
-import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings, getSuccessStories, getSuccessStoryBySlug, getSuccessStoryCategories } from './queries'
+import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings, getSuccessStories, getSuccessStoryBySlug, getSuccessStoryCategories, getRelatedPosts } from './queries'
 import { draftMode } from 'next/headers'
 
 // Safely invoke draftMode() so it doesn't throw during generateStaticParams
@@ -196,3 +196,29 @@ export const getCachedSuccessStoryCategories = async () => {
   );
   return cached();
 };
+
+export const getCachedRelatedPosts = async (
+  currentPostId: number | string,
+  category?: any,
+  contentType: 'blog' | 'news' = 'blog',
+  limit: number = 2,
+) => {
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getRelatedPosts({ currentPostId, category, contentType, limit });
+  }
+
+  const categoryKey = typeof category === 'object' && category !== null && 'id' in category
+    ? String(category.id)
+    : String(category || 'none');
+
+  const cached = unstable_cache(
+    async () => getRelatedPosts({ currentPostId, category, contentType, limit }),
+    ['related-posts', contentType, String(currentPostId), categoryKey, String(limit)],
+    { tags: ['blogs', `${contentType}-posts`] }
+  );
+
+  return cached();
+};
+

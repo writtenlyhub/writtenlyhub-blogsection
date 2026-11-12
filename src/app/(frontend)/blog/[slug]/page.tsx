@@ -12,7 +12,7 @@ import { AboutAuthor } from '@/components/blog/AboutAuthor';
 import { RelatedArticles } from '@/components/blog/RelatedArticles';
 import Link from 'next/link';
 import { mapBlogData, mapBlogList } from '@/lib/utils/blogMapper';
-import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts, getCachedSiteSettings } from '@/lib/api';
+import { getCachedPostBySlug, getCachedArchivePosts, getCachedPosts, getCachedSiteSettings, getCachedRelatedPosts } from '@/lib/api';
 import { getPayloadClient } from '@/lib/api/payload';
 import { SocialShare } from '@/components/blog/SocialShare';
 import { NewsletterPopup } from '@/components/blog/NewsletterPopup';
@@ -148,45 +148,12 @@ export default async function BlogDetail({ params }: PageProps) {
   const siteSettings = await getCachedSiteSettings();
   const newsletterPopupData = siteSettings?.newsletterPopup || undefined;
 
-  let finalRelatedArticles = blogData.relatedArticles || [];
-
-  if (finalRelatedArticles.length === 0) {
-    const categorySlug = rawPayloadPost.category && typeof rawPayloadPost.category === 'object' ? rawPayloadPost.category.slug : undefined;
-
-    if (categorySlug) {
-      const categoryPosts = await getCachedArchivePosts(4, 1, categorySlug);
-      const filteredCatPosts = categoryPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
-      if (filteredCatPosts.length > 0) {
-        const mappedList = mapBlogList(filteredCatPosts);
-        finalRelatedArticles = mappedList.map(item => ({
-          title: item.title,
-          summary: item.excerpt,
-          category: item.category.title,
-          date: item.publishedDate,
-          readTime: item.readTime,
-          imageUrl: item.featuredImage,
-          link: `/blog/${item.slug}`
-        }));
-      }
-    }
-
-    if (finalRelatedArticles.length === 0) {
-      const latestPosts = await getCachedPosts(4, 1);
-      const filteredLatest = latestPosts.docs.filter(p => p.id !== rawPayloadPost.id).slice(0, 3);
-      if (filteredLatest.length > 0) {
-        const mappedList = mapBlogList(filteredLatest);
-        finalRelatedArticles = mappedList.map(item => ({
-          title: item.title,
-          summary: item.excerpt,
-          category: item.category.title,
-          date: item.publishedDate,
-          readTime: item.readTime,
-          imageUrl: item.featuredImage,
-          link: `/blog/${item.slug}`
-        }));
-      }
-    }
-  }
+  const relatedData = await getCachedRelatedPosts(
+    rawPayloadPost.id,
+    rawPayloadPost.category,
+    'blog',
+    2,
+  );
 
   const jsonLdSchemas = buildJsonLd({
     post: rawPayloadPost,
@@ -310,8 +277,8 @@ export default async function BlogDetail({ params }: PageProps) {
         </div>
       </main>
 
-      {finalRelatedArticles.length > 0 && (
-        <RelatedArticles data={{ articles: finalRelatedArticles }} />
+      {relatedData.articles.length > 0 && (
+        <RelatedArticles data={relatedData} />
       )}
 
       <NewsletterPopup data={newsletterPopupData} />

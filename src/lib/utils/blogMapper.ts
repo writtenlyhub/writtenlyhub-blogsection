@@ -78,7 +78,7 @@ function isUser(user: number | User | undefined | null): user is User {
 /**
  * Type guard for Category
  */
-function isCategory(category: number | Category | undefined | null): category is Category {
+export function isCategory(category: number | Category | undefined | null): category is Category {
   return typeof category === 'object' && category !== null && 'name' in category;
 }
 
@@ -211,6 +211,8 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
     if (typeof rel === 'object' && rel !== null && 'title' in rel) {
       const relCat = isCategory(rel.category) ? rel.category.name : 'Uncategorized';
       const relImg = isMedia(rel.featuredImage) ? getMediaUrl(rel.featuredImage.url) : '';
+      const relImgWidth = isMedia(rel.featuredImage) && typeof rel.featuredImage.width === 'number' ? rel.featuredImage.width : null;
+      const relImgHeight = isMedia(rel.featuredImage) && typeof rel.featuredImage.height === 'number' ? rel.featuredImage.height : null;
       return [{
         title: rel.title,
         summary: rel.excerpt || '',
@@ -222,6 +224,8 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
           post.contentType === 'news'
             ? `/news/${rel.slug}`
             : `/blog/${rel.slug}`,
+        imageWidth: relImgWidth,
+        imageHeight: relImgHeight,
       }];
     }
     return [];

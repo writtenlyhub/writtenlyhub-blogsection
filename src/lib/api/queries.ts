@@ -1,5 +1,7 @@
 import { getPayloadClient } from './payload'
-import type { Blog } from '../../payload-types' // Generated types
+import type { Blog, Category } from '../../payload-types' // Generated types
+import type { ArticleCard } from '@/types/blog'
+import { getMediaUrl, isCategory, isMedia } from '../utils/blogMapper'
 import { draftMode } from 'next/headers'
 
 export const getPosts = async (
@@ -61,6 +63,21 @@ export const getArchivePosts = async (
     });
     if (cats.docs.length > 0) {
       categoryId = cats.docs[0].id;
+    } else {
+      // Category slug was explicitly requested but does not exist in taxonomy.
+      // Return empty docs rather than ignoring the filter.
+      return {
+        docs: [],
+        totalDocs: 0,
+        limit,
+        totalPages: 0,
+        page,
+        pagingCounter: 0,
+        hasPrevPage: false,
+        hasNextPage: false,
+        prevPage: null,
+        nextPage: null,
+      };
     }
   }
 
@@ -335,4 +352,165 @@ export const getSuccessStoryCategories = async () => {
     limit: 100,
   })
 }
+
+export interface RelatedPostsData {
+  title: string;
+  moreText: string;
+  moreLink: string;
+  articles: ArticleCard[];
+  isFallback: boolean;
+}
+
+export const getRelatedPosts = async ({
+  currentPostId,
+  category,
+  contentType = 'blog',
+  limit = 2,
+}: {
+  currentPostId: number | string;
+  category?: number | Category | (number | Category)[] | null;
+  contentType?: 'blog' | 'news';
+  limit?: number;
+}): Promise<RelatedPostsData> => {
+  const payload = await getPayloadClient();
+  const { isEnabled: draft } = await draftMode();
+
+  // 1. Resolve Primary Category
+  let categoryDoc: Category | null = null;
+  const primaryCategory = Array.isArray(category) ? category[0] : category;
+
+  if (primaryCategory) {
+    if (typeof primaryCategory === 'object' && 'id' in primaryCategory && primaryCategory.name) {
+      categoryDoc = primaryCategory as Category;
+    } else if (
+      typeof primaryCategory === 'number' || 
+      (typeof primaryCategory === 'string' && !isNaN(Number(primaryCategory)))
+    ) {
+      categoryDoc = await payload.findByID({
+        collection: 'categories',
+        id: Number(primaryCategory),
+        depth: 0,
+      }).catch(() => null);
+    }
+  }
+
+  const mapPostToArticleCard = (doc: any): ArticleCard => {
+    const docCatName = isCategory(doc.category)
+      ? doc.category.name
+      : (categoryDoc?.name || 'Uncategorized');
+
+    const docImg = isMedia(doc.featuredImage)
+      ? getMediaUrl(doc.featuredImage.url)
+      : '';
+    const docImgWidth = isMedia(doc.featuredImage) && typeof doc.featuredImage.width === 'number'
+      ? doc.featuredImage.width
+      : null;
+    const docImgHeight = isMedia(doc.featuredImage) && typeof doc.featuredImage.height === 'number'
+      ? doc.featuredImage.height
+      : null;
+
+    return {
+      title: doc.title || '',
+      summary: doc.excerpt || '',
+      category: docCatName,
+      date: (doc.updatedAt || doc.publishedAt)
+        ? new Date(doc.updatedAt || doc.publishedAt).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          })
+        : '',
+      readTime: doc.readTime || '5 min read',
+      imageUrl: docImg,
+      link: `/${doc.contentType || contentType}/${doc.slug}`,
+      imageWidth: docImgWidth,
+      imageHeight: docImgHeight,
+    };
+  };
+
+  // 2. Query published posts in the SAME category & SAME contentType, excluding current post
+  if (categoryDoc && categoryDoc.id) {
+    const categoryWhere: any = {
+      contentType: { equals: contentType },
+      category: { equals: categoryDoc.id },
+      id: { not_equals: currentPostId },
+    };
+    if (!draft) {
+      categoryWhere._status = { equals: 'published' };
+    }
+
+    const matchingPosts = await payload.find({
+      collection: 'blogs',
+      where: categoryWhere,
+      sort: '-publishedAt',
+      limit,
+      depth: 1,
+      draft,
+      overrideAccess: draft,
+      select: {
+        id: true,
+        title: true,
+        excerpt: true,
+        slug: true,
+        category: true,
+        publishedAt: true,
+        updatedAt: true,
+        readTime: true,
+        featuredImage: true,
+        contentType: true,
+      },
+    });
+
+    if (matchingPosts.docs.length > 0) {
+      return {
+        title: 'You might also like',
+        moreText: `More from ${categoryDoc.name}`,
+        moreLink: `/${contentType}?category=${categoryDoc.slug || ''}`,
+        articles: matchingPosts.docs.map(mapPostToArticleCard),
+        isFallback: false,
+      };
+    }
+  }
+
+  // 3. Fallback: No matching category posts found or article is uncategorized.
+  // Query published posts from the SAME contentType (never mix blogs and news), excluding current post
+  const fallbackWhere: any = {
+    contentType: { equals: contentType },
+    id: { not_equals: currentPostId },
+  };
+  if (!draft) {
+    fallbackWhere._status = { equals: 'published' };
+  }
+
+  const fallbackPosts = await payload.find({
+    collection: 'blogs',
+    where: fallbackWhere,
+    sort: '-publishedAt',
+    limit,
+    depth: 1,
+    draft,
+    overrideAccess: draft,
+    select: {
+      id: true,
+      title: true,
+      excerpt: true,
+      slug: true,
+      category: true,
+      publishedAt: true,
+      updatedAt: true,
+      readTime: true,
+      featuredImage: true,
+      contentType: true,
+    },
+  });
+
+  return {
+    title: 'You might also like',
+    moreText: contentType === 'news' ? 'More from News' : 'More from our Blog',
+    moreLink: `/${contentType}`,
+    articles: fallbackPosts.docs.map(mapPostToArticleCard),
+    isFallback: true,
+  };
+};
+
 

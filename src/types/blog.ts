@@ -106,6 +106,8 @@ export interface ArticleCard {
   readTime: string;
   imageUrl: string;
   link: string;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
 }
 
 export interface BlogDetailData {

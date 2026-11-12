@@ -9,20 +9,17 @@ export const Media: CollectionConfig = {
       {
         name: 'thumbnail',
         width: 400,
-        height: 300,
-        position: 'centre',
+        withoutEnlargement: true,
       },
       {
         name: 'card',
         width: 768,
-        height: 1024,
-        position: 'centre',
+        withoutEnlargement: true,
       },
       {
         name: 'feature',
         width: 1024,
-        height: 768,
-        position: 'centre',
+        withoutEnlargement: true,
       },
     ],
     adminThumbnail: 'thumbnail',

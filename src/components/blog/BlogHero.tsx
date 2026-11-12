@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { BlogHeroData } from '@/types/blog';
 import Link from 'next/link';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { ArticleImage } from '@/components/ui/ArticleImageFrame';
 import { PlayArticleButton } from '@/components/blog/PlayArticleButton';
 import { Calendar, Clock } from 'lucide-react';
 
@@ -25,29 +26,11 @@ export function BlogHero(props: BlogHeroData) {
     focalY,
   } = props;
 
-  // Calculate known aspect ratio from Payload CMS metadata (if available)
-  const initialRatio =
-    imageWidth && imageHeight && imageWidth > 0 && imageHeight > 0
-      ? imageWidth / imageHeight
-      : undefined;
-
-  const [aspectRatio, setAspectRatio] = useState<number | undefined>(initialRatio);
+  const hasFocalPoint = typeof focalX === 'number' && typeof focalY === 'number';
+  const focalPosition = hasFocalPoint ? `${focalX}% ${focalY}%` : 'center';
 
   // Graceful handling of missing data
   if (!title) return null;
-
-  // If aspect ratio is significantly narrower than the 21/9 container (< 1.6),
-  // forcing object-cover would aggressively crop out >30%–60% of vertical content
-  // (such as news headlines, infographic charts, or portrait subjects).
-  // For these images, we preserve the full original image (object-contain) centered
-  // over an edge-to-edge ambient backdrop of the same image so the existing container
-  // remains completely filled without unwanted white gaps or cropped content.
-  const isWidescreen = aspectRatio !== undefined ? aspectRatio >= 1.6 : true;
-
-  // Compute focal-point object position if available from Payload (0-100%)
-  const hasFocalPoint =
-    typeof focalX === 'number' && typeof focalY === 'number';
-  const focalPosition = hasFocalPoint ? `${focalX}% ${focalY}%` : 'center';
 
   return (
     <section className="flex flex-col items-center text-center gap-6 mb-8 w-full">
@@ -118,39 +101,19 @@ export function BlogHero(props: BlogHeroData) {
       </div>
       
       {imageUrl && (
-        <div className="mt-8 relative w-full aspect-[21/9] max-h-[450px] rounded-xl overflow-hidden shadow-xl bg-surface-container-low flex items-center justify-center">
-          {!isWidescreen && (
-            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-              <ImageWithFallback 
-                alt="" 
-                src={imageUrl} 
-                fill 
-                className="object-cover blur-2xl scale-110 opacity-35" 
-                priority={false}
-                aria-hidden
-              />
-            </div>
-          )}
-          <ImageWithFallback 
-            alt={imageAlt || title} 
-            src={imageUrl} 
-            fill 
-            className={`w-full h-full transition-opacity duration-300 ${
-              isWidescreen
-                ? 'object-cover'
-                : 'object-contain object-center z-10'
-            }`}
-            style={isWidescreen ? { objectPosition: focalPosition } : undefined}
+        <div className="mt-8 w-full max-w-[820px] mx-auto rounded-2xl overflow-hidden shadow-xl border border-outline-variant/30">
+          <ArticleImage
+            src={imageUrl}
+            alt={imageAlt || title}
+            width={imageWidth}
+            height={imageHeight}
             priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1200px"
-            onLoad={(e) => {
-              const img = e.currentTarget;
-              if (img.naturalWidth && img.naturalHeight) {
-                const ratio = img.naturalWidth / img.naturalHeight;
-                if (ratio !== aspectRatio) {
-                  setAspectRatio(ratio);
-                }
-              }
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 820px"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              objectFit: 'unset',
             }}
           />
         </div>
