@@ -134,16 +134,20 @@ export function RichText({ content, className = '' }: RichTextProps) {
              )}
           </figure>
         );
-      case 'link':
+      case 'link': {
+        const isAnchor = !node.url || node.url.startsWith('#');
         return (
           <a 
             key={index} 
             href={node.url} 
+            target={isAnchor ? undefined : '_blank'}
+            rel={isAnchor ? undefined : 'noopener noreferrer'}
             className="text-writtenly-orange hover:text-writtenly-orange/80 underline decoration-writtenly-orange/40 hover:decoration-writtenly-orange/80 decoration-1 hover:decoration-2 underline-offset-4 transition-all duration-300 break-words"
           >
             {node.children?.map((child: MockContentNode, i: number) => renderNode(child, i, 'link'))}
           </a>
         );
+      }
       case 'text':
         return <React.Fragment key={index}>{node.text}</React.Fragment>;
       case 'block-quote':
