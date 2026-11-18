@@ -152,6 +152,8 @@ export interface User {
   bio?: string | null;
   linkedin?: string | null;
   twitter?: string | null;
+  website?: string | null;
+  verified?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1008,6 +1010,8 @@ export interface UsersSelect<T extends boolean = true> {
   bio?: T;
   linkedin?: T;
   twitter?: T;
+  website?: T;
+  verified?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

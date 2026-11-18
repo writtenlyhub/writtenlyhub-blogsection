@@ -161,12 +161,18 @@ export function mapBlogData(post: Blog | null | undefined): BlogDetailData | nul
         role: post.author.designation || post.author.role || 'Author',
         bio: post.author.bio || '',
         avatarUrl: isMedia(post.author.avatar) ? getMediaUrl(post.author.avatar.url) : '',
+        slug: post.author.slug || '',
+        linkedin: post.author.linkedin || '',
+        twitter: post.author.twitter || '',
+        website: (post.author as any).website || '',
+        verified: (post.author as any).verified ?? true,
       }
     : {
         name: 'Anonymous',
         role: 'Author',
         bio: '',
         avatarUrl: '',
+        slug: '',
       };
 
   const categoryName = isCategory(post.category) ? post.category.name : 'Uncategorized';
@@ -301,6 +307,7 @@ export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
           role: post.author.designation || post.author.role || 'Author',
           bio: post.author.bio || '',
           avatarUrl: isMedia(post.author.avatar) ? getMediaUrl(post.author.avatar.url) : '',
+          slug: post.author.slug || '',
         }
       : {
           id: 'anon',
@@ -308,6 +315,7 @@ export function mapBlogList(posts: any[] | undefined): UI_Blog[] {
           role: 'Author',
           bio: '',
           avatarUrl: '',
+          slug: '',
         };
 
     const category: UI_Category = isCategory(post.category)

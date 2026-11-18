@@ -17,6 +17,30 @@ export interface Author {
   role: string;
   bio: string;
   avatarUrl: string;
+  slug?: string;
+  linkedin?: string;
+  twitter?: string;
+  website?: string;
+  verified?: boolean;
+}
+
+export interface AuthorProfile {
+  id: string;
+  name: string;
+  slug: string;
+  role: string;
+  designation: string;
+  bio: string;
+  avatarUrl: string;
+  linkedin?: string;
+  twitter?: string;
+  website?: string;
+  verified?: boolean;
+  expertise: string[];
+  totalArticles: number;
+  blogsCount: number;
+  newsCount: number;
+  readersReached: string;
 }
 
 export interface UI_Category {
@@ -30,6 +54,7 @@ export interface UI_Author {
   name: string;
   role: string;
   avatarUrl: string;
+  slug?: string;
 }
 
 export interface UI_Blog {
@@ -57,6 +82,7 @@ export interface BlogHeroData {
   author: {
     name: string;
     avatarUrl: string;
+    slug?: string;
   };
   publishedAt: string;
   updatedAt: string;

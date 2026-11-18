@@ -1,5 +1,19 @@
 import { unstable_cache } from 'next/cache'
-import { getPosts, getArchivePosts, getPostBySlug, getCategories, getSiteSettings, getHomepageSettings, getSuccessStories, getSuccessStoryBySlug, getSuccessStoryCategories, getRelatedPosts } from './queries'
+import {
+  getPosts,
+  getArchivePosts,
+  getPostBySlug,
+  getCategories,
+  getSiteSettings,
+  getHomepageSettings,
+  getSuccessStories,
+  getSuccessStoryBySlug,
+  getSuccessStoryCategories,
+  getRelatedPosts,
+  getAuthorBySlug,
+  getAuthorProfileData,
+  getAllAuthorSlugs,
+} from './queries'
 import { draftMode } from 'next/headers'
 
 // Safely invoke draftMode() so it doesn't throw during generateStaticParams
@@ -217,6 +231,54 @@ export const getCachedRelatedPosts = async (
     async () => getRelatedPosts({ currentPostId, category, contentType, limit }),
     ['related-posts', contentType, String(currentPostId), categoryKey, String(limit)],
     { tags: ['blogs', `${contentType}-posts`] }
+  );
+
+  return cached();
+};
+
+export const getCachedAuthorBySlug = async (slug: string) => {
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getAuthorBySlug(slug);
+  }
+
+  const normalized = slug.toLowerCase().trim();
+  const cached = unstable_cache(
+    async () => getAuthorBySlug(normalized),
+    ['author-by-slug', normalized],
+    { tags: ['users', 'authors', `author-${normalized}`] }
+  );
+
+  return cached();
+};
+
+export const getCachedAuthorProfileData = async (slug: string) => {
+  const { isEnabled: draft } = await safeDraftMode();
+
+  if (draft || process.env.NODE_ENV !== 'production') {
+    return getAuthorProfileData(slug);
+  }
+
+  const normalized = slug.toLowerCase().trim();
+  const cached = unstable_cache(
+    async () => getAuthorProfileData(normalized),
+    ['author-profile-data', normalized],
+    { tags: ['blogs', 'users', 'authors', `author-${normalized}`] }
+  );
+
+  return cached();
+};
+
+export const getCachedAllAuthorSlugs = async () => {
+  if (process.env.NODE_ENV !== 'production') {
+    return getAllAuthorSlugs();
+  }
+
+  const cached = unstable_cache(
+    async () => getAllAuthorSlugs(),
+    ['all-author-slugs'],
+    { tags: ['users', 'authors'] }
   );
 
   return cached();

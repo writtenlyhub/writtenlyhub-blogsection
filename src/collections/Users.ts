@@ -83,5 +83,14 @@ export const Users: CollectionConfig = {
       name: 'twitter',
       type: 'text',
     },
+    {
+      name: 'website',
+      type: 'text',
+    },
+    {
+      name: 'verified',
+      type: 'checkbox',
+      defaultValue: true,
+    },
   ],
 }

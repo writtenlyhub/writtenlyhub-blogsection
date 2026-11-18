@@ -117,6 +117,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
+    // Add author profile pages to sitemap
+    try {
+      const authorsResult = await payload.find({
+        collection: 'users',
+        limit: 100,
+        depth: 0,
+        select: {
+          slug: true,
+          updatedAt: true,
+        },
+      });
+
+      for (const author of authorsResult.docs) {
+        if (!author.slug) continue;
+        const authorModDate = author.updatedAt ? new Date(author.updatedAt) : undefined;
+        urls.push({
+          url: `${SITE_URL}/author/${author.slug}`,
+          ...(authorModDate && !Number.isNaN(authorModDate.getTime())
+            ? { lastModified: authorModDate }
+            : {}),
+          changeFrequency: 'weekly',
+          priority: 0.8,
+        });
+      }
+    } catch (authorErr) {
+      console.error('[sitemap] Failed to fetch authors for sitemap:', authorErr);
+    }
+
     // Keep stable static entries and avoid duplicate URLs if a CMS canonical
     // override points at a URL already present in the sitemap.
     const seen = new Set<string>();

@@ -63,20 +63,42 @@ export function BlogHero(props: BlogHeroData) {
       
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 font-body-sm text-body-sm text-on-surface-variant mt-2 border-t border-b border-outline-variant py-4 w-full max-w-4xl">
         {author && (
-          <div className="flex items-center justify-center gap-3 sm:pr-4 sm:border-r border-outline-variant">
-            <div className="w-12 h-12 relative rounded-full overflow-hidden shrink-0">
-              <ImageWithFallback 
-                alt={author.name} 
-                src={author.avatarUrl} 
-                fill 
-                className="object-cover" 
-              />
+          author.slug ? (
+            <Link
+              href={`/author/${author.slug}`}
+              className="group/author flex items-center justify-center gap-3 sm:pr-4 sm:border-r border-outline-variant hover:opacity-90 transition-opacity"
+            >
+              <div className="w-12 h-12 relative rounded-full overflow-hidden shrink-0 border border-transparent group-hover/author:border-secondary transition-colors">
+                <ImageWithFallback 
+                  alt={author.name} 
+                  src={author.avatarUrl} 
+                  fill 
+                  className="object-cover" 
+                />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="font-label-md text-label-md font-bold text-writtenly-navy group-hover/author:text-secondary transition-colors">
+                  {author.name}
+                </span>
+                <span className="font-label-sm text-label-sm text-outline font-medium">Author</span>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex items-center justify-center gap-3 sm:pr-4 sm:border-r border-outline-variant">
+              <div className="w-12 h-12 relative rounded-full overflow-hidden shrink-0">
+                <ImageWithFallback 
+                  alt={author.name} 
+                  src={author.avatarUrl} 
+                  fill 
+                  className="object-cover" 
+                />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="font-label-md text-label-md font-bold text-writtenly-navy">{author.name}</span>
+                <span className="font-label-sm text-label-sm text-outline font-medium">Author</span>
+              </div>
             </div>
-            <div className="flex flex-col text-left">
-              <span className="font-label-md text-label-md font-bold text-writtenly-navy">{author.name}</span>
-              <span className="font-label-sm text-label-sm text-outline font-medium">Author</span>
-            </div>
-          </div>
+          )
         )}
         
         <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 font-label-md text-label-md font-medium w-full sm:w-auto">

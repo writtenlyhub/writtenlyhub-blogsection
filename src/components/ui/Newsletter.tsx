@@ -3,7 +3,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { trackEvent } from '@/lib/analytics';
 
-export function Newsletter({ source = 'Inline Form' }: { source?: string }) {
+export function Newsletter({ 
+  source = 'Inline Form',
+  title = 'Stay ahead of the curve.',
+  description = 'Join 5,000+ marketers receiving our weekly insights on content strategy, SEO, and the future of digital writing.',
+}: { 
+  source?: string;
+  title?: string;
+  description?: string;
+}) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -66,10 +74,10 @@ export function Newsletter({ source = 'Inline Form' }: { source?: string }) {
         <div className="p-6 md:p-10 lg:p-12 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-8 md:gap-10">
           <div className="max-w-2xl text-center lg:text-left">
             <h3 className="font-display-lg text-display-lg text-white mb-5 font-bold tracking-tight">
-              Stay ahead of the curve.
+              {title}
             </h3>
             <p className="font-body-xl text-body-xl text-white/80">
-              Join 5,000+ marketers receiving our weekly insights on content strategy, SEO, and the future of digital writing.
+              {description}
             </p>
           </div>
           <div className="w-full lg:w-auto shrink-0 flex flex-col items-center lg:items-start">
