@@ -152,7 +152,7 @@ export default async function BlogDetail({ params }: PageProps) {
     rawPayloadPost.id,
     rawPayloadPost.category,
     'blog',
-    2,
+    3,
   );
 
   const jsonLdSchemas = buildJsonLd({

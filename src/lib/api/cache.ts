@@ -215,7 +215,7 @@ export const getCachedRelatedPosts = async (
   currentPostId: number | string,
   category?: any,
   contentType: 'blog' | 'news' = 'blog',
-  limit: number = 2,
+  limit: number = 3,
 ) => {
   const { isEnabled: draft } = await safeDraftMode();
 

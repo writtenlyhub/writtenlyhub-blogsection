@@ -365,7 +365,7 @@ export const getRelatedPosts = async ({
   currentPostId,
   category,
   contentType = 'blog',
-  limit = 2,
+  limit = 3,
 }: {
   currentPostId: number | string;
   category?: number | Category | (number | Category)[] | null;
